@@ -11,7 +11,8 @@ import {
 import { COUNSELOR_INFO } from "@/lib/constants";
 
 interface QuickActionsProps {
-  hasYearbookPage?: boolean;
+  /** If set, show "View Your Page" linking to /yearbook/[slug]; otherwise "Complete Yearbook" → /dashboard/yearbook/edit */
+  yearbookSlug?: string | null;
 }
 
 const ACTIONS = [
@@ -22,13 +23,13 @@ const ACTIONS = [
     description: "See your full graduation progress",
   },
   {
-    href: "/dashboard/wins/new",
+    href: "/dashboard/wall-of-wins/submit",
     icon: Trophy,
     title: "Submit Win",
     description: "Share a scholarship or acceptance",
   },
   {
-    href: "/yearbook/edit",
+    href: "/dashboard/yearbook/edit",
     icon: BookOpen,
     title: "Complete Yearbook",
     description: "Create your digital yearbook page",
@@ -51,10 +52,10 @@ const ACTIONS = [
 /**
  * 5 cards: View Checklist, Submit Win, Yearbook (or View Your Page), Ed RonIQ, Schedule Counselor. Hover: gold accent.
  */
-export function QuickActions({ hasYearbookPage = false }: QuickActionsProps) {
+export function QuickActions({ yearbookSlug }: QuickActionsProps) {
   const actions = ACTIONS.map((a) =>
-    a.title === "Complete Yearbook" && hasYearbookPage
-      ? { ...a, href: "/yearbook/me", title: "View Your Page", description: "See your yearbook page" }
+    a.title === "Complete Yearbook" && yearbookSlug
+      ? { ...a, href: `/yearbook/${yearbookSlug}`, title: "View Your Page", description: "See your yearbook page" }
       : a
   );
 

@@ -166,7 +166,7 @@ export async function GET() {
   const userId = session.user.id as string;
 
   try {
-    const [user, gradChecklist, assessments, serviceLearning, localObligations, ccrStatus, recentWins, winStats] =
+    const [user, gradChecklist, assessments, serviceLearning, localObligations, ccrStatus, yearbookPage, recentWins, winStats] =
       await Promise.all([
         prisma.user.findUnique({
           where: { id: userId },
@@ -180,6 +180,10 @@ export async function GET() {
         prisma.serviceLearning.findUnique({ where: { userId } }),
         prisma.localObligations.findUnique({ where: { userId } }),
         prisma.cCRStatus.findUnique({ where: { userId } }),
+        prisma.yearbookPage.findUnique({
+          where: { userId },
+          select: { slug: true },
+        }),
         prisma.win.findMany({
           where: { approved: true, deletedAt: null },
           orderBy: { createdAt: "desc" },
@@ -241,6 +245,7 @@ export async function GET() {
         image: user?.image ?? null,
         role: user?.role ?? "STUDENT",
       },
+      yearbookSlug: yearbookPage?.slug ?? null,
       readiness,
       alerts,
       recentWins: winsWithStudent,

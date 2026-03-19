@@ -17,11 +17,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let yearbookUrls: MetadataRoute.Sitemap = [];
   try {
     const pages = await prisma.yearbookPage.findMany({
-      where: { status: "APPROVED", publishedAt: { not: null } },
-      select: { userId: true, updatedAt: true },
+      where: { status: "APPROVED", publishedAt: { not: null }, slug: { not: null } },
+      select: { slug: true, updatedAt: true },
     });
     yearbookUrls = pages.map((p) => ({
-      url: `${base}/yearbook/${p.userId}`,
+      url: `${base}/yearbook/${p.slug!}`,
       lastModified: p.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.7,

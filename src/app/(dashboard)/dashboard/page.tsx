@@ -86,7 +86,7 @@ export default function DashboardPage() {
           <h2 id="quick-actions-heading" className="font-heading text-lg font-semibold text-navy-900 mb-4">
             Quick actions
           </h2>
-          <QuickActions hasYearbookPage={false} />
+          <QuickActions yearbookSlug={data.yearbookSlug ?? undefined} />
         </section>
 
         <section aria-labelledby="recent-wins-heading">

@@ -1,0 +1,6 @@
+Phase 4: Wall of Wins & Digital Yearbook — complete.
+- Wall of Wins: public list, submit, detail, WinCard, WinFilters, WinSubmitForm, APIs (wins, wins/[id], wins/stats, uploads/presigned).
+- Digital Yearbook: YearbookCard, ClassicTemplate, PhotoGallery, CommentSection, ViewCountIncrement, YearbookPageActions, YearbookEditor.
+- Pages: (public)/yearbook, (public)/yearbook/[slug], (dashboard)/yearbook/edit.
+- APIs: yearbook (GET/POST), yearbook/me (GET), yearbook/[slug] (GET/PATCH), yearbook/[slug]/comments (GET/POST).
+- Dashboard: yearbookSlug in dashboard API, QuickActions yearbookSlug → "View Your Page" or "Complete Yearbook".

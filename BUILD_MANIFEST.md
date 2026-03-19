@@ -7,9 +7,9 @@
 
 ## Current phase
 
-**Phase 4**  
-- Phase 3 (Student Dashboard & Graduation Checklist) is COMPLETE.  
-- Next: Public pages (wall-of-wins, yearbook, resources, leaderboards), more dashboard flows, admin/moderator, API routes.
+**Phase 4 — COMPLETE (release line)**  
+- Wall of Wins & Digital Yearbook are the current shipped milestone.  
+- **Phase 5 is not active** — any prompt or plan for leaderboards, Ed RonIQ, resources, or admin is **deferred**. Do not implement or track as “Phase 5” until explicitly restarted.
 
 ---
 
@@ -42,9 +42,18 @@ _(none)_
 
 ---
 
-## Next up (Phase 4)
+## Phase 4 — COMPLETE (Wall of Wins & Digital Yearbook)
 
-- Public pages: wall-of-wins, yearbook, resources, leaderboards
-- More dashboard flows (wins, yearbook edit, Ed RonIQ)
-- Admin and moderator flows
-- API routes with Zod, auth, rate limiting
+- **Wall of Wins:** Win model (evidenceUrl), validations, `/api/wins`, `/api/wins/[id]`, `/api/wins/stats`, `/api/uploads/presigned`; WinCard, WinFilters, WinSubmitForm; `(public)/wall-of-wins`, `(public)/wall-of-wins/[id]`, `(dashboard)/dashboard/wall-of-wins/submit`.
+- **Digital Yearbook:** YearbookPage (slug, displayName, tagline, myStory, favoriteQuote, favoriteMemories, galleryPhotos, viewCount, etc.); validations, `/api/yearbook`, `/api/yearbook/me`, `/api/yearbook/[slug]`, `/api/yearbook/[slug]/comments`; YearbookCard, ClassicTemplate, PhotoGallery, CommentSection, ViewCountIncrement, YearbookPageActions, YearbookEditor; `(public)/yearbook`, `(public)/yearbook/[slug]`, `(dashboard)/yearbook/edit`; dashboard API returns `yearbookSlug`; QuickActions "View Your Page" / "Complete Yearbook". `.phase_4_complete` marker.
+
+---
+
+## Backlog (post–Phase 4; **not** Phase 5 until re-scoped)
+
+_These items are **not** the current phase. Reference only when Phase 5 is explicitly opened again._
+
+- Public pages: resources, leaderboards  
+- More dashboard flows (Ed RonIQ, etc.)  
+- Admin and moderator flows  
+- API hardening: rate limiting, expanded Zod coverage where needed

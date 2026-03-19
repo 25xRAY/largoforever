@@ -106,6 +106,8 @@ enum YearbookTemplate {
   CLASSIC
   MODERN
   MINIMAL
+  BOLD
+  SCRAPBOOK
 }
 
 enum YearbookLayout {
@@ -298,6 +300,7 @@ model Win {
   scholarshipType ScholarshipType?
   militaryBranch  MilitaryBranch?
   amount          Float?
+  evidenceUrl     String?  @db.VarChar(512)
   approved        Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -310,18 +313,28 @@ model Win {
 }
 
 model YearbookPage {
-  id          String           @id @default(uuid())
-  userId      String           @unique
-  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  headline    String?          @db.VarChar(256)
-  quote       String?          @db.VarChar(512)
-  template   YearbookTemplate  @default(CLASSIC)
-  layout     YearbookLayout    @default(SINGLE)
-  imageUrl   String?           @db.VarChar(512)
-  status      ModerationStatus @default(PENDING)
-  publishedAt DateTime?
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  id               String           @id @default(uuid())
+  userId           String           @unique
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug             String?          @unique @db.VarChar(120)
+  displayName      String?          @db.VarChar(100)
+  headline         String?          @db.VarChar(256)
+  tagline          String?          @db.VarChar(100)
+  quote            String?          @db.VarChar(512)
+  myStory          String?          @db.Text
+  favoriteQuote    String?          @db.VarChar(250)
+  favoriteMemories String?          @db.Text
+  galleryPhotos    String?          @db.Text
+  template         YearbookTemplate @default(CLASSIC)
+  layout           YearbookLayout   @default(SINGLE)
+  imageUrl         String?          @db.VarChar(512)
+  accentColor      String?          @db.VarChar(20)
+  cashappHandle    String?          @db.VarChar(50)
+  status           ModerationStatus @default(PENDING)
+  publishedAt      DateTime?
+  viewCount        Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   comments Comment[]
 
