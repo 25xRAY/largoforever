@@ -32,10 +32,7 @@ export async function POST(request: Request) {
       );
     }
     if (fileSize != null && fileSize > MAX_SIZE_BYTES) {
-      return NextResponse.json(
-        { error: "File too large. Max 5MB." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "File too large. Max 5MB." }, { status: 400 });
     }
 
     const hasS3 =

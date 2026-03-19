@@ -139,6 +139,20 @@ enum LeaderboardCategory {
   WINS
 }
 
+/** Public honors boards (Phase 5) — opt-in categories. */
+enum DistrictLeaderboardCategory {
+  GPA
+  SERVICE
+  ACADEMIC_CHALLENGE
+  LEADERSHIP
+}
+
+enum HonorDesignation {
+  NONE
+  VALEDICTORIAN
+  SALUTATORIAN
+}
+
 model Account {
   id                String  @id @default(uuid())
   userId            String
@@ -193,6 +207,10 @@ model User {
   graduationYear   Int?
   yearbookPublic   Boolean   @default(true)
   leaderboardOptIn Boolean   @default(false)
+  displayGpa         Float?
+  apIbCourseCount    Int       @default(0)
+  leadershipRolesJson String? @db.Text
+  honorDesignation   HonorDesignation @default(NONE)
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   deletedAt        DateTime?
@@ -207,7 +225,23 @@ model User {
   yearbookPage     YearbookPage?
   comments         Comment[]
   leaderboardEntries LeaderboardEntry[]
+  leaderboardPreferences UserLeaderboardPreference[]
   auditLogs        AuditLog[]
+}
+
+model UserLeaderboardPreference {
+  id        String                     @id @default(uuid())
+  userId    String
+  user      User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category  DistrictLeaderboardCategory
+  optedIn   Boolean                    @default(false)
+  verified  Boolean                    @default(false)
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @updatedAt
+
+  @@unique([userId, category])
+  @@index([userId])
+  @@index([category])
 }
 
 model GradChecklist {

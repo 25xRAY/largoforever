@@ -125,7 +125,10 @@ export default function OnboardingPage() {
           {step === 1 && (
             <>
               <p className="text-sm text-white/80">
-                Name: <strong>{user?.firstName} {user?.lastName}</strong>
+                Name:{" "}
+                <strong>
+                  {user?.firstName} {user?.lastName}
+                </strong>
               </p>
               <Input
                 label="Preferred name (optional)"
@@ -197,7 +200,9 @@ export default function OnboardingPage() {
                 )}
                 <div>
                   <dt className="text-white/70">Pathway</dt>
-                  <dd className="font-medium">{COMPLETER_PATHWAY_LABELS[completerPathway as CompleterPathway]}</dd>
+                  <dd className="font-medium">
+                    {COMPLETER_PATHWAY_LABELS[completerPathway as CompleterPathway]}
+                  </dd>
                 </div>
                 <div>
                   <dt className="text-white/70">Graduation year</dt>

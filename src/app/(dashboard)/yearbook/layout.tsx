@@ -6,10 +6,6 @@ export const metadata = generatePageMetadata({
   noIndex: true,
 });
 
-export default function DashboardYearbookLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardYearbookLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

@@ -35,13 +35,10 @@ export function EmptyState({
       role="status"
       aria-label={`${heading}. ${description}`}
     >
-      <Icon
-        className="mb-4 h-12 w-12 text-navy-400"
-        aria-hidden
-      />
+      <Icon className="mb-4 h-12 w-12 text-navy-400" aria-hidden />
       <h3 className="font-heading text-lg font-semibold text-navy-800">{heading}</h3>
       <p className="mt-2 max-w-sm text-sm text-navy-600">{description}</p>
-      {(actionLabel && (actionHref || onAction)) && (
+      {actionLabel && (actionHref || onAction) && (
         <div className="mt-6">
           {actionHref ? (
             <Button asChild variant="primary" size="md">

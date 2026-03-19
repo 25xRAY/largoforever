@@ -1,0 +1,12 @@
+{
+  "extends": ["next/core-web-vitals", "prettier"],
+  "ignorePatterns": ["node_modules/", ".next/", "coverage/", "playwright-report/"],
+  "overrides": [
+    {
+      "files": ["e2e/**/*.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
+}

@@ -4,28 +4,18 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getYearbookPageBySlug, getYearbookCommentsBySlug } from "@/lib/yearbook";
 import { generatePageMetadata, getCanonicalUrl } from "@/lib/seo";
-import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
-import { CommentSection, ViewCountIncrement, YearbookPageActions, YearbookTemplateView } from "@/components/yearbook";
+import {
+  CommentSection,
+  ViewCountIncrement,
+  YearbookPageActions,
+  YearbookTemplateView,
+} from "@/components/yearbook";
 import { JsonLd } from "@/components/seo/JsonLd";
 import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const rows = await prisma.yearbookPage.findMany({
-    where: {
-      status: "APPROVED",
-      publishedAt: { not: null },
-      slug: { not: null },
-    },
-    select: { slug: true },
-  });
-  return rows
-    .filter((r): r is { slug: string } => r.slug != null && r.slug.length > 0)
-    .map((r) => ({ slug: r.slug! }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,7 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = await getYearbookPageBySlug(slug, session?.user?.id as string | undefined);
   if (!page) return { title: "Not Found" };
   const title = `${page.displayName ?? "Largo Lion"} — Class of 2026 Yearbook`;
-  const description = page.tagline ?? page.headline ?? "Largo Lions Class of 2026 Digital Yearbook.";
+  const description =
+    page.tagline ?? page.headline ?? "Largo Lions Class of 2026 Digital Yearbook.";
   const base = generatePageMetadata({
     title,
     description,

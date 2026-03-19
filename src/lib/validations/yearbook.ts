@@ -17,7 +17,12 @@ export const yearbookPageSchema = z.object({
   layout: layoutEnum.optional(),
   imageUrl: z.string().url().optional().nullable(),
   accentColor: z.string().max(20).optional().nullable(),
-  cashappHandle: z.string().regex(/^$|^[\w]+$/).max(50).optional().nullable(),
+  cashappHandle: z
+    .string()
+    .regex(/^$|^[\w]+$/)
+    .max(50)
+    .optional()
+    .nullable(),
 });
 
 export type YearbookPageInput = z.infer<typeof yearbookPageSchema>;

@@ -1,9 +1,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
-export default function DashboardRootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const dynamic = "force-dynamic";
+
+export default function DashboardRootLayout({ children }: { children: React.ReactNode }) {
   return <DashboardLayout>{children}</DashboardLayout>;
 }

@@ -47,7 +47,11 @@ Modal.displayName = "Modal";
 
 const ModalHeader = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex items-start justify-between p-6 pb-0", className)} {...props} />
+    <div
+      ref={ref}
+      className={cn("flex items-start justify-between p-6 pb-0", className)}
+      {...props}
+    />
   )
 );
 ModalHeader.displayName = "ModalHeader";
@@ -68,14 +72,16 @@ const ModalDescription = forwardRef<
   React.ComponentRef<typeof Dialog.Description>,
   React.ComponentPropsWithoutRef<typeof Dialog.Description>
 >(({ className, ...props }, ref) => (
-  <Dialog.Description ref={ref} className={cn("mt-1 text-sm text-navy-600", className)} {...props} />
+  <Dialog.Description
+    ref={ref}
+    className={cn("mt-1 text-sm text-navy-600", className)}
+    {...props}
+  />
 ));
 ModalDescription.displayName = "ModalDescription";
 
 const ModalContent = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6", className)} {...props} />
-  )
+  ({ className, ...props }, ref) => <div ref={ref} className={cn("p-6", className)} {...props} />
 );
 ModalContent.displayName = "ModalContent";
 

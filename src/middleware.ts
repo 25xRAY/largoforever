@@ -47,7 +47,20 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/yearbook/") ||
     pathname === "/resources" ||
     pathname === "/leaderboards" ||
-    pathname.startsWith("/api/public");
+    pathname.startsWith("/api/public") ||
+    pathname.startsWith("/api/leaderboards") ||
+    pathname.startsWith("/api/resources");
+
+  if (pathname.startsWith("/api/ai/")) {
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const role = token.role as string;
+    if (role !== "STUDENT" && role !== "ADMIN") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    return NextResponse.next();
+  }
 
   if (isPublic && token && (pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/dashboard", req.url));

@@ -31,8 +31,7 @@ const badgeVariants = cva(
 );
 
 export interface BadgeProps
-  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "size">,
-    VariantProps<typeof badgeVariants> {
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, "size">, VariantProps<typeof badgeVariants> {
   dismissible?: boolean;
   onDismiss?: () => void;
 }
@@ -41,18 +40,7 @@ export interface BadgeProps
  * Badge with CVA variants. Optional dismissible with X button. Accessible.
  */
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      dismissible = false,
-      onDismiss,
-      children,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, variant, size, dismissible = false, onDismiss, children, ...props }, ref) => {
     return (
       <span
         ref={ref}

@@ -8,8 +8,7 @@ const cardVariants = cva("rounded-card bg-white text-navy-900", {
   variants: {
     variant: {
       default: "shadow-card",
-      interactive:
-        "shadow-card transition-all hover:shadow-card-hover hover:-translate-y-0.5",
+      interactive: "shadow-card transition-all hover:shadow-card-hover hover:-translate-y-0.5",
       outlined: "border-2 border-navy-200",
       elevated: "shadow-card-hover",
     },
@@ -20,17 +19,14 @@ const cardVariants = cva("rounded-card bg-white text-navy-900", {
 });
 
 export interface CardProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {}
 
 /**
  * Card container. Sub-components: CardHeader, CardTitle, CardDescription, CardContent, CardFooter.
  */
-const Card = forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, ...props }, ref) => (
-    <div ref={ref} className={cn(cardVariants({ variant }), className)} {...props} />
-  )
-);
+const Card = forwardRef<HTMLDivElement, CardProps>(({ className, variant, ...props }, ref) => (
+  <div ref={ref} className={cn(cardVariants({ variant }), className)} {...props} />
+));
 Card.displayName = "Card";
 
 const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
@@ -72,12 +68,4 @@ const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 );
 CardFooter.displayName = "CardFooter";
 
-export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  cardVariants,
-};
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, cardVariants };

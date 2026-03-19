@@ -56,9 +56,7 @@ export default function DashboardPage() {
     <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
       <div className="space-y-8">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-navy-900">
-            Welcome back, {name} 🦁
-          </h1>
+          <h1 className="font-heading text-2xl font-bold text-navy-900">Welcome back, {name} 🦁</h1>
           <p className="mt-1 text-navy-600">
             {daysLeft} days until graduation — {GRADUATION_DATE}
           </p>
@@ -83,14 +81,20 @@ export default function DashboardPage() {
         </section>
 
         <section aria-labelledby="quick-actions-heading">
-          <h2 id="quick-actions-heading" className="font-heading text-lg font-semibold text-navy-900 mb-4">
+          <h2
+            id="quick-actions-heading"
+            className="font-heading text-lg font-semibold text-navy-900 mb-4"
+          >
             Quick actions
           </h2>
           <QuickActions yearbookSlug={data.yearbookSlug ?? undefined} />
         </section>
 
         <section aria-labelledby="recent-wins-heading">
-          <h2 id="recent-wins-heading" className="font-heading text-lg font-semibold text-navy-900 mb-4">
+          <h2
+            id="recent-wins-heading"
+            className="font-heading text-lg font-semibold text-navy-900 mb-4"
+          >
             Recent class wins
           </h2>
           <RecentWins wins={data.recentWins ?? []} />

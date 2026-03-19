@@ -46,7 +46,8 @@ export const SITE_SCHEMA = {
   "@type": "EducationalOrganization",
   name: "Largo High School",
   url: "https://largolions2026.org",
-  description: "Largo High School Class of 2026 — Largo Lions. Prince George's County Public Schools.",
+  description:
+    "Largo High School Class of 2026 — Largo Lions. Prince George's County Public Schools.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "505 Largo Rd",
@@ -77,12 +78,54 @@ export const FAQ_SCHEMA = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   mainEntity: [
-    { "@type": "Question", name: "How many credits do I need to graduate?", acceptedAnswer: { "@type": "Answer", text: "You need 21 total credits: English 4, Math 3, Science 3, Social Studies 3, Fine Arts 1, PE 0.5, Health 0.5, and Career Pathway 6." } },
-    { "@type": "Question", name: "What assessments are required?", acceptedAnswer: { "@type": "Answer", text: "Four assessments: Algebra I, English 10, Government, and Life Science. You can meet these with state tests, AP (3+), SAT (480+/530+), ACT (20+), or IB (4+)." } },
-    { "@type": "Question", name: "How many service learning hours?", acceptedAnswer: { "@type": "Answer", text: "75 hours of service learning in grades 6–12 are required for graduation." } },
-    { "@type": "Question", name: "What is the Career Completer Pathway?", acceptedAnswer: { "@type": "Answer", text: "A career pathway (STEM, Health, Business, Arts/Media, IT, Construction, Education, or Public Service) that you complete as part of your 6 career pathway credits." } },
-    { "@type": "Question", name: "When is graduation?", acceptedAnswer: { "@type": "Answer", text: "Largo Lions Class of 2026 graduation is June 2, 2026." } },
-    { "@type": "Question", name: "Who is my counselor?", acceptedAnswer: { "@type": "Answer", text: "Tomeco Dates. Email tomeco.dates@pgcps.org or call 301-808-8880. Schedule at calendly.com/tomeco-dates." } },
+    {
+      "@type": "Question",
+      name: "How many credits do I need to graduate?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You need 21 total credits: English 4, Math 3, Science 3, Social Studies 3, Fine Arts 1, PE 0.5, Health 0.5, and Career Pathway 6.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What assessments are required?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Four assessments: Algebra I, English 10, Government, and Life Science. You can meet these with state tests, AP (3+), SAT (480+/530+), ACT (20+), or IB (4+).",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How many service learning hours?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "75 hours of service learning in grades 6–12 are required for graduation.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the Career Completer Pathway?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A career pathway (STEM, Health, Business, Arts/Media, IT, Construction, Education, or Public Service) that you complete as part of your 6 career pathway credits.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "When is graduation?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Largo Lions Class of 2026 graduation is June 2, 2026.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Who is my counselor?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Tomeco Dates. Email tomeco.dates@pgcps.org or call 301-808-8880. Schedule at calendly.com/tomeco-dates.",
+      },
+    },
   ],
 } as const;
 

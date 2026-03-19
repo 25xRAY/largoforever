@@ -23,10 +23,13 @@ function pathToSegment(path: string): string {
 export function Breadcrumbs() {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
-  const items = [HOME, ...segments.map((s, i) => ({
-    name: pathToSegment(segments.slice(0, i + 1).join("/")),
-    path: "/" + segments.slice(0, i + 1).join("/"),
-  }))];
+  const items = [
+    HOME,
+    ...segments.map((s, i) => ({
+      name: pathToSegment(segments.slice(0, i + 1).join("/")),
+      path: "/" + segments.slice(0, i + 1).join("/"),
+    })),
+  ];
 
   const schemaItems = items.map((item, i) => ({
     name: item.name,
@@ -42,7 +45,11 @@ export function Breadcrumbs() {
             const isLast = i === items.length - 1;
             return (
               <li key={item.path} className="flex items-center gap-2">
-                {i > 0 && <span aria-hidden className="text-navy-400">/</span>}
+                {i > 0 && (
+                  <span aria-hidden className="text-navy-400">
+                    /
+                  </span>
+                )}
                 {isLast ? (
                   <span className="font-medium text-navy-900" aria-current="page">
                     {item.name}

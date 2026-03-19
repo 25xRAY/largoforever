@@ -43,15 +43,11 @@ export function BoldTemplate({
       <div className="relative min-h-[320px] w-full overflow-hidden sm:min-h-[420px]">
         {imageUrl ? (
           <>
-            <Image
-              src={imageUrl}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
+            <Image src={imageUrl} alt="" fill className="object-cover" sizes="100vw" priority />
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/30"
+              aria-hidden
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/30" aria-hidden />
           </>
         ) : (
           <div className="absolute inset-0 bg-navy-800" aria-hidden />
@@ -69,10 +65,7 @@ export function BoldTemplate({
             </p>
           )}
           <div
-            className={cn(
-              "mt-6 h-1 w-24 rounded-full sm:w-32",
-              !accentHex && "bg-gold-500"
-            )}
+            className={cn("mt-6 h-1 w-24 rounded-full sm:w-32", !accentHex && "bg-gold-500")}
             style={accentHex ? { backgroundColor: "var(--yb-accent)" } : undefined}
           />
         </div>
@@ -101,7 +94,10 @@ export function BoldTemplate({
 
         {favoriteQuote && (
           <p
-            className={cn("mt-10 text-center text-lg font-bold sm:text-xl", !accentHex && "text-gold-500")}
+            className={cn(
+              "mt-10 text-center text-lg font-bold sm:text-xl",
+              !accentHex && "text-gold-500"
+            )}
             style={accentHex ? { color: "var(--yb-accent)" } : undefined}
           >
             &ldquo;{favoriteQuote}&rdquo;
@@ -117,7 +113,13 @@ export function BoldTemplate({
                 style={{ transform: i % 2 === 1 ? "rotate(1deg)" : "rotate(-0.5deg)" }}
               >
                 <div className="relative aspect-[4/5] w-full">
-                  <Image src={url} alt="" fill className="object-cover" sizes="(max-width: 768px) 45vw, 30vw" />
+                  <Image
+                    src={url}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 45vw, 30vw"
+                  />
                 </div>
               </div>
             ))}

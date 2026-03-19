@@ -66,7 +66,7 @@ export function ReadinessMeter({
       <div
         className="relative"
         style={{ width: SIZE, height: SIZE }}
-        role="img"
+        role="meter"
         aria-label={`Readiness: ${percentage}%`}
         aria-valuenow={percentage}
         aria-valuemin={0}

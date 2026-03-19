@@ -10,7 +10,10 @@ import { cn } from "@/lib/utils";
 
 interface YearbookEditorProps {
   slug: string;
-  initialData: Partial<YearbookPageInput> & { favoriteMemories?: string[]; galleryPhotos?: string[] };
+  initialData: Partial<YearbookPageInput> & {
+    favoriteMemories?: string[];
+    galleryPhotos?: string[];
+  };
 }
 
 /**
@@ -60,7 +63,9 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
 
   const onSave = form.handleSubmit(async (data) => {
     const memories = (data.favoriteMemories ?? []).filter(Boolean);
-    const photos = (data.galleryPhotos ?? []).filter((u): u is string => Boolean(u && u.startsWith("http")));
+    const photos = (data.galleryPhotos ?? []).filter((u): u is string =>
+      Boolean(u && u.startsWith("http"))
+    );
     setIsSaving(true);
     const res = await fetch(`/api/yearbook/${encodeURIComponent(slug)}`, {
       method: "PATCH",
@@ -83,9 +88,22 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
   return (
     <form onSubmit={onSave} className="space-y-8">
       <div className="grid gap-6 sm:grid-cols-2">
-        <Input label="Display name" {...form.register("displayName")} errorMessage={form.formState.errors.displayName?.message} />
-        <Input label="Headline" {...form.register("headline")} errorMessage={form.formState.errors.headline?.message} />
-        <Input label="Tagline" {...form.register("tagline")} errorMessage={form.formState.errors.tagline?.message} className="sm:col-span-2" />
+        <Input
+          label="Display name"
+          {...form.register("displayName")}
+          errorMessage={form.formState.errors.displayName?.message}
+        />
+        <Input
+          label="Headline"
+          {...form.register("headline")}
+          errorMessage={form.formState.errors.headline?.message}
+        />
+        <Input
+          label="Tagline"
+          {...form.register("tagline")}
+          errorMessage={form.formState.errors.tagline?.message}
+          className="sm:col-span-2"
+        />
         <div className="sm:col-span-2">
           <label className="mb-1 block text-sm font-medium text-navy-700">Template</label>
           <select
@@ -99,7 +117,12 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
             <option value="SCRAPBOOK">Scrapbook</option>
           </select>
         </div>
-        <Input label="Profile image URL" {...form.register("imageUrl")} errorMessage={form.formState.errors.imageUrl?.message} className="sm:col-span-2" />
+        <Input
+          label="Profile image URL"
+          {...form.register("imageUrl")}
+          errorMessage={form.formState.errors.imageUrl?.message}
+          className="sm:col-span-2"
+        />
         <div className="sm:col-span-2">
           <label className="mb-1 block text-sm font-medium text-navy-700">Quote</label>
           <textarea
@@ -112,7 +135,9 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-sm font-medium text-navy-700">My story (max 1500 chars)</label>
+          <label className="mb-1 block text-sm font-medium text-navy-700">
+            My story (max 1500 chars)
+          </label>
           <textarea
             {...form.register("myStory")}
             maxLength={1500}
@@ -122,13 +147,22 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
               "focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
             )}
           />
-          <p className="mt-1 text-right text-sm text-navy-500">{(form.watch("myStory") ?? "").length}/1500</p>
+          <p className="mt-1 text-right text-sm text-navy-500">
+            {(form.watch("myStory") ?? "").length}/1500
+          </p>
         </div>
-        <Input label="Favorite quote" {...form.register("favoriteQuote")} errorMessage={form.formState.errors.favoriteQuote?.message} className="sm:col-span-2" />
+        <Input
+          label="Favorite quote"
+          {...form.register("favoriteQuote")}
+          errorMessage={form.formState.errors.favoriteQuote?.message}
+          className="sm:col-span-2"
+        />
       </div>
 
       <div>
-        <h3 className="font-heading text-lg font-semibold text-navy-900">Favorite memories (up to 10)</h3>
+        <h3 className="font-heading text-lg font-semibold text-navy-900">
+          Favorite memories (up to 10)
+        </h3>
         {memories.map((_, i) => (
           <div key={i} className="mt-2 flex gap-2">
             <input
@@ -145,7 +179,12 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
               type="button"
               variant="secondary"
               size="sm"
-              onClick={() => form.setValue("favoriteMemories", memories.filter((_, j) => j !== i))}
+              onClick={() =>
+                form.setValue(
+                  "favoriteMemories",
+                  memories.filter((_, j) => j !== i)
+                )
+              }
             >
               Remove
             </Button>
@@ -165,7 +204,9 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
       </div>
 
       <div>
-        <h3 className="font-heading text-lg font-semibold text-navy-900">Gallery photos (up to 6 URLs)</h3>
+        <h3 className="font-heading text-lg font-semibold text-navy-900">
+          Gallery photos (up to 6 URLs)
+        </h3>
         {gallery.map((_, i) => (
           <div key={i} className="mt-2 flex gap-2">
             <input
@@ -183,7 +224,12 @@ export function YearbookEditor({ slug, initialData }: YearbookEditorProps) {
               type="button"
               variant="secondary"
               size="sm"
-              onClick={() => form.setValue("galleryPhotos", gallery.filter((_, j) => j !== i))}
+              onClick={() =>
+                form.setValue(
+                  "galleryPhotos",
+                  gallery.filter((_, j) => j !== i)
+                )
+              }
             >
               Remove
             </Button>

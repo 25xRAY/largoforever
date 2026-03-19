@@ -1,10 +1,28 @@
 export { Avatar, avatarSizes } from "./Avatar";
 export { Badge, badgeVariants } from "./Badge";
 export { Button, buttonVariants } from "./Button";
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, cardVariants } from "./Card";
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  cardVariants,
+} from "./Card";
 export { EmptyState } from "./EmptyState";
 export { Input, inputVariants } from "./Input";
-export { Modal, ModalHeader, ModalTitle, ModalDescription, ModalContent, ModalFooter, ModalCloseButton, Dialog, modalSizes } from "./Modal";
+export {
+  Modal,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalContent,
+  ModalFooter,
+  ModalCloseButton,
+  Dialog,
+  modalSizes,
+} from "./Modal";
 export { Progress } from "./Progress";
 export { Skeleton, skeletonVariants } from "./Skeleton";
 export { Toaster, useToast } from "./Toast";

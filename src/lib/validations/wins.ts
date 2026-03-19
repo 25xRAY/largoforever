@@ -1,13 +1,6 @@
 import { z } from "zod";
 
-const winTypeEnum = z.enum([
-  "SCHOLARSHIP",
-  "ACCEPTANCE",
-  "MILITARY",
-  "JOB",
-  "AWARD",
-  "OTHER",
-]);
+const winTypeEnum = z.enum(["SCHOLARSHIP", "ACCEPTANCE", "MILITARY", "JOB", "AWARD", "OTHER"]);
 
 const institutionTypeEnum = z.enum([
   "FOUR_YEAR",
@@ -18,12 +11,7 @@ const institutionTypeEnum = z.enum([
   "OTHER",
 ]);
 
-const scholarshipRangeEnum = z.enum([
-  "UNDER_1K",
-  "ONE_TO_5K",
-  "FIVE_TO_10K",
-  "OVER_10K",
-]);
+const scholarshipRangeEnum = z.enum(["UNDER_1K", "ONE_TO_5K", "FIVE_TO_10K", "OVER_10K"]);
 
 const scholarshipTypeEnum = z.enum(["MERIT", "NEED", "ATHLETIC", "OTHER"]);
 

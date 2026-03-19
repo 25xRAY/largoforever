@@ -55,7 +55,11 @@ export default async function YearbookBrowsePage() {
   return (
     <>
       <JsonLd data={structuredData} />
-      <Suspense fallback={<div className="min-h-[40vh] animate-pulse rounded-card bg-navy-100" aria-hidden />}>
+      <Suspense
+        fallback={
+          <div className="min-h-[40vh] animate-pulse rounded-card bg-navy-100" aria-hidden />
+        }
+      >
         <YearbookBrowseClient />
       </Suspense>
     </>

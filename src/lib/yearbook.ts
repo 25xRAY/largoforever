@@ -28,10 +28,7 @@ export async function getYearbookPageBySlug(
   const page = await prisma.yearbookPage.findFirst({
     where: {
       slug,
-      OR: [
-        { status: "APPROVED", publishedAt: { not: null } },
-        ...(userId ? [{ userId }] : []),
-      ],
+      OR: [{ status: "APPROVED", publishedAt: { not: null } }, ...(userId ? [{ userId }] : [])],
     },
     include: {
       user: { select: { id: true, firstName: true, lastName: true } },
@@ -47,7 +44,9 @@ export async function getYearbookPageBySlug(
   return {
     id: page.id,
     slug: page.slug,
-    displayName: page.displayName ?? (page.user ? [page.user.firstName, page.user.lastName].filter(Boolean).join(" ") : null),
+    displayName:
+      page.displayName ??
+      (page.user ? [page.user.firstName, page.user.lastName].filter(Boolean).join(" ") : null),
     headline: page.headline,
     tagline: page.tagline,
     quote: page.quote,

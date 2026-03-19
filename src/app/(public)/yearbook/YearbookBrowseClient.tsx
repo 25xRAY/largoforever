@@ -46,7 +46,9 @@ export function YearbookBrowseClient() {
     <div className="mx-auto max-w-7xl space-y-8 px-4 py-8">
       <section className="rounded-card bg-gradient-to-br from-navy-600 to-navy-800 p-8 text-white">
         <h1 className="font-heading text-3xl font-bold">Class of 2026 Digital Yearbook 📖</h1>
-        <p className="mt-2 text-white/90">Class of 2026 — Largo Lions. Browse and celebrate your classmates.</p>
+        <p className="mt-2 text-white/90">
+          Class of 2026 — Largo Lions. Browse and celebrate your classmates.
+        </p>
         <form onSubmit={handleSearch} className="mt-6 flex flex-wrap gap-3">
           <Input
             type="search"
@@ -72,17 +74,26 @@ export function YearbookBrowseClient() {
       ) : (
         <>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {pages.map((p: { slug: string; displayName: string | null; headline: string | null; tagline: string | null; imageUrl: string | null; template: string }) => (
-              <YearbookCard
-                key={p.slug}
-                slug={p.slug ?? ""}
-                displayName={p.displayName}
-                headline={p.headline}
-                tagline={p.tagline}
-                imageUrl={p.imageUrl}
-                template={p.template ?? "CLASSIC"}
-              />
-            ))}
+            {pages.map(
+              (p: {
+                slug: string;
+                displayName: string | null;
+                headline: string | null;
+                tagline: string | null;
+                imageUrl: string | null;
+                template: string;
+              }) => (
+                <YearbookCard
+                  key={p.slug}
+                  slug={p.slug ?? ""}
+                  displayName={p.displayName}
+                  headline={p.headline}
+                  tagline={p.tagline}
+                  imageUrl={p.imageUrl}
+                  template={p.template ?? "CLASSIC"}
+                />
+              )
+            )}
           </div>
           <div className="flex items-center justify-center gap-4 pt-8">
             {page > 1 && (

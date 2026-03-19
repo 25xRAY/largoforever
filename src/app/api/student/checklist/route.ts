@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { CREDITS_REQUIRED, SERVICE_HOURS_REQUIRED, ASSESSMENTS_REQUIRED, SUBJECT_CREDITS } from "@/lib/constants";
+import {
+  CREDITS_REQUIRED,
+  SERVICE_HOURS_REQUIRED,
+  ASSESSMENTS_REQUIRED,
+  SUBJECT_CREDITS,
+} from "@/lib/constants";
 
 const SUBJECT_KEYS = [
   "english",
@@ -86,7 +91,8 @@ export async function GET() {
 
     const assessmentsPassed = assessments.filter((a) => a.result === "PASS").length;
     const serviceHours = serviceLearning?.hours ?? 0;
-    const servicePercentage = SERVICE_HOURS_REQUIRED > 0 ? (serviceHours / SERVICE_HOURS_REQUIRED) * 100 : 0;
+    const servicePercentage =
+      SERVICE_HOURS_REQUIRED > 0 ? (serviceHours / SERVICE_HOURS_REQUIRED) * 100 : 0;
 
     const obligations = localObligations
       ? {

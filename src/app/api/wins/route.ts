@@ -20,7 +20,9 @@ export async function GET(request: Request) {
     limit: searchParams.get("limit") ?? DEFAULT_LIMIT,
   });
 
-  const filters = parsed.success ? parsed.data : { sort: "newest" as const, page: 1, limit: DEFAULT_LIMIT };
+  const filters = parsed.success
+    ? parsed.data
+    : { sort: "newest" as const, page: 1, limit: DEFAULT_LIMIT };
   const page = filters.page ?? 1;
   const limit = filters.limit ?? DEFAULT_LIMIT;
   const skip = (page - 1) * limit;
@@ -76,9 +78,7 @@ export async function GET(request: Request) {
       evidenceUrl: w.evidenceUrl,
       approved: w.approved,
       createdAt: w.createdAt.toISOString(),
-      user: w.user
-        ? { firstName: w.user.firstName, lastName: w.user.lastName }
-        : null,
+      user: w.user ? { firstName: w.user.firstName, lastName: w.user.lastName } : null,
     })),
     total,
     page,

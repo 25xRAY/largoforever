@@ -16,10 +16,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header
-      className="fixed left-0 right-0 top-0 z-50 bg-navy-500 shadow-nav"
-      role="banner"
-    >
+    <header className="fixed left-0 right-0 top-0 z-50 bg-navy-500 shadow-nav" role="banner">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
@@ -30,10 +27,7 @@ export function Header() {
           <span className="font-heading text-lg font-bold">Largo Lions &apos;26</span>
         </Link>
 
-        <nav
-          className="hidden md:flex md:items-center md:gap-1"
-          aria-label="Main navigation"
-        >
+        <nav className="hidden md:flex md:items-center md:gap-1" aria-label="Main navigation">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -78,26 +72,52 @@ export function Header() {
                     <p className="font-heading font-semibold text-navy-900">
                       {session.user.firstName} {session.user.lastName}
                     </p>
-                    <p className="text-xs text-navy-600 capitalize">{session.user.role?.toLowerCase()}</p>
+                    <p className="text-xs text-navy-600 capitalize">
+                      {session.user.role?.toLowerCase()}
+                    </p>
                   </div>
                   <Dropdown.Item asChild>
-                    <Link href="/dashboard/profile" className="block rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none">
+                    <Link
+                      href="/dashboard/profile"
+                      className="block rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none"
+                    >
                       Profile
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item asChild>
-                    <Link href="/dashboard/settings" className="block rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none">
+                    <Link
+                      href="/dashboard/settings"
+                      className="block rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none"
+                    >
                       Settings
                     </Link>
                   </Dropdown.Item>
-                  <Dropdown.Item onSelect={() => signOut({ callbackUrl: "/" })} className="rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none">
+                  {(session.user.role === "ADMIN" || session.user.role === "MODERATOR") && (
+                    <Dropdown.Item asChild>
+                      <Link
+                        href="/admin"
+                        className="block rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none"
+                      >
+                        Admin panel
+                      </Link>
+                    </Dropdown.Item>
+                  )}
+                  <Dropdown.Item
+                    onSelect={() => signOut({ callbackUrl: "/" })}
+                    className="rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none"
+                  >
                     Sign Out
                   </Dropdown.Item>
                 </Dropdown.Content>
               </Dropdown.Portal>
             </Dropdown.Root>
           ) : (
-            <Button asChild variant="outline" size="sm" className="border-white text-white hover:bg-white/10">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="border-white text-white hover:bg-white/10"
+            >
               <Link href="/login">Sign In</Link>
             </Button>
           )}

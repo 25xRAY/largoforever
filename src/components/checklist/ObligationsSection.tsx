@@ -31,7 +31,11 @@ export function ObligationsSection({
   const status = { feesClear, deviceClear, booksClear, athleticClear };
 
   return (
-    <Accordion.Item value="obligations" id="obligations" className="rounded-card border border-navy-200 bg-white shadow-card">
+    <Accordion.Item
+      value="obligations"
+      id="obligations"
+      className="rounded-card border border-navy-200 bg-white shadow-card"
+    >
       <Accordion.Header>
         <Accordion.Trigger className="flex w-full items-center justify-between px-6 py-4 text-left font-heading text-lg font-semibold text-navy-900 hover:bg-navy-50 focus:outline-none focus:ring-2 focus:ring-gold-500 rounded-t-card">
           <span>Local obligations — {allCleared ? "All clear" : "In progress"}</span>

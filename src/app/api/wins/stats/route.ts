@@ -26,10 +26,7 @@ export async function GET() {
           where: {
             approved: true,
             deletedAt: null,
-            OR: [
-              { scholarshipRange: "OVER_10K" },
-              { type: "SCHOLARSHIP", amount: { gte: 10000 } },
-            ],
+            OR: [{ scholarshipRange: "OVER_10K" }, { type: "SCHOLARSHIP", amount: { gte: 10000 } }],
           },
         }),
         prisma.win.count({

@@ -47,21 +47,31 @@ export function ClassicTemplate({
       {myStory && (
         <section className="prose prose-navy max-w-none py-6">
           <p className="text-lg leading-relaxed">
-            <span className="float-left mr-2 font-accent text-5xl font-bold text-gold-500">{firstLetter}</span>
+            <span className="float-left mr-2 font-accent text-5xl font-bold text-gold-500">
+              {firstLetter}
+            </span>
             {restStory}
           </p>
         </section>
       )}
 
       {favoriteQuote && (
-        <p className="my-6 text-center font-accent text-lg italic text-navy-600">&ldquo;{favoriteQuote}&rdquo;</p>
+        <p className="my-6 text-center font-accent text-lg italic text-navy-600">
+          &ldquo;{favoriteQuote}&rdquo;
+        </p>
       )}
 
       {galleryPhotos.length > 0 && (
         <div className="my-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {galleryPhotos.slice(0, 6).map((url, i) => (
             <div key={i} className="relative aspect-square overflow-hidden rounded-lg">
-              <Image src={url} alt="" fill className="object-cover" sizes="(max-width: 640px) 50vw, 33vw" />
+              <Image
+                src={url}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(max-width: 640px) 50vw, 33vw"
+              />
             </div>
           ))}
         </div>

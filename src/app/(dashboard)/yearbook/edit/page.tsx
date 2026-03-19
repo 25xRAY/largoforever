@@ -19,7 +19,11 @@ export default function YearbookEditPage() {
   const toast = useToast();
   const [createDisplayName, setCreateDisplayName] = useState("");
 
-  const { data: page, isLoading, error } = useQuery({
+  const {
+    data: page,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["yearbook-me"],
     queryFn: fetchMyYearbook,
   });
@@ -66,7 +70,9 @@ export default function YearbookEditPage() {
     return (
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
         <h1 className="font-heading text-2xl font-bold text-navy-900">Create your yearbook page</h1>
-        <p className="text-navy-600">Add your display name to get started. You can edit everything else after.</p>
+        <p className="text-navy-600">
+          Add your display name to get started. You can edit everything else after.
+        </p>
         <div className="flex flex-wrap gap-4">
           <Input
             placeholder="Display name (optional)"
@@ -117,7 +123,15 @@ export default function YearbookEditPage() {
       <YearbookEditor slug={slug} initialData={initialData} />
       {slug && (
         <p className="text-sm text-navy-600">
-          Your page: <a href={`/yearbook/${slug}`} className="text-gold-600 hover:underline" target="_blank" rel="noopener noreferrer">/yearbook/{slug}</a>
+          Your page:{" "}
+          <a
+            href={`/yearbook/${slug}`}
+            className="text-gold-600 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            /yearbook/{slug}
+          </a>
         </p>
       )}
     </div>

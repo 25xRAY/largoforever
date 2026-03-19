@@ -30,7 +30,11 @@ export function YearbookPageActions({ slug, viewCount, shareTitle }: YearbookPag
   const shareTwitter = () => {
     const text = encodeURIComponent(shareTitle);
     const u = encodeURIComponent(url);
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${u}`, "_blank", "noopener,noreferrer");
+    window.open(
+      `https://twitter.com/intent/tweet?text=${text}&url=${u}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
   };
 
   const shareFacebook = () => {
@@ -65,7 +69,11 @@ export function YearbookPageActions({ slug, viewCount, shareTitle }: YearbookPag
       >
         Share on Facebook
       </button>
-      <button type="button" onClick={() => window.print()} className="text-sm text-gold-600 hover:underline">
+      <button
+        type="button"
+        onClick={() => window.print()}
+        className="text-sm text-gold-600 hover:underline"
+      >
         Print
       </button>
     </footer>

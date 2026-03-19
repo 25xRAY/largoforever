@@ -62,14 +62,18 @@ export const checklistServiceSchema = z.object({
   hours: z.number(),
   required: z.number(),
   percentage: z.number(),
-  activities: z.array(z.object({
-    id: z.string(),
-    org: z.string().optional(),
-    date: z.string().optional(),
-    hours: z.number(),
-    description: z.string().optional(),
-    verified: z.boolean(),
-  })).optional(),
+  activities: z
+    .array(
+      z.object({
+        id: z.string(),
+        org: z.string().optional(),
+        date: z.string().optional(),
+        hours: z.number(),
+        description: z.string().optional(),
+        verified: z.boolean(),
+      })
+    )
+    .optional(),
 });
 
 export const checklistObligationsSchema = z.object({

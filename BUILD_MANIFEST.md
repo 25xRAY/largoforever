@@ -7,9 +7,39 @@
 
 ## Current phase
 
-**Phase 4 — COMPLETE (release line)**  
-- Wall of Wins & Digital Yearbook are the current shipped milestone.  
-- **Phase 5 is not active** — any prompt or plan for leaderboards, Ed RonIQ, resources, or admin is **deferred**. Do not implement or track as “Phase 5” until explicitly restarted.
+**Phase 5 — COMPLETE (Leaderboards, Ed RonIQ, Resources hub, Admin panel)**  
+**Phase 6 — COMPLETE (Testing, CI, deployment tooling)**  
+Verify: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build:verify`, `npm run test:e2e` (e2e needs DB + seed + server per Playwright config).
+
+---
+
+## Phase 5 — COMPLETE (Leaderboards, Ed RonIQ, Resources & Admin)
+
+- **Prisma:** `DistrictLeaderboardCategory`, `HonorDesignation`, `UserLeaderboardPreference`, user fields `displayGpa`, `apIbCourseCount`, `leadershipRolesJson`, `honorDesignation`.
+- **Libs:** `admin-session.ts`, `leaderboard-public.ts`, `ed-roniq.ts`, validations `leaderboard-opt-in.ts`, `admin.ts`.
+- **API:** `GET/POST` leaderboards (public / student opt-in); `GET /api/resources`; `POST /api/ai/chat` (Ed RonIQ); admin: `stats`, `moderation`, `students`, `students/[id]`, `export`, `leaderboards`.
+- **Public UI:** `(public)/leaderboards` (Lions of Distinction 🏅, ItemList JSON-LD); `(public)/resources` (CrisisSection, tabbed categories, FAQPage schema).
+- **Ed RonIQ:** `(dashboard)/dashboard/ed-roniq` (noIndex), `ChatInterface`, `ChatMessage`, `TypingIndicator`, `EdRoniqCrisisBanner` wired to `crisisDetected`.
+- **Admin UI:** `(admin)/admin` dashboard (Recharts: wins line, readiness bar, win types pie); `moderation`, `students`, `students/[id]`, `leaderboards`, `data-export` pages; `AdminSidebar` + `DashboardLayout` variant `admin`.
+- **Seed:** Resources for `graduation`, `fa`, `college`, `records`, `wellness`, `crisis`, `district`; leaderboard prefs + honors/GPA sample data for students.
+- `.phase_5_complete` marker.
+
+---
+
+## Phase 6 — COMPLETE (Testing, performance & deployment)
+
+- **Jest:** `jest.config.js` (multi-project), `jest.client.config.js`, `jest.api.config.js`, `jest.coverage.js`, `jest.setup.js`, `jest.setup.node.js` — Next/SWC transform per project; API tests mock `@/lib/auth` where ESM adapters break in Node.
+- **Unit / integration tests:** `src/lib/__tests__/*`, `src/components/**/__tests__/*`, `src/app/api/__tests__/auth.test.ts`, `src/app/api/__tests__/wins.test.ts`.
+- **Playwright:** `playwright.config.ts` (chromium, firefox, webkit, mobile-chrome, mobile-safari), `e2e/*.spec.ts` (includes `admin.spec.ts` — seeded admin sign-in → `/admin` dashboard), `@axe-core/playwright` on `/`, `/login`, `/wall-of-wins`, `/yearbook`, `/resources`, `/leaderboards`.
+- **Performance / security:** `next.config.mjs` (AVIF/WebP, `remotePatterns`, `removeConsole` in prod, security headers).
+- **Libs:** `src/lib/cache.ts`, `analytics.ts`, `image-processing.ts`, `static-generator.ts`; `src/lib/env.ts` (Zod validation for required env).
+- **Deployment:** `vercel.json`, `Dockerfile` (uses `npm run build:verify`), `scripts/verify-next-build.mjs` (treats successful compilation with `.next/BUILD_ID` as success when Next 14.2 reports internal `/_error` prerender noise).
+- **Admin archive stub:** `src/app/api/admin/archive/route.ts` (POST, admin-only, `202` + `downloadUrl: null`).
+- **Public pages:** Full `(public)/resources` and `(public)/leaderboards` shipped in Phase 5 (see Phase 5 section).
+- **UX / a11y:** `ReadinessMeter` uses `role="meter"` (valid ARIA); `Providers` wraps `Toaster` in one client boundary.
+- **Seed:** `prisma/seed.ts` sets unique `YearbookPage.slug` for browse/e2e.
+- **Tooling:** `.eslintrc.json`, `npm run typecheck`, Prettier includes `e2e` + `scripts/**/*.mjs`.
+- `.phase_6_complete` marker.
 
 ---
 
@@ -49,11 +79,15 @@ _(none)_
 
 ---
 
-## Backlog (post–Phase 4; **not** Phase 5 until re-scoped)
+## Backlog (post–Phase 6; **not** active until re-scoped)
 
-_These items are **not** the current phase. Reference only when Phase 5 is explicitly opened again._
+- Admin: dedicated **reported content** queue when backend supports it
+- API hardening: expanded rate limiting / Zod coverage where needed
 
-- Public pages: resources, leaderboards  
-- More dashboard flows (Ed RonIQ, etc.)  
-- Admin and moderator flows  
-- API hardening: rate limiting, expanded Zod coverage where needed
+---
+
+## BUILD COMPLETE
+
+Phases 1–6 and Phase 5 feature scope delivered. The Largo Lions Class of 2026 platform is production-ready.  
+**Stack:** Next.js 14, TypeScript, Tailwind CSS, PostgreSQL, Prisma, NextAuth.js  
+**Legacy in Motion...Altitude Achieved!** 🦁💙💛

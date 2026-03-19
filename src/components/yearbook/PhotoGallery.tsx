@@ -19,8 +19,10 @@ export function PhotoGallery({ photos, alt = "Gallery" }: PhotoGalleryProps) {
 
   const open = (i: number) => setLightboxIndex(i);
   const close = () => setLightboxIndex(null);
-  const prev = () => setLightboxIndex((lightboxIndex ?? 0) > 0 ? (lightboxIndex ?? 0) - 1 : photos.length - 1);
-  const next = () => setLightboxIndex((lightboxIndex ?? 0) < photos.length - 1 ? (lightboxIndex ?? 0) + 1 : 0);
+  const prev = () =>
+    setLightboxIndex((lightboxIndex ?? 0) > 0 ? (lightboxIndex ?? 0) - 1 : photos.length - 1);
+  const next = () =>
+    setLightboxIndex((lightboxIndex ?? 0) < photos.length - 1 ? (lightboxIndex ?? 0) + 1 : 0);
 
   return (
     <>
@@ -32,7 +34,13 @@ export function PhotoGallery({ photos, alt = "Gallery" }: PhotoGalleryProps) {
             onClick={() => open(i)}
             className="relative aspect-square overflow-hidden rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500"
           >
-            <Image src={url} alt={`${alt} ${i + 1}`} fill className="object-cover" sizes="(max-width: 640px) 50vw, 33vw" />
+            <Image
+              src={url}
+              alt={`${alt} ${i + 1}`}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 50vw, 33vw"
+            />
           </button>
         ))}
       </div>

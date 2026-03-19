@@ -26,10 +26,20 @@ export default function Error({
         We couldn&apos;t load this page. Please try again or head back home.
       </p>
       <div className="mt-8 flex gap-4">
-        <Button variant="primary" size="lg" onClick={reset} className="bg-gold-500 text-navy-900 hover:bg-gold-400">
+        <Button
+          variant="primary"
+          size="lg"
+          onClick={reset}
+          className="bg-gold-500 text-navy-900 hover:bg-gold-400"
+        >
           Try again
         </Button>
-        <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+        <Button
+          asChild
+          variant="outline"
+          size="lg"
+          className="border-white text-white hover:bg-white/10"
+        >
           <Link href="/">Back to Home</Link>
         </Button>
       </div>

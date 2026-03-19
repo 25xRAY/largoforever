@@ -22,8 +22,7 @@ const inputVariants = cva(
 );
 
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">,
-    VariantProps<typeof inputVariants> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size">, VariantProps<typeof inputVariants> {
   label?: string;
   helperText?: string;
   errorMessage?: string;
@@ -53,7 +52,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const [showPassword, setShowPassword] = useState(false);
     const [value, setValue] = useState(
-      typeof props.value === "string" ? props.value : props.defaultValue ?? ""
+      typeof props.value === "string" ? props.value : (props.defaultValue ?? "")
     );
     const isControlled = props.value !== undefined;
     const currentLength = isControlled
@@ -71,10 +70,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label
-            htmlFor={id}
-            className="mb-1 block font-body text-sm font-medium text-navy-700"
-          >
+          <label htmlFor={id} className="mb-1 block font-body text-sm font-medium text-navy-700">
             {label}
           </label>
         )}
@@ -87,12 +83,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-describedby={descIds.length > 0 ? descIds.join(" ") : undefined}
             aria-invalid={hasError}
             maxLength={maxLength}
+            {...props}
             value={isControlled ? props.value : value}
             onChange={(e) => {
-              if (!isControlled) setValue(e.target.value);
               props.onChange?.(e);
+              if (!isControlled) setValue(e.target.value);
             }}
-            {...props}
           />
           {isPassword && (
             <button
@@ -109,10 +105,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {(helperText || errorMessage) && (
           <p
             id={errorMessage ? `${id}-error` : `${id}-helper`}
-            className={cn(
-              "mt-1 text-sm",
-              errorMessage ? "text-danger" : "text-navy-600"
-            )}
+            className={cn("mt-1 text-sm", errorMessage ? "text-danger" : "text-navy-600")}
           >
             {errorMessage ?? helperText}
           </p>

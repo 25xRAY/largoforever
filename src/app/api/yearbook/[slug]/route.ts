@@ -8,16 +8,16 @@ import { yearbookPageSchema } from "@/lib/validations/yearbook";
  * GET — public if approved+published or owner. Increment viewCount (debounced by caller).
  * PATCH — authenticated owner only.
  */
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id as string | undefined;
 
   const page = await prisma.yearbookPage.findFirst({
-    where: { slug, OR: [{ status: "APPROVED", publishedAt: { not: null } }, { userId: userId ?? "" }] },
+    where: {
+      slug,
+      OR: [{ status: "APPROVED", publishedAt: { not: null } }, { userId: userId ?? "" }],
+    },
     include: {
       user: { select: { id: true, firstName: true, lastName: true } },
     },
@@ -52,10 +52,7 @@ export async function GET(
   return NextResponse.json(payload);
 }
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -88,8 +85,10 @@ export async function PATCH(
     if (data.quote !== undefined) update.quote = data.quote;
     if (data.myStory !== undefined) update.myStory = data.myStory;
     if (data.favoriteQuote !== undefined) update.favoriteQuote = data.favoriteQuote;
-    if (data.favoriteMemories !== undefined) update.favoriteMemories = JSON.stringify(data.favoriteMemories ?? []);
-    if (data.galleryPhotos !== undefined) update.galleryPhotos = JSON.stringify(data.galleryPhotos ?? []);
+    if (data.favoriteMemories !== undefined)
+      update.favoriteMemories = JSON.stringify(data.favoriteMemories ?? []);
+    if (data.galleryPhotos !== undefined)
+      update.galleryPhotos = JSON.stringify(data.galleryPhotos ?? []);
     if (data.template !== undefined) update.template = data.template;
     if (data.layout !== undefined) update.layout = data.layout;
     if (data.imageUrl !== undefined) update.imageUrl = data.imageUrl;

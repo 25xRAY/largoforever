@@ -54,14 +54,18 @@ export function MinimalistTemplate({
             </section>
           )}
           {favoriteQuote && (
-            <p className="max-w-xl text-sm italic leading-loose text-navy-500">&ldquo;{favoriteQuote}&rdquo;</p>
+            <p className="max-w-xl text-sm italic leading-loose text-navy-500">
+              &ldquo;{favoriteQuote}&rdquo;
+            </p>
           )}
         </div>
       </div>
 
       {galleryPhotos.length > 0 && (
         <div className="border-t border-navy-200 bg-white/60 py-6">
-          <p className="mb-3 px-6 text-xs font-medium uppercase tracking-widest text-navy-500 sm:px-10">Gallery</p>
+          <p className="mb-3 px-6 text-xs font-medium uppercase tracking-widest text-navy-500 sm:px-10">
+            Gallery
+          </p>
           <div className="flex gap-3 overflow-x-auto px-6 pb-2 sm:px-10 [scrollbar-width:thin]">
             {galleryPhotos.slice(0, 6).map((url, i) => (
               <div
@@ -77,11 +81,15 @@ export function MinimalistTemplate({
 
       {favoriteMemories.length > 0 && (
         <div className="border-t border-navy-200 px-6 py-8 sm:px-10">
-          <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-navy-500">Memories</h2>
+          <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-navy-500">
+            Memories
+          </h2>
           <ul className="space-y-3 text-sm leading-relaxed text-navy-600">
             {favoriteMemories.map((m, i) => (
               <li key={i} className="flex gap-3 border-b border-navy-100 pb-3 last:border-0">
-                <span className="font-mono text-xs text-navy-400">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-xs text-navy-400">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <span>{m}</span>
               </li>
             ))}

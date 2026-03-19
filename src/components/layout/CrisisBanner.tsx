@@ -40,18 +40,13 @@ export function CrisisBanner({ alwaysExpanded = false, className }: CrisisBanner
 
   return (
     <div
-      className={cn(
-        "bg-gradient-to-r from-danger to-danger-dark text-white",
-        className
-      )}
+      className={cn("bg-gradient-to-r from-danger to-danger-dark text-white", className)}
       role="region"
       aria-label="Crisis resources"
     >
       <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
-          <p className="text-sm font-medium">
-            If you or someone you know is in crisis:
-          </p>
+          <p className="text-sm font-medium">If you or someone you know is in crisis:</p>
           <div className="flex flex-wrap items-center gap-4 text-sm">
             <a
               href={`tel:${CRISIS_RESOURCES.nationalSuicide.number}`}

@@ -10,10 +10,7 @@ const RATE_LIMIT_PER_HOUR = 5;
  * GET — public. Approved comments for this yearbook page.
  * POST — rate limited (5/hour per IP). Creates comment (PENDING moderation). Auth optional; if auth'd use session user.
  */
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const page = await prisma.yearbookPage.findFirst({
     where: { slug },
@@ -39,10 +36,7 @@ export async function GET(
   return NextResponse.json({ data: list });
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ slug: string }> }
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const session = await getServerSession(authOptions);
 

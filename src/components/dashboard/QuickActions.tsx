@@ -1,13 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ClipboardCheck,
-  Trophy,
-  BookOpen,
-  Sparkles,
-  Calendar,
-} from "lucide-react";
+import { ClipboardCheck, Trophy, BookOpen, Sparkles, Calendar } from "lucide-react";
 import { COUNSELOR_INFO } from "@/lib/constants";
 
 interface QuickActionsProps {
@@ -55,7 +49,12 @@ const ACTIONS = [
 export function QuickActions({ yearbookSlug }: QuickActionsProps) {
   const actions = ACTIONS.map((a) =>
     a.title === "Complete Yearbook" && yearbookSlug
-      ? { ...a, href: `/yearbook/${yearbookSlug}`, title: "View Your Page", description: "See your yearbook page" }
+      ? {
+          ...a,
+          href: `/yearbook/${yearbookSlug}`,
+          title: "View Your Page",
+          description: "See your yearbook page",
+        }
       : a
   );
 

@@ -118,8 +118,7 @@ export default function ChecklistPage() {
             className="font-medium text-gold-600 hover:underline focus:outline-none focus:ring-2 focus:ring-gold-500 rounded"
           >
             {COUNSELOR_INFO.name}
-          </a>
-          {" "}
+          </a>{" "}
           at {COUNSELOR_INFO.phone} or{" "}
           <Link
             href={COUNSELOR_INFO.calendly}

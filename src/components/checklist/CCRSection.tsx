@@ -27,7 +27,11 @@ export function CCRSection({ pathway, met, completedAt }: CCRSectionProps) {
   const percentage = met ? 100 : pathway ? 50 : 0;
 
   return (
-    <Accordion.Item value="ccr" id="ccr" className="rounded-card border border-navy-200 bg-white shadow-card">
+    <Accordion.Item
+      value="ccr"
+      id="ccr"
+      className="rounded-card border border-navy-200 bg-white shadow-card"
+    >
       <Accordion.Header>
         <Accordion.Trigger className="flex w-full items-center justify-between px-6 py-4 text-left font-heading text-lg font-semibold text-navy-900 hover:bg-navy-50 focus:outline-none focus:ring-2 focus:ring-gold-500 rounded-t-card">
           <span>Career Completer Pathway (CCR)</span>
@@ -53,7 +57,8 @@ export function CCRSection({ pathway, met, completedAt }: CCRSectionProps) {
           </>
         ) : (
           <p className="text-navy-600">
-            Select your pathway in onboarding or profile settings to track your Career Completer progress.
+            Select your pathway in onboarding or profile settings to track your Career Completer
+            progress.
           </p>
         )}
       </Accordion.Content>

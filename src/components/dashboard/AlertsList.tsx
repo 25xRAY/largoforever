@@ -34,9 +34,7 @@ const PRIORITY_RANK: Record<Alert["priority"], number> = {
  * Sorted critical → warning → info. Max 5 visible. Colored left border, icon, message, "Resolve →" link.
  */
 export function AlertsList({ alerts, maxVisible = 5 }: AlertsListProps) {
-  const sorted = [...alerts].sort(
-    (a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]
-  );
+  const sorted = [...alerts].sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]);
   const visible = sorted.slice(0, maxVisible);
 
   if (visible.length === 0) {

@@ -12,13 +12,30 @@ import type { Alert } from "@/types";
 
 export const revalidate = 300;
 
-function computeReadiness(userId: string, data: {
-  gradChecklist: { englishCredits: number; mathCredits: number; scienceCredits: number; socialStudiesCredits: number; fineArtsCredits: number; peCredits: number; healthCredits: number; careerPathwayCredits: number } | null;
-  assessments: { result: string }[];
-  serviceLearning: { hours: number } | null;
-  localObligations: { feesClear: boolean; deviceClear: boolean; booksClear: boolean; athleticClear: boolean } | null;
-  ccrStatus: { met: boolean; pathway: string | null } | null;
-}) {
+function computeReadiness(
+  userId: string,
+  data: {
+    gradChecklist: {
+      englishCredits: number;
+      mathCredits: number;
+      scienceCredits: number;
+      socialStudiesCredits: number;
+      fineArtsCredits: number;
+      peCredits: number;
+      healthCredits: number;
+      careerPathwayCredits: number;
+    } | null;
+    assessments: { result: string }[];
+    serviceLearning: { hours: number } | null;
+    localObligations: {
+      feesClear: boolean;
+      deviceClear: boolean;
+      booksClear: boolean;
+      athleticClear: boolean;
+    } | null;
+    ccrStatus: { met: boolean; pathway: string | null } | null;
+  }
+) {
   const creditsEarned = data.gradChecklist
     ? data.gradChecklist.englishCredits +
       data.gradChecklist.mathCredits +
@@ -32,14 +49,20 @@ function computeReadiness(userId: string, data: {
   const creditsPct = CREDITS_REQUIRED > 0 ? (creditsEarned / CREDITS_REQUIRED) * 100 : 0;
 
   const assessmentsPassed = data.assessments.filter((a) => a.result === "PASS").length;
-  const assessmentsPct = ASSESSMENTS_REQUIRED > 0 ? (assessmentsPassed / ASSESSMENTS_REQUIRED) * 100 : 0;
+  const assessmentsPct =
+    ASSESSMENTS_REQUIRED > 0 ? (assessmentsPassed / ASSESSMENTS_REQUIRED) * 100 : 0;
 
   const serviceHours = data.serviceLearning?.hours ?? 0;
   const servicePct = SERVICE_HOURS_REQUIRED > 0 ? (serviceHours / SERVICE_HOURS_REQUIRED) * 100 : 0;
 
   const obligations = data.localObligations;
   const obligationsCleared = obligations
-    ? [obligations.feesClear, obligations.deviceClear, obligations.booksClear, obligations.athleticClear].filter(Boolean).length
+    ? [
+        obligations.feesClear,
+        obligations.deviceClear,
+        obligations.booksClear,
+        obligations.athleticClear,
+      ].filter(Boolean).length
     : 0;
   const obligationsAllCleared = obligationsCleared === 4;
 
@@ -81,10 +104,7 @@ function computeReadiness(userId: string, data: {
   };
 }
 
-function buildAlerts(
-  readiness: ReturnType<typeof computeReadiness>,
-  userId: string
-): Alert[] {
+function buildAlerts(readiness: ReturnType<typeof computeReadiness>, userId: string): Alert[] {
   const alerts: Alert[] = [];
   const now = new Date();
 
@@ -166,43 +186,52 @@ export async function GET() {
   const userId = session.user.id as string;
 
   try {
-    const [user, gradChecklist, assessments, serviceLearning, localObligations, ccrStatus, yearbookPage, recentWins, winStats] =
-      await Promise.all([
-        prisma.user.findUnique({
-          where: { id: userId },
-          select: { firstName: true, lastName: true, preferredName: true, image: true, role: true },
-        }),
-        prisma.gradChecklist.findUnique({ where: { userId } }),
-        prisma.assessment.findMany({
-          where: { gradChecklist: { userId } },
-          select: { result: true },
-        }),
-        prisma.serviceLearning.findUnique({ where: { userId } }),
-        prisma.localObligations.findUnique({ where: { userId } }),
-        prisma.cCRStatus.findUnique({ where: { userId } }),
-        prisma.yearbookPage.findUnique({
-          where: { userId },
-          select: { slug: true },
-        }),
-        prisma.win.findMany({
-          where: { approved: true, deletedAt: null },
-          orderBy: { createdAt: "desc" },
-          take: 3,
-          select: {
-            id: true,
-            type: true,
-            title: true,
-            description: true,
-            institutionName: true,
-            user: { select: { firstName: true, lastName: true } },
-          },
-        }),
-        prisma.win.aggregate({
-          where: { approved: true, deletedAt: null },
-          _sum: { amount: true },
-          _count: { id: true },
-        }),
-      ]);
+    const [
+      user,
+      gradChecklist,
+      assessments,
+      serviceLearning,
+      localObligations,
+      ccrStatus,
+      yearbookPage,
+      recentWins,
+      winStats,
+    ] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: { firstName: true, lastName: true, preferredName: true, image: true, role: true },
+      }),
+      prisma.gradChecklist.findUnique({ where: { userId } }),
+      prisma.assessment.findMany({
+        where: { gradChecklist: { userId } },
+        select: { result: true },
+      }),
+      prisma.serviceLearning.findUnique({ where: { userId } }),
+      prisma.localObligations.findUnique({ where: { userId } }),
+      prisma.cCRStatus.findUnique({ where: { userId } }),
+      prisma.yearbookPage.findUnique({
+        where: { userId },
+        select: { slug: true },
+      }),
+      prisma.win.findMany({
+        where: { approved: true, deletedAt: null },
+        orderBy: { createdAt: "desc" },
+        take: 3,
+        select: {
+          id: true,
+          type: true,
+          title: true,
+          description: true,
+          institutionName: true,
+          user: { select: { firstName: true, lastName: true } },
+        },
+      }),
+      prisma.win.aggregate({
+        where: { approved: true, deletedAt: null },
+        _sum: { amount: true },
+        _count: { id: true },
+      }),
+    ]);
 
     const checklistData = {
       gradChecklist,

@@ -77,7 +77,9 @@ export function ScrapbookTemplate({
           </span>
         </div>
 
-        <h1 className="mt-6 font-accent text-3xl font-bold italic text-navy-900 sm:text-4xl">{displayName}</h1>
+        <h1 className="mt-6 font-accent text-3xl font-bold italic text-navy-900 sm:text-4xl">
+          {displayName}
+        </h1>
         {(headline || tagline) && (
           <p className="mt-2 font-accent text-lg text-navy-700">{headline || tagline}</p>
         )}

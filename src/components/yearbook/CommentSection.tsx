@@ -25,7 +25,11 @@ interface CommentSectionProps {
 /**
  * Comment form (name, relationship, message 500 chars). List of approved comments. Auth required to post.
  */
-export function CommentSection({ slug, comments: initialComments, onCommentSubmitted }: CommentSectionProps) {
+export function CommentSection({
+  slug,
+  comments: initialComments,
+  onCommentSubmitted,
+}: CommentSectionProps) {
   const { status } = useSession();
   const [comments, setComments] = useState(initialComments);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +54,10 @@ export function CommentSection({ slug, comments: initialComments, onCommentSubmi
       return;
     }
     form.reset();
-    toast.toast({ title: "Comment submitted. It will appear after moderation.", variant: "success" });
+    toast.toast({
+      title: "Comment submitted. It will appear after moderation.",
+      variant: "success",
+    });
     const listRes = await fetch(`/api/yearbook/${slug}/comments`);
     if (listRes.ok) {
       const json = await listRes.json();
@@ -64,7 +71,11 @@ export function CommentSection({ slug, comments: initialComments, onCommentSubmi
       <h2 className="font-heading text-xl font-semibold text-navy-900">Comments</h2>
       {status === "authenticated" ? (
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
-          <Input label="Your name" {...form.register("authorName")} errorMessage={form.formState.errors.authorName?.message} />
+          <Input
+            label="Your name"
+            {...form.register("authorName")}
+            errorMessage={form.formState.errors.authorName?.message}
+          />
           <div>
             <label className="mb-1 block text-sm font-medium text-navy-700">Relationship</label>
             <select
@@ -79,7 +90,9 @@ export function CommentSection({ slug, comments: initialComments, onCommentSubmi
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-navy-700">Message (max 500 characters)</label>
+            <label className="mb-1 block text-sm font-medium text-navy-700">
+              Message (max 500 characters)
+            </label>
             <textarea
               {...form.register("message")}
               maxLength={500}
@@ -87,7 +100,8 @@ export function CommentSection({ slug, comments: initialComments, onCommentSubmi
               className={cn(
                 "w-full rounded-button border-2 border-navy-200 bg-white px-4 py-3 font-body text-navy-900",
                 "focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500",
-                form.formState.errors.message && "border-danger focus:border-danger focus:ring-danger"
+                form.formState.errors.message &&
+                  "border-danger focus:border-danger focus:ring-danger"
               )}
             />
             <p className="mt-1 text-right text-sm text-navy-500">
@@ -112,7 +126,9 @@ export function CommentSection({ slug, comments: initialComments, onCommentSubmi
           <li key={c.id} className="rounded-card border border-navy-200 bg-navy-50/50 p-4">
             <p className="font-medium text-navy-900">{c.authorName}</p>
             <p className="mt-1 text-sm text-navy-700">{c.content}</p>
-            <p className="mt-2 text-xs text-navy-500">{new Date(c.createdAt).toLocaleDateString()}</p>
+            <p className="mt-2 text-xs text-navy-500">
+              {new Date(c.createdAt).toLocaleDateString()}
+            </p>
           </li>
         ))}
       </ul>

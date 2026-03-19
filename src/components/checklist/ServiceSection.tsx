@@ -31,10 +31,16 @@ export function ServiceSection({
   const remaining = Math.max(0, required - hours);
 
   return (
-    <Accordion.Item value="service" id="service" className="rounded-card border border-navy-200 bg-white shadow-card">
+    <Accordion.Item
+      value="service"
+      id="service"
+      className="rounded-card border border-navy-200 bg-white shadow-card"
+    >
       <Accordion.Header>
         <Accordion.Trigger className="flex w-full items-center justify-between px-6 py-4 text-left font-heading text-lg font-semibold text-navy-900 hover:bg-navy-50 focus:outline-none focus:ring-2 focus:ring-gold-500 rounded-t-card">
-          <span>Service Learning — {hours}/{required} hours</span>
+          <span>
+            Service Learning — {hours}/{required} hours
+          </span>
           <Progress value={percentage} showLabel className="max-w-[100px]" />
         </Accordion.Trigger>
       </Accordion.Header>
@@ -66,9 +72,7 @@ export function ServiceSection({
         ) : (
           <p className="text-sm text-navy-600">No activities recorded yet.</p>
         )}
-        <p className="mt-4 font-medium text-navy-900">
-          Total: {hours} hours
-        </p>
+        <p className="mt-4 font-medium text-navy-900">Total: {hours} hours</p>
         {remaining > 0 && (
           <p className="mt-1 text-sm text-warning-dark">
             You need {remaining} more hours to meet the requirement.

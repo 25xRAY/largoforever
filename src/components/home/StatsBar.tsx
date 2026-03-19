@@ -3,12 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Skeleton } from "@/components/ui/Skeleton";
 
-function animateValue(
-  from: number,
-  to: number,
-  duration: number,
-  onUpdate: (n: number) => void
-) {
+function animateValue(from: number, to: number, duration: number, onUpdate: (n: number) => void) {
   const start = performance.now();
   const run = (now: number) => {
     const t = Math.min((now - start) / duration, 1);
@@ -81,9 +76,7 @@ export function StatsBar() {
     animateValue(0, data.collegeAcceptances, duration, (n) =>
       setDisplay((d) => ({ ...d, collegeAcceptances: n }))
     );
-    animateValue(0, data.fullRides, duration, (n) =>
-      setDisplay((d) => ({ ...d, fullRides: n }))
-    );
+    animateValue(0, data.fullRides, duration, (n) => setDisplay((d) => ({ ...d, fullRides: n })));
     animateValue(0, data.graduationRate, duration, (n) =>
       setDisplay((d) => ({ ...d, graduationRate: n }))
     );

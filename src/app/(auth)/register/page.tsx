@@ -95,9 +95,7 @@ export default function RegisterPage() {
   return (
     <div className="w-full max-w-md space-y-8 rounded-card bg-white/5 p-8 backdrop-blur sm:bg-white/10">
       <div className="text-center">
-        <h1 className="font-heading text-3xl font-bold text-white">
-          Join the Pride 🦁
-        </h1>
+        <h1 className="font-heading text-3xl font-bold text-white">Join the Pride 🦁</h1>
         <p className="mt-2 text-sm text-white/80">
           Create your account to track graduation and celebrate wins.
         </p>
@@ -125,7 +123,10 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit as (data: RegisterInput) => void)} className="space-y-4">
+      <form
+        onSubmit={handleSubmit(onSubmit as (data: RegisterInput) => void)}
+        className="space-y-4"
+      >
         {errors.root && (
           <p className="text-sm text-danger" role="alert">
             {errors.root.message}
@@ -202,9 +203,7 @@ export default function RegisterPage() {
             .
           </span>
         </label>
-        {errors.acceptTerms && (
-          <p className="text-sm text-danger">{errors.acceptTerms.message}</p>
-        )}
+        {errors.acceptTerms && <p className="text-sm text-danger">{errors.acceptTerms.message}</p>}
         <Button
           type="submit"
           variant="primary"

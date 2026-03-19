@@ -87,24 +87,14 @@ export function WinCard({
         <Badge variant={badge.variant} size="sm">
           {badge.label}
         </Badge>
-        {approved && (
-          <span className="text-xs font-medium text-success">Verified ✅</span>
-        )}
+        {approved && <span className="text-xs font-medium text-success">Verified ✅</span>}
       </div>
       <h3 className="mt-2 font-heading text-lg font-semibold text-navy-900">{title}</h3>
-      {institutionName && (
-        <p className="mt-1 text-sm text-navy-600">{institutionName}</p>
-      )}
-      {amountText && (
-        <p className="mt-1 text-sm font-medium text-gold-600">{amountText}</p>
-      )}
-      {description && (
-        <p className="mt-2 line-clamp-2 text-sm text-navy-600">{description}</p>
-      )}
+      {institutionName && <p className="mt-1 text-sm text-navy-600">{institutionName}</p>}
+      {amountText && <p className="mt-1 text-sm font-medium text-gold-600">{amountText}</p>}
+      {description && <p className="mt-2 line-clamp-2 text-sm text-navy-600">{description}</p>}
       <p className="mt-3 text-xs text-navy-500">{displayName}</p>
-      <p className="text-xs text-navy-400">
-        {new Date(createdAt).toLocaleDateString()}
-      </p>
+      <p className="text-xs text-navy-400">{new Date(createdAt).toLocaleDateString()}</p>
     </Link>
   );
 }

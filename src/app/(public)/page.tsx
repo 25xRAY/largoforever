@@ -1,14 +1,5 @@
 import Link from "next/link";
-import {
-  ClipboardCheck,
-  Trophy,
-  BookOpen,
-  Sparkles,
-  Crown,
-  Shield,
-  Sun,
-  Gem,
-} from "lucide-react";
+import { ClipboardCheck, Trophy, BookOpen, Sparkles, Crown, Shield, Sun, Gem } from "lucide-react";
 import { generatePageMetadata } from "@/lib/seo";
 import {
   EducationalOrganizationSchema,
@@ -36,7 +27,8 @@ const FEATURES = [
     href: "/dashboard/checklist",
     icon: ClipboardCheck,
     title: "Graduation Tracker",
-    description: "Stay on top of credits, assessments, service hours, and CCR so you cross the stage with confidence.",
+    description:
+      "Stay on top of credits, assessments, service hours, and CCR so you cross the stage with confidence.",
   },
   {
     href: "/wall-of-wins",
@@ -60,8 +52,18 @@ const FEATURES = [
 
 const LION_PILLARS = [
   { letter: "L", word: "Leadership", icon: Crown, desc: "Leading by example and lifting others." },
-  { letter: "I", word: "Integrity", icon: Shield, desc: "Doing the right thing, even when no one is watching." },
-  { letter: "O", word: "Optimism", icon: Sun, desc: "Believing in what's possible and staying positive." },
+  {
+    letter: "I",
+    word: "Integrity",
+    icon: Shield,
+    desc: "Doing the right thing, even when no one is watching.",
+  },
+  {
+    letter: "O",
+    word: "Optimism",
+    icon: Sun,
+    desc: "Believing in what's possible and staying positive.",
+  },
   { letter: "N", word: "Nobility", icon: Gem, desc: "Character, honor, and pride in who we are." },
 ];
 
@@ -89,14 +91,30 @@ export default function HomePage() {
           <h1 className="mt-8 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl animate-fadeUp">
             Largo Lions Class of 2026
           </h1>
-          <p className="mt-4 font-accent text-xl italic text-gold-400 sm:text-2xl md:text-3xl animate-fadeUp" style={{ animationDelay: "0.1s" }}>
+          <p
+            className="mt-4 font-accent text-xl italic text-gold-400 sm:text-2xl md:text-3xl animate-fadeUp"
+            style={{ animationDelay: "0.1s" }}
+          >
             Legacy in Motion...Altitude Achieved!
           </p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center animate-fadeUp" style={{ animationDelay: "0.2s" }}>
-            <Button asChild size="lg" variant="primary" className="bg-gold-500 text-navy-900 hover:bg-gold-400">
+          <div
+            className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center animate-fadeUp"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <Button
+              asChild
+              size="lg"
+              variant="primary"
+              className="bg-gold-500 text-navy-900 hover:bg-gold-400"
+            >
               <Link href="/login">Track My Graduation</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-white text-white hover:bg-white/10"
+            >
               <Link href="#features">Explore the Platform</Link>
             </Button>
           </div>
@@ -122,7 +140,9 @@ export default function HomePage() {
                   className="group rounded-card border-l-4 border-navy-500 bg-white p-6 shadow-card transition-all hover:border-gold-500 hover:shadow-card-hover hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-gold-500"
                 >
                   <Icon className="h-10 w-10 text-navy-500 group-hover:text-gold-500" aria-hidden />
-                  <h3 className="mt-4 font-heading text-lg font-semibold text-navy-900">{f.title}</h3>
+                  <h3 className="mt-4 font-heading text-lg font-semibold text-navy-900">
+                    {f.title}
+                  </h3>
                   <p className="mt-2 text-sm text-navy-600">{f.description}</p>
                   <span className="mt-4 inline-block text-sm font-medium text-gold-600 group-hover:underline">
                     Learn More →
@@ -137,7 +157,10 @@ export default function HomePage() {
       {/* 4. ED RONIQ DEMO */}
       <section className="bg-navy-50 py-20" aria-labelledby="edroniq-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 id="edroniq-heading" className="font-heading text-3xl font-bold text-navy-900 text-center mb-12">
+          <h2
+            id="edroniq-heading"
+            className="font-heading text-3xl font-bold text-navy-900 text-center mb-12"
+          >
             Meet Ed RonIQ 🦁
           </h2>
           <div className="mx-auto max-w-2xl rounded-card border-2 border-navy-200 bg-white p-6 shadow-card">
@@ -149,7 +172,8 @@ export default function HomePage() {
               </div>
               <div className="flex justify-start">
                 <div className="max-w-[80%] rounded-lg bg-gold-100 px-4 py-2 text-sm text-navy-800">
-                  You need 21 total credits: 4 English, 3 Math, 3 Science, 3 Social Studies, 1 Fine Arts, 0.5 PE, 0.5 Health, and 6 Career Pathway. You’ve got this! 🦁
+                  You need 21 total credits: 4 English, 3 Math, 3 Science, 3 Social Studies, 1 Fine
+                  Arts, 0.5 PE, 0.5 Health, and 6 Career Pathway. You’ve got this! 🦁
                 </div>
               </div>
             </div>
@@ -158,7 +182,8 @@ export default function HomePage() {
                 <Link href="/login">Sign In to Chat with Ed RonIQ</Link>
               </Button>
               <p className="mt-3 text-xs text-navy-500">
-                For official guidance, always refer to your counselor. Ed RonIQ is a helpful tool, not a replacement for counseling.
+                For official guidance, always refer to your counselor. Ed RonIQ is a helpful tool,
+                not a replacement for counseling.
               </p>
             </div>
           </div>
@@ -168,7 +193,10 @@ export default function HomePage() {
       {/* 5. L.I.O.N. PHILOSOPHY */}
       <section className="bg-navy-500 py-20" aria-labelledby="lion-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p id="lion-heading" className="font-heading text-5xl font-bold tracking-tight text-gold-500 text-center md:text-6xl">
+          <p
+            id="lion-heading"
+            className="font-heading text-5xl font-bold tracking-tight text-gold-500 text-center md:text-6xl"
+          >
             L.I.O.N.
           </p>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -190,14 +218,21 @@ export default function HomePage() {
       {/* 6. LEADERSHIP TEAM */}
       <section className="bg-white py-20" aria-labelledby="team-heading">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 id="team-heading" className="font-heading text-3xl font-bold text-navy-900 text-center mb-12">
+          <h2
+            id="team-heading"
+            className="font-heading text-3xl font-bold text-navy-900 text-center mb-12"
+          >
             Your Senior Support Team
           </h2>
           <div className="grid gap-8 md:grid-cols-2">
             <div className="rounded-card border-2 border-navy-200 bg-white p-6 shadow-card">
-              <h3 className="font-heading text-xl font-semibold text-navy-900">{ADMIN_INFO.name}</h3>
+              <h3 className="font-heading text-xl font-semibold text-navy-900">
+                {ADMIN_INFO.name}
+              </h3>
               <p className="text-navy-600">{ADMIN_INFO.title}</p>
-              <p className="mt-2 text-sm text-navy-500">CliftonStrengths: Strategic, Empathy, Individualization, Belief, Adaptability</p>
+              <p className="mt-2 text-sm text-navy-500">
+                CliftonStrengths: Strategic, Empathy, Individualization, Belief, Adaptability
+              </p>
               <a
                 href={`mailto:${ADMIN_INFO.email}`}
                 className="mt-4 inline-block text-gold-600 hover:underline focus:outline-none focus:ring-2 focus:ring-gold-500 rounded"
@@ -206,12 +241,21 @@ export default function HomePage() {
               </a>
             </div>
             <div className="rounded-card border-2 border-navy-200 bg-white p-6 shadow-card">
-              <h3 className="font-heading text-xl font-semibold text-navy-900">{COUNSELOR_INFO.name}</h3>
+              <h3 className="font-heading text-xl font-semibold text-navy-900">
+                {COUNSELOR_INFO.name}
+              </h3>
               <p className="text-navy-600">Counselor</p>
               <p className="mt-2 text-sm text-navy-500">
-                <a href={`tel:${COUNSELOR_INFO.phone.replace(/-/g, "")}`} className="hover:underline">{COUNSELOR_INFO.phone}</a>
+                <a
+                  href={`tel:${COUNSELOR_INFO.phone.replace(/-/g, "")}`}
+                  className="hover:underline"
+                >
+                  {COUNSELOR_INFO.phone}
+                </a>
                 {" · "}
-                <a href={`mailto:${COUNSELOR_INFO.email}`} className="hover:underline">{COUNSELOR_INFO.email}</a>
+                <a href={`mailto:${COUNSELOR_INFO.email}`} className="hover:underline">
+                  {COUNSELOR_INFO.email}
+                </a>
               </p>
               <a
                 href={COUNSELOR_INFO.calendly}

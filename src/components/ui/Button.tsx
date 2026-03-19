@@ -13,7 +13,8 @@ const buttonVariants = cva(
       variant: {
         primary: "bg-gold-500 text-navy-900 hover:bg-gold-400 active:bg-gold-600",
         secondary: "bg-navy-500 text-white hover:bg-navy-600 active:bg-navy-700",
-        outline: "border-2 border-navy-500 bg-transparent text-navy-500 hover:bg-navy-50 active:bg-navy-100",
+        outline:
+          "border-2 border-navy-500 bg-transparent text-navy-500 hover:bg-navy-50 active:bg-navy-100",
         ghost: "bg-transparent text-navy-700 hover:bg-navy-50 active:bg-navy-100",
         danger: "bg-danger text-white hover:bg-danger-dark active:opacity-90",
         link: "bg-transparent text-navy-500 underline-offset-4 hover:underline",
@@ -33,8 +34,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
@@ -64,22 +64,28 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button";
     const content =
-      asChild && !isLoading
-        ? children
-        : isLoading
-          ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                {loadingText ?? (typeof children === "string" ? children : "Loading...")}
-              </>
-            )
-          : (
-              <>
-                {leftIcon && <span className="[&>svg]:h-4 [&>svg]:w-4" aria-hidden>{leftIcon}</span>}
-                {children}
-                {rightIcon && <span className="[&>svg]:h-4 [&>svg]:w-4" aria-hidden>{rightIcon}</span>}
-              </>
-            );
+      asChild && !isLoading ? (
+        children
+      ) : isLoading ? (
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          {loadingText ?? (typeof children === "string" ? children : "Loading...")}
+        </>
+      ) : (
+        <>
+          {leftIcon && (
+            <span className="[&>svg]:h-4 [&>svg]:w-4" aria-hidden>
+              {leftIcon}
+            </span>
+          )}
+          {children}
+          {rightIcon && (
+            <span className="[&>svg]:h-4 [&>svg]:w-4" aria-hidden>
+              {rightIcon}
+            </span>
+          )}
+        </>
+      );
 
     return (
       <Comp

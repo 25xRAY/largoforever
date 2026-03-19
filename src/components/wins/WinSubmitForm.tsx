@@ -74,7 +74,11 @@ export function WinSubmitForm() {
         form.setError("root", { message: err.error ?? "Submit failed." });
         return;
       }
-      toast({ title: "Win submitted!", description: "It will appear after review.", variant: "success" });
+      toast({
+        title: "Win submitted!",
+        description: "It will appear after review.",
+        variant: "success",
+      });
       router.push("/wall-of-wins");
       router.refresh();
     } catch {
@@ -151,14 +155,18 @@ export function WinSubmitForm() {
                     />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium">Range (if amount unknown)</label>
+                    <label className="mb-1 block text-sm font-medium">
+                      Range (if amount unknown)
+                    </label>
                     <select
                       className="w-full rounded-button border-2 border-navy-200 px-4 py-3"
                       {...form.register("scholarshipRange")}
                     >
                       <option value="">—</option>
                       {SCHOLARSHIP_RANGES.map((r) => (
-                        <option key={r.value} value={r.value}>{r.label}</option>
+                        <option key={r.value} value={r.value}>
+                          {r.label}
+                        </option>
                       ))}
                     </select>
                   </div>
@@ -173,7 +181,9 @@ export function WinSubmitForm() {
                   >
                     <option value="">—</option>
                     {MILITARY_BRANCHES.map((b) => (
-                      <option key={b.value} value={b.value}>{b.label}</option>
+                      <option key={b.value} value={b.value}>
+                        {b.label}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -198,10 +208,18 @@ export function WinSubmitForm() {
           {step === 3 && (
             <>
               <div className="rounded-lg bg-navy-50 p-4 text-sm">
-                <p><strong>Type:</strong> {WIN_TYPES.find((t) => t.value === watchType)?.label}</p>
-                <p><strong>Title:</strong> {form.getValues("title")}</p>
-                <p><strong>Institution:</strong> {form.getValues("institutionName") || "—"}</p>
-                <p><strong>Description:</strong> {form.getValues("description") || "—"}</p>
+                <p>
+                  <strong>Type:</strong> {WIN_TYPES.find((t) => t.value === watchType)?.label}
+                </p>
+                <p>
+                  <strong>Title:</strong> {form.getValues("title")}
+                </p>
+                <p>
+                  <strong>Institution:</strong> {form.getValues("institutionName") || "—"}
+                </p>
+                <p>
+                  <strong>Description:</strong> {form.getValues("description") || "—"}
+                </p>
               </div>
               {form.formState.errors.root && (
                 <p className="text-danger">{form.formState.errors.root.message}</p>

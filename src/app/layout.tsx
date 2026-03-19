@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat, Open_Sans, Playfair_Display } from "next/font/google";
 import { Providers } from "@/components/providers/Providers";
-import { Toaster } from "@/components/ui/Toast";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -45,16 +44,9 @@ export const metadata: Metadata = {
   viewport: { width: "device-width", initialScale: 1 },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${montserrat.variable} ${openSans.variable} ${playfair.variable}`}
-    >
+    <html lang="en" className={`${montserrat.variable} ${openSans.variable} ${playfair.variable}`}>
       <body className="min-h-screen font-body antialiased">
         <a
           href="#main-content"
@@ -62,9 +54,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Providers>
-        <Toaster>{children}</Toaster>
-      </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -32,7 +32,10 @@ export async function GET() {
       if (w.type === "ACCEPTANCE") {
         collegeAcceptances += 1;
       }
-      if (w.scholarshipRange === "OVER_10K" || (w.type === "SCHOLARSHIP" && (w.amount ?? 0) >= 10000)) {
+      if (
+        w.scholarshipRange === "OVER_10K" ||
+        (w.type === "SCHOLARSHIP" && (w.amount ?? 0) >= 10000)
+      ) {
         fullRides += 1;
       }
     }

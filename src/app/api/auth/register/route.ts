@@ -53,19 +53,19 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({
-      user: {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+    return NextResponse.json(
+      {
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
       },
-    });
+      { status: 201 }
+    );
   } catch (err) {
     logger.error("Registration failed", { error: String(err) });
-    return NextResponse.json(
-      { error: "Registration failed. Please try again." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Registration failed. Please try again." }, { status: 500 });
   }
 }

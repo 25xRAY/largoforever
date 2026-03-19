@@ -55,7 +55,9 @@ export async function GET(request: Request) {
     data: pages.map((p) => ({
       ...p,
       publishedAt: p.publishedAt?.toISOString() ?? null,
-      displayName: p.displayName ?? (p.user ? [p.user.firstName, p.user.lastName].filter(Boolean).join(" ") : null),
+      displayName:
+        p.displayName ??
+        (p.user ? [p.user.firstName, p.user.lastName].filter(Boolean).join(" ") : null),
     })),
     total,
     page,
@@ -93,7 +95,10 @@ export async function POST(request: Request) {
     }
 
     const data = parsed.data;
-    const displayName = data.displayName ?? [session.user.firstName, session.user.lastName].filter(Boolean).join(" ") ?? "Student";
+    const displayName =
+      data.displayName ??
+      [session.user.firstName, session.user.lastName].filter(Boolean).join(" ") ??
+      "Student";
     const slug = generateSlug(displayName) || userId.slice(0, 8);
     const uniqueSlug = `${slug}-${Date.now().toString(36)}`;
 
@@ -109,7 +114,8 @@ export async function POST(request: Request) {
         favoriteQuote: data.favoriteQuote ?? null,
         favoriteMemories: data.favoriteMemories ? JSON.stringify(data.favoriteMemories) : null,
         galleryPhotos: data.galleryPhotos ? JSON.stringify(data.galleryPhotos) : null,
-        template: (data.template as "CLASSIC" | "MODERN" | "MINIMAL" | "BOLD" | "SCRAPBOOK") ?? "CLASSIC",
+        template:
+          (data.template as "CLASSIC" | "MODERN" | "MINIMAL" | "BOLD" | "SCRAPBOOK") ?? "CLASSIC",
         layout: (data.layout as "SINGLE" | "GALLERY" | "STORY") ?? "SINGLE",
         imageUrl: data.imageUrl ?? null,
         accentColor: data.accentColor ?? null,
