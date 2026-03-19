@@ -175,19 +175,25 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique @db.VarChar(256)
-  emailVerified DateTime?
-  password      String?   @db.VarChar(256)
-  name          String?  @db.VarChar(256)
-  firstName     String?  @db.VarChar(128)
-  lastName      String?  @db.VarChar(128)
-  image         String?  @db.VarChar(512)
-  role          UserRole @default(STUDENT)
-  lastLoginAt   DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  deletedAt    DateTime?
+  id               String    @id @default(uuid())
+  email            String    @unique @db.VarChar(256)
+  emailVerified    DateTime?
+  password         String?   @db.VarChar(256)
+  name             String?   @db.VarChar(256)
+  firstName        String?   @db.VarChar(128)
+  lastName         String?   @db.VarChar(128)
+  image            String?   @db.VarChar(512)
+  role             UserRole  @default(STUDENT)
+  lastLoginAt      DateTime?
+  profileComplete  Boolean   @default(false)
+  preferredName    String?   @db.VarChar(50)
+  pronouns         String?   @db.VarChar(30)
+  graduationYear   Int?
+  yearbookPublic   Boolean   @default(true)
+  leaderboardOptIn Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
 
   accounts         Account[]
   sessions         Session[]

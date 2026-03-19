@@ -7,40 +7,34 @@
 
 ## Current phase
 
-**Phase 2**  
-- Phase 1 (UI Components & Public Shell) is COMPLETE.  
-- Next: Public pages (login, register, wall-of-wins, yearbook, resources, leaderboards), dashboard and student flows, admin/moderator flows, API routes.
+**Phase 3**  
+- Phase 2 (Authentication & Onboarding) is COMPLETE.  
+- Next: Public pages (wall-of-wins, yearbook, resources, leaderboards), dashboard and student flows, admin/moderator flows, API routes.
+
+---
+
+## Phase 2 — COMPLETE (Authentication & Onboarding)
+
+- `src/lib/validations/auth.ts` (loginSchema, registerSchema, onboardingSchema)
+- `src/app/api/auth/[...nextauth]/route.ts` (unchanged; GET/POST)
+- `src/app/api/auth/register/route.ts` (POST register, bcrypt 12, 409 on duplicate)
+- `src/hooks/useAuth.ts` (useSession wrapper: user, isAuthenticated, isStudent, isAdmin, isModerator, signOut)
+- `src/app/(auth)/layout.tsx` (navy gradient, logo)
+- `src/app/(auth)/login/page.tsx` (branded login, Google + email, RHF + loginSchema, Forgot/Register links, WebPageSchema)
+- `src/app/(auth)/login/layout.tsx` (metadata: title, noIndex)
+- `src/app/(auth)/register/page.tsx` (Join the Pride, Google + form, password strength, terms checkbox, redirect to onboarding)
+- `src/app/(auth)/register/layout.tsx` (metadata, noIndex)
+- `src/app/(auth)/onboarding/page.tsx` (3-step wizard: name/preferred/pronouns/photo, pathway/year, review + toggles; POST /api/student/onboarding)
+- `src/app/api/student/onboarding/route.ts` (POST auth, onboardingSchema, transaction: User update, GradChecklist, 4 Assessments, ServiceLearning, LocalObligations, CCRStatus, AuditLog)
+- Prisma `User`: profileComplete, preferredName, pronouns, graduationYear, yearbookPublic, leaderboardOptIn
+- `src/components/seo/SchemaOrg.tsx`: WebPageSchema added
+- `.phase_2_complete` marker
 
 ---
 
 ## Phase 1 — COMPLETE (UI Components & Public Shell)
 
-**UI components (src/components/ui/)**  
-- Button.tsx, Input.tsx, Card.tsx, Badge.tsx, Avatar.tsx, Progress.tsx  
-- Toast.tsx, Modal.tsx, Skeleton.tsx, EmptyState.tsx  
-- src/components/ui/index.ts (barrel)
-
-**Layout (src/components/layout/)**  
-- Logo.tsx, Header.tsx, Footer.tsx, Sidebar.tsx, CrisisBanner.tsx, Breadcrumbs.tsx, DashboardLayout.tsx
-
-**Homepage & API**  
-- src/app/(public)/layout.tsx, src/app/(public)/page.tsx  
-- src/components/home/StatsBar.tsx  
-- src/app/api/public/stats/route.ts
-
-**Error / loading**  
-- src/app/not-found.tsx, src/app/error.tsx, src/app/loading.tsx
-
-**Other**  
-- NAV_LINKS updated (Dashboard, Wall of Wins, Yearbook, Leaderboards, Resources)  
-- Root layout: Toaster wrapper  
-- `.phase_1_complete` marker
-
----
-
-## Phase 0 — COMPLETE (Project Scaffold & Infrastructure)
-
-- (see Phase 0 list in git history)
+- (see Phase 1 list in git history)
 
 ---
 
@@ -50,9 +44,9 @@ _(none)_
 
 ---
 
-## Next up (Phase 2)
+## Next up (Phase 3)
 
-- Public pages: login, register, wall-of-wins, yearbook, resources, leaderboards
+- Public pages: wall-of-wins, yearbook, resources, leaderboards
 - Dashboard and student flows
 - Admin and moderator flows
 - API routes with Zod, auth, rate limiting

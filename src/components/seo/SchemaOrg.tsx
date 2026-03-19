@@ -13,6 +13,16 @@ export function WebSiteSchema() {
   return <JsonLd data={WEBSITE_SCHEMA as Record<string, unknown>} />;
 }
 
+export function WebPageSchema({ name, url }: { name: string; url: string }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name,
+    url,
+  };
+  return <JsonLd data={data} />;
+}
+
 export function BreadcrumbSchema({ items }: { items: { name: string; url: string }[] }) {
   const data = {
     "@context": "https://schema.org",
