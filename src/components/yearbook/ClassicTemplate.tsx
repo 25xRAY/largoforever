@@ -1,19 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-
-interface ClassicTemplateProps {
-  displayName: string;
-  headline?: string | null;
-  tagline?: string | null;
-  quote?: string | null;
-  myStory?: string | null;
-  favoriteQuote?: string | null;
-  favoriteMemories?: string[];
-  galleryPhotos?: string[];
-  imageUrl?: string | null;
-}
+import type { YearbookTemplateProps } from "./templates/yearbook-template-props";
 
 /**
  * Traditional yearbook: large centered photo, Playfair name, drop-cap story, italic quote, 2x3 photo grid, memories list.
@@ -28,7 +16,7 @@ export function ClassicTemplate({
   favoriteMemories = [],
   galleryPhotos = [],
   imageUrl,
-}: ClassicTemplateProps) {
+}: YearbookTemplateProps) {
   const firstLetter = (myStory ?? "").charAt(0);
   const restStory = (myStory ?? "").slice(1);
 

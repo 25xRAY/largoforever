@@ -5,3 +5,5 @@ export { CommentSection } from "./CommentSection";
 export { ViewCountIncrement } from "./ViewCountIncrement";
 export { YearbookPageActions } from "./YearbookPageActions";
 export { YearbookEditor } from "./YearbookEditor";
+export { YearbookTemplateView } from "./templates/YearbookTemplateView";
+export type { YearbookTemplateKey } from "./templates/YearbookTemplateView";

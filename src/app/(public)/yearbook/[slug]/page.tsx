@@ -4,7 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getYearbookPageBySlug, getYearbookCommentsBySlug } from "@/lib/yearbook";
 import { generatePageMetadata } from "@/lib/seo";
-import { ClassicTemplate, CommentSection, ViewCountIncrement, YearbookPageActions } from "@/components/yearbook";
+import { cn } from "@/lib/utils";
+import { CommentSection, ViewCountIncrement, YearbookPageActions, YearbookTemplateView } from "@/components/yearbook";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -50,27 +51,46 @@ export default async function YearbookSlugPage({ params }: Props) {
     authorName: c.authorName,
   }));
 
+  const isBold = page.template === "BOLD";
+
+  const templateBody = (
+    <YearbookTemplateView
+      template={page.template}
+      displayName={displayName}
+      headline={page.headline}
+      tagline={page.tagline}
+      quote={page.quote}
+      myStory={page.myStory}
+      favoriteQuote={page.favoriteQuote}
+      favoriteMemories={page.favoriteMemories}
+      galleryPhotos={page.galleryPhotos}
+      imageUrl={page.imageUrl}
+      accentColor={page.accentColor}
+    />
+  );
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
+    <div className={cn("mx-auto px-4 py-8", isBold ? "max-w-5xl" : "max-w-3xl")}>
       <ViewCountIncrement slug={slug} />
       <Link href="/yearbook" className="text-gold-600 hover:underline text-sm">
         ← Back to Yearbook
       </Link>
 
-      <article className="mt-8 rounded-card border-2 border-navy-200 bg-white p-8 shadow-card">
-        <ClassicTemplate
-          displayName={displayName}
-          headline={page.headline}
-          tagline={page.tagline}
-          quote={page.quote}
-          myStory={page.myStory}
-          favoriteQuote={page.favoriteQuote}
-          favoriteMemories={page.favoriteMemories}
-          galleryPhotos={page.galleryPhotos}
-          imageUrl={page.imageUrl}
-        />
-        <YearbookPageActions slug={slug} viewCount={page.viewCount} />
-      </article>
+      {isBold ? (
+        <>
+          <article className="mt-8 overflow-hidden rounded-card border-0 bg-transparent p-0 shadow-card">
+            {templateBody}
+          </article>
+          <div className="mt-4 rounded-card border-2 border-navy-200 bg-white px-6 py-4 shadow-card sm:px-8">
+            <YearbookPageActions slug={slug} viewCount={page.viewCount} />
+          </div>
+        </>
+      ) : (
+        <article className="mt-8 rounded-card border-2 border-navy-200 bg-white p-8 shadow-card">
+          {templateBody}
+          <YearbookPageActions slug={slug} viewCount={page.viewCount} />
+        </article>
+      )}
 
       <CommentSection slug={slug} comments={commentsForSection} />
     </div>

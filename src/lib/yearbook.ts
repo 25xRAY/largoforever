@@ -13,6 +13,7 @@ export interface YearbookPagePublic {
   galleryPhotos: string[];
   template: string;
   imageUrl: string | null;
+  accentColor: string | null;
   viewCount: number;
 }
 
@@ -56,6 +57,7 @@ export async function getYearbookPageBySlug(
     galleryPhotos: page.galleryPhotos ? (JSON.parse(page.galleryPhotos) as string[]) : [],
     template: page.template,
     imageUrl: page.imageUrl,
+    accentColor: page.accentColor,
     viewCount: page.viewCount,
   };
 }

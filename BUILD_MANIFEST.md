@@ -45,7 +45,7 @@ _(none)_
 ## Phase 4 — COMPLETE (Wall of Wins & Digital Yearbook)
 
 - **Wall of Wins:** Win model (evidenceUrl), validations, `/api/wins`, `/api/wins/[id]`, `/api/wins/stats`, `/api/uploads/presigned`; WinCard, WinFilters, WinSubmitForm; `(public)/wall-of-wins`, `(public)/wall-of-wins/[id]`, `(dashboard)/dashboard/wall-of-wins/submit`.
-- **Digital Yearbook:** YearbookPage (slug, displayName, tagline, myStory, favoriteQuote, favoriteMemories, galleryPhotos, viewCount, etc.); validations, `/api/yearbook`, `/api/yearbook/me`, `/api/yearbook/[slug]`, `/api/yearbook/[slug]/comments`; YearbookCard, ClassicTemplate, PhotoGallery, CommentSection, ViewCountIncrement, YearbookPageActions, YearbookEditor; `(public)/yearbook`, `(public)/yearbook/[slug]`, `(dashboard)/yearbook/edit`; dashboard API returns `yearbookSlug`; QuickActions "View Your Page" / "Complete Yearbook". `.phase_4_complete` marker.
+- **Digital Yearbook:** YearbookPage (slug, displayName, tagline, myStory, favoriteQuote, favoriteMemories, galleryPhotos, viewCount, accentColor, etc.); validations, `/api/yearbook`, `/api/yearbook/me`, `/api/yearbook/[slug]`, `/api/yearbook/[slug]/comments`; YearbookCard, **templates** (Classic, Minimalist/MODERN+MINIMAL, Bold, Scrapbook via `YearbookTemplateView`), PhotoGallery, CommentSection, ViewCountIncrement, YearbookPageActions, YearbookEditor; `(public)/yearbook`, `(public)/yearbook/[slug]`, `(dashboard)/yearbook/edit`; dashboard API returns `yearbookSlug`; QuickActions "View Your Page" / "Complete Yearbook". `.phase_4_complete` marker.
 
 ---
 
