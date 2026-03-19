@@ -24,11 +24,20 @@ function getBorderClass(priority: Alert["priority"]) {
   return "border-l-info";
 }
 
+const PRIORITY_RANK: Record<Alert["priority"], number> = {
+  RED: 0,
+  YELLOW: 1,
+  GREEN: 2,
+};
+
 /**
  * Sorted critical → warning → info. Max 5 visible. Colored left border, icon, message, "Resolve →" link.
  */
 export function AlertsList({ alerts, maxVisible = 5 }: AlertsListProps) {
-  const visible = alerts.slice(0, maxVisible);
+  const sorted = [...alerts].sort(
+    (a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority]
+  );
+  const visible = sorted.slice(0, maxVisible);
 
   if (visible.length === 0) {
     return (
