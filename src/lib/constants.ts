@@ -68,13 +68,13 @@ export const ADMIN_INFO = {
   title: "Assistant Principal",
 } as const;
 
-/** Main nav links (path + label). */
+/** Main nav links (path + label) — Dashboard, Wall of Wins, Yearbook, Leaderboards, Resources. */
 export const NAV_LINKS: { href: string; label: string }[] = [
-  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Dashboard" },
   { href: "/wall-of-wins", label: "Wall of Wins" },
   { href: "/yearbook", label: "Yearbook" },
-  { href: "/resources", label: "Resources" },
   { href: "/leaderboards", label: "Leaderboards" },
+  { href: "/resources", label: "Resources" },
 ];
 
 /** Footer links. */

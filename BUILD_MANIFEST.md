@@ -7,49 +7,40 @@
 
 ## Current phase
 
-**Phase 1**  
-- Phase 0 (Project Scaffold & Infrastructure) is COMPLETE.  
-- Next: Phase 1 features (pages, dashboard, API routes, etc. as specified in project plan).
+**Phase 2**  
+- Phase 1 (UI Components & Public Shell) is COMPLETE.  
+- Next: Public pages (login, register, wall-of-wins, yearbook, resources, leaderboards), dashboard and student flows, admin/moderator flows, API routes.
+
+---
+
+## Phase 1 — COMPLETE (UI Components & Public Shell)
+
+**UI components (src/components/ui/)**  
+- Button.tsx, Input.tsx, Card.tsx, Badge.tsx, Avatar.tsx, Progress.tsx  
+- Toast.tsx, Modal.tsx, Skeleton.tsx, EmptyState.tsx  
+- src/components/ui/index.ts (barrel)
+
+**Layout (src/components/layout/)**  
+- Logo.tsx, Header.tsx, Footer.tsx, Sidebar.tsx, CrisisBanner.tsx, Breadcrumbs.tsx, DashboardLayout.tsx
+
+**Homepage & API**  
+- src/app/(public)/layout.tsx, src/app/(public)/page.tsx  
+- src/components/home/StatsBar.tsx  
+- src/app/api/public/stats/route.ts
+
+**Error / loading**  
+- src/app/not-found.tsx, src/app/error.tsx, src/app/loading.tsx
+
+**Other**  
+- NAV_LINKS updated (Dashboard, Wall of Wins, Yearbook, Leaderboards, Resources)  
+- Root layout: Toaster wrapper  
+- `.phase_1_complete` marker
 
 ---
 
 ## Phase 0 — COMPLETE (Project Scaffold & Infrastructure)
 
-- `.env.example`
-- `src/lib/env.ts`
-- `tailwind.config.ts`
-- `src/app/globals.css`
-- `src/app/layout.tsx`
-- `src/lib/utils.ts`
-- `src/lib/constants.ts`
-- `src/lib/logger.ts`
-- `prisma/schema.prisma`
-- `src/lib/prisma.ts`
-- `prisma/seed.ts`
-- `src/lib/auth.ts`
-- `src/types/next-auth.d.ts`
-- `src/middleware.ts`
-- `src/app/api/auth/[...nextauth]/route.ts`
-- `src/lib/seo.ts`
-- `src/components/seo/JsonLd.tsx`
-- `src/components/seo/SchemaOrg.tsx`
-- `src/app/sitemap.ts`
-- `src/app/robots.ts`
-- `src/types/index.ts`
-- `src/components/providers/Providers.tsx`
-- `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `next-env.d.ts`
-- `.phase_0_complete` marker
-
----
-
-## Completed (bootstrap, pre-Phase 0)
-
-- `.gitignore`
-- `00-cursorrules.md`
-- `setup-cursorrules.sh`
-- `.cursor/rules/largo-lions-2026.mdc`
-- `BUILD_MANIFEST.md`
-- `VERIFICATION_CHECKLIST.md`
+- (see Phase 0 list in git history)
 
 ---
 
@@ -59,9 +50,9 @@ _(none)_
 
 ---
 
-## Next up (Phase 1)
+## Next up (Phase 2)
 
-- Public pages: homepage, login, register, wall-of-wins, yearbook, resources, leaderboards
+- Public pages: login, register, wall-of-wins, yearbook, resources, leaderboards
 - Dashboard and student flows
 - Admin and moderator flows
 - API routes with Zod, auth, rate limiting

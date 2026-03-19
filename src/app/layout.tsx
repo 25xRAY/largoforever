@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Open_Sans, Playfair_Display } from "next/font/google";
 import { Providers } from "@/components/providers/Providers";
+import { Toaster } from "@/components/ui/Toast";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -62,10 +63,8 @@ export default function RootLayout({
           Skip to content
         </a>
         <Providers>
-          <div id="main-content" tabIndex={-1}>
-            {children}
-          </div>
-        </Providers>
+        <Toaster>{children}</Toaster>
+      </Providers>
       </body>
     </html>
   );
