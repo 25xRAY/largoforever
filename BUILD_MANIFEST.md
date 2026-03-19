@@ -7,34 +7,32 @@
 
 ## Current phase
 
-**Phase 3**  
-- Phase 2 (Authentication & Onboarding) is COMPLETE.  
-- Next: Public pages (wall-of-wins, yearbook, resources, leaderboards), dashboard and student flows, admin/moderator flows, API routes.
+**Phase 4**  
+- Phase 3 (Student Dashboard & Graduation Checklist) is COMPLETE.  
+- Next: Public pages (wall-of-wins, yearbook, resources, leaderboards), more dashboard flows, admin/moderator, API routes.
+
+---
+
+## Phase 3 — COMPLETE (Student Dashboard & Graduation Checklist)
+
+- `src/app/(dashboard)/layout.tsx` (DashboardLayout wrapper)
+- `src/app/(dashboard)/dashboard/layout.tsx` (metadata: My Dashboard, noIndex)
+- `src/app/api/student/dashboard/route.ts` (GET: user, readiness, alerts, recentWins, classStats; revalidate 300)
+- `src/lib/validations/checklist.ts` (Zod schemas for checklist data)
+- **Dashboard components:** ReadinessMeter, AlertsList, QuickActions, RecentWins, DeadlinesWidget
+- `src/app/(dashboard)/dashboard/page.tsx` (two-column: welcome, meter, alerts, quick actions, recent wins; sidebar: profile, deadlines, class stats; React Query, loading skeleton, error retry)
+- `src/app/(dashboard)/dashboard/loading.tsx` (branded skeleton)
+- `src/app/api/student/checklist/route.ts` (GET: full checklist — credits, assessments, service, obligations, CCR)
+- **Checklist components:** CreditSection, AssessmentSection, ServiceSection, ObligationsSection, CCRSection (Radix Accordion)
+- `src/app/(dashboard)/dashboard/checklist/page.tsx` (horizontal readiness bar, 5 accordion sections, last synced, counselor contact)
+- `src/app/(dashboard)/dashboard/checklist/layout.tsx` (metadata: My Graduation Checklist, noIndex)
+- `.phase_3_complete` marker
 
 ---
 
 ## Phase 2 — COMPLETE (Authentication & Onboarding)
 
-- `src/lib/validations/auth.ts` (loginSchema, registerSchema, onboardingSchema)
-- `src/app/api/auth/[...nextauth]/route.ts` (unchanged; GET/POST)
-- `src/app/api/auth/register/route.ts` (POST register, bcrypt 12, 409 on duplicate)
-- `src/hooks/useAuth.ts` (useSession wrapper: user, isAuthenticated, isStudent, isAdmin, isModerator, signOut)
-- `src/app/(auth)/layout.tsx` (navy gradient, logo)
-- `src/app/(auth)/login/page.tsx` (branded login, Google + email, RHF + loginSchema, Forgot/Register links, WebPageSchema)
-- `src/app/(auth)/login/layout.tsx` (metadata: title, noIndex)
-- `src/app/(auth)/register/page.tsx` (Join the Pride, Google + form, password strength, terms checkbox, redirect to onboarding)
-- `src/app/(auth)/register/layout.tsx` (metadata, noIndex)
-- `src/app/(auth)/onboarding/page.tsx` (3-step wizard: name/preferred/pronouns/photo, pathway/year, review + toggles; POST /api/student/onboarding)
-- `src/app/api/student/onboarding/route.ts` (POST auth, onboardingSchema, transaction: User update, GradChecklist, 4 Assessments, ServiceLearning, LocalObligations, CCRStatus, AuditLog)
-- Prisma `User`: profileComplete, preferredName, pronouns, graduationYear, yearbookPublic, leaderboardOptIn
-- `src/components/seo/SchemaOrg.tsx`: WebPageSchema added
-- `.phase_2_complete` marker
-
----
-
-## Phase 1 — COMPLETE (UI Components & Public Shell)
-
-- (see Phase 1 list in git history)
+- (see Phase 2 list in git history)
 
 ---
 
@@ -44,9 +42,9 @@ _(none)_
 
 ---
 
-## Next up (Phase 3)
+## Next up (Phase 4)
 
 - Public pages: wall-of-wins, yearbook, resources, leaderboards
-- Dashboard and student flows
+- More dashboard flows (wins, yearbook edit, Ed RonIQ)
 - Admin and moderator flows
 - API routes with Zod, auth, rate limiting
