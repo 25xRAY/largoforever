@@ -1,0 +1,90 @@
+---
+description: Largo Lions Class of 2026 — build protocol, code standards, brand, SEO
+alwaysApply: true
+---
+
+You are building the Largo Lions Class of 2026 platform (largolions2026.org). A full-stack Next.js 14 application for 350+ high school seniors to track graduation requirements, celebrate achievements, and create permanent digital yearbook pages.
+
+===== AUTONOMOUS BUILD PROTOCOL =====
+
+You are operating in AUTONOMOUS MODE. Follow these rules:
+
+1. READ BUILD_MANIFEST.md at project root before every action. It tells you what is built, what is current, and what comes next.
+2. After completing any file, UPDATE BUILD_MANIFEST.md — add the filepath to the "completed" list for the current phase.
+3. If a phase is fully complete, write a marker file: touch .phase_X_complete (where X is the phase number).
+4. NEVER ask the user questions. Make the best decision and proceed.
+5. If you encounter an error, fix it yourself. If you cannot fix it after 3 attempts, write the error to BUILD_MANIFEST.md under "## Blockers" and proceed to the next file.
+6. After creating each file, run type-check: npx tsc --noEmit --pretty 2>&1 | head -20. Fix any errors before moving on.
+7. After creating each component, verify the import chain — make sure barrel exports (index.ts) are updated.
+8. Commit logical checkpoints: after every 5-10 files, run git add -A && git commit -m "phase X: [description]"
+
+===== ABSOLUTE CODE STANDARDS =====
+
+1. TypeScript strict mode. No `any`. No `@ts-ignore`. No `as unknown as`. Every function typed.
+2. Every page gets: <title>, <meta description>, Open Graph tags, Schema.org JSON-LD, canonical URL.
+3. Every interactive element gets: aria-label, keyboard nav, focus ring, screen reader text.
+4. Every API route gets: Zod input validation, try/catch error handling, rate limiting check, auth check.
+5. Every database query: parameterized (Prisma), select needed fields only, paginate lists.
+6. Every form: client validation + server validation + loading + error + success states.
+7. No console.log in production. Use src/lib/logger.ts.
+8. No inline styles. Tailwind only. No raw hex codes — use design token classes.
+9. Mobile-first. Responsive at 320px, 375px, 768px, 1024px, 1440px.
+10. All images: next/image, width+height+alt, priority for above-fold.
+11. All external links: rel="noopener noreferrer" target="_blank".
+12. Crisis resources (988, 741741) accessible from every authenticated page.
+
+===== BRAND SYSTEM (use these tokens, never raw hex) =====
+
+Colors:
+  navy: { DEFAULT: '#003B7A', 50: '#E6EEF5', 100: '#C0D4E8', 200: '#8BB1D4', 300: '#5A8FC0', 400: '#2D6DAB', 500: '#003B7A', 600: '#003069', 700: '#002555', 800: '#001A40', 900: '#000F2B' }
+  gold: { DEFAULT: '#FFD700', 50: '#FFFBE6', 100: '#FFF4B3', 200: '#FFED80', 300: '#FFE54D', 400: '#FFDE1A', 500: '#FFD700', 600: '#D4B300', 700: '#AA8F00', 800: '#806B00', 900: '#554700' }
+  success: '#28A745'
+  warning: '#FFC107'
+  danger: '#DC3545'
+  info: '#17A2B8'
+
+Typography:
+  heading: Montserrat 600/700
+  body: Open Sans 400/500
+  accent: Playfair Display italic
+
+Brand:
+  Motto: "Legacy in Motion...Altitude Achieved!"
+  Mascot: Lions
+  Philosophy: L.I.O.N. = Leadership, Integrity, Optimism, Nobility
+  Graduation Date: June 2, 2026
+
+===== SCHOOL CONTEXT =====
+
+  School: Largo High School, Prince George's County, Maryland
+  District: PGCPS
+  Class: 2026 (~350 seniors)
+  Counselor: Tomeco Dates (tomeco.dates@pgcps.org, 301-808-8880, calendly.com/tomeco-dates)
+  Asst. Principal: Dr. Robyn D. Jones (robyn.jones@pgcps.org, CliftonStrengths: Strategic, Empathy, Individualization, Belief, Adaptability)
+  Dev Team: Talent Ready Class of 2028
+  Domain: largolions2026.org
+
+===== SEO REQUIREMENTS (EVERY PAGE) =====
+
+  - Unique <title> with primary keyword + "Largo Lions Class of 2026"
+  - Meta description 150-160 chars with call to action
+  - Open Graph: og:title, og:description, og:image, og:url, og:type, og:site_name
+  - Twitter Card: summary_large_image
+  - Schema.org JSON-LD (minimum 1 per page, homepage gets 4+)
+  - Canonical URL
+  - Breadcrumb structured data
+  - Semantic HTML: main, nav, article, section, aside, footer
+  - Single H1 per page with primary keyword
+  - Alt text on all images with keyword context
+  - FAQ structured data on homepage + resources page (for AI answer engines)
+
+===== GRADUATION REQUIREMENTS DATA =====
+
+  Credits: 21 total (English 4, Math 3 inc. Algebra I + Geometry, Science 3 lab inc. Biology, Social Studies 3 inc. US History + World History + Government, Fine Arts 1, PE 0.5, Health 0.5, Career Pathway 6)
+  Assessments: 4 (Algebra I, English 10, Government, Life Science) — alternatives: AP 3+, SAT 480+/530+, ACT 20+, IB 4+
+  Service Learning: 75 hours (grades 6-12)
+  Local Obligations: fees, devices, books, athletic equipment
+  CCR: Career Completer Pathway (STEM, Health, Business, Arts/Media, IT, Construction, Education, Public Service)
+
+  Readiness Calculation:
+  readiness = (credits/21)*40 + (assessments_passed/4)*25 + (service_hours/75)*15 + (obligations_clear?10:0) + (ccr_met?10:0)
