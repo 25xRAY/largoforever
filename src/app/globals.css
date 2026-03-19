@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --navy-50: #e6eef5;
+    --navy-100: #c0d4e8;
+    --navy-200: #8bb1d4;
+    --navy-300: #5a8fc0;
+    --navy-400: #2d6dab;
+    --navy-500: #003b7a;
+    --navy-600: #003069;
+    --navy-700: #002555;
+    --navy-800: #001a40;
+    --navy-900: #000f2b;
+    --gold-50: #fffbe6;
+    --gold-100: #fff4b3;
+    --gold-200: #ffed80;
+    --gold-300: #ffe54d;
+    --gold-400: #ffde1a;
+    --gold-500: #ffd700;
+    --gold-600: #d4b300;
+    --gold-700: #aa8f00;
+    --gold-800: #806b00;
+    --gold-900: #554700;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --info: #17a2b8;
+  }
+
+  ::selection {
+    background-color: var(--gold-500);
+    color: var(--navy-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold-500);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-button bg-navy-500 px-4 py-2 font-heading font-semibold text-white transition-colors hover:bg-navy-600 focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-button border-2 border-navy-500 bg-transparent px-4 py-2 font-heading font-semibold text-navy-500 transition-colors hover:bg-navy-50 focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2;
+  }
+
+  .card-base {
+    @apply rounded-card bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover;
+  }
+
+  .gradient-navy {
+    @apply bg-gradient-to-br from-navy-600 to-navy-800;
+  }
+
+  .gradient-hero {
+    @apply bg-gradient-to-br from-navy-500 via-navy-600 to-navy-800;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent;
+  }
+}
+
+@media print {
+  nav,
+  footer,
+  [role="navigation"],
+  button:not(.print-show),
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  a[href]::after {
+    content: none !important;
+  }
+}

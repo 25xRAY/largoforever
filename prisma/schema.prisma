@@ -1,0 +1,387 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+  MODERATOR
+  COUNSELOR
+}
+
+enum AuthProvider {
+  CREDENTIALS
+  GOOGLE
+}
+
+enum AlertType {
+  CREDITS
+  ASSESSMENTS
+  SERVICE
+  OBLIGATIONS
+  CCR
+  GENERAL
+}
+
+enum AssessmentType {
+  ALGEBRA_I
+  ENGLISH_10
+  GOVERNMENT
+  LIFE_SCIENCE
+}
+
+enum AssessmentResult {
+  PASS
+  FAIL
+  PENDING
+  WAIVED
+}
+
+enum AssessmentMethod {
+  STATE
+  AP
+  SAT
+  ACT
+  IB
+}
+
+enum CompleterPathway {
+  STEM
+  HEALTH
+  BUSINESS
+  ARTS_MEDIA
+  IT
+  CONSTRUCTION
+  EDUCATION
+  PUBLIC_SERVICE
+}
+
+enum WinType {
+  SCHOLARSHIP
+  ACCEPTANCE
+  MILITARY
+  JOB
+  AWARD
+  OTHER
+}
+
+enum InstitutionType {
+  FOUR_YEAR
+  TWO_YEAR
+  TRADE
+  MILITARY
+  WORKFORCE
+  OTHER
+}
+
+enum ScholarshipRange {
+  UNDER_1K
+  ONE_TO_5K
+  FIVE_TO_10K
+  OVER_10K
+}
+
+enum ScholarshipType {
+  MERIT
+  NEED
+  ATHLETIC
+  OTHER
+}
+
+enum MilitaryBranch {
+  ARMY
+  NAVY
+  AIR_FORCE
+  MARINES
+  COAST_GUARD
+  SPACE_FORCE
+}
+
+enum YearbookTemplate {
+  CLASSIC
+  MODERN
+  MINIMAL
+}
+
+enum YearbookLayout {
+  SINGLE
+  GALLERY
+  STORY
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum CommentRelation {
+  YEARBOOK_PAGE
+  WIN
+}
+
+enum HonorTier {
+  GOLD
+  SILVER
+  BRONZE
+}
+
+enum LeaderboardCategory {
+  READINESS
+  SERVICE_HOURS
+  WINS
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String  @db.VarChar(64)
+  provider          String  @db.VarChar(64)
+  providerAccountId String  @db.VarChar(256)
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String? @db.VarChar(32)
+  scope             String? @db.VarChar(256)
+  id_token          String? @db.Text
+  session_state     String? @db.VarChar(256)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique @db.VarChar(256)
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String   @db.VarChar(256)
+  token      String   @unique @db.VarChar(256)
+  expires   DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique @db.VarChar(256)
+  emailVerified DateTime?
+  password      String?   @db.VarChar(256)
+  name          String?  @db.VarChar(256)
+  firstName     String?  @db.VarChar(128)
+  lastName      String?  @db.VarChar(128)
+  image         String?  @db.VarChar(512)
+  role          UserRole @default(STUDENT)
+  lastLoginAt   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt    DateTime?
+
+  accounts         Account[]
+  sessions         Session[]
+  gradChecklist    GradChecklist?
+  serviceLearning  ServiceLearning?
+  localObligations LocalObligations?
+  ccrStatus        CCRStatus?
+  wins             Win[]
+  yearbookPage     YearbookPage?
+  comments         Comment[]
+  leaderboardEntries LeaderboardEntry[]
+  auditLogs        AuditLog[]
+}
+
+model GradChecklist {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  englishCredits        Float    @default(0)
+  mathCredits           Float    @default(0)
+  scienceCredits        Float    @default(0)
+  socialStudiesCredits  Float    @default(0)
+  fineArtsCredits       Float    @default(0)
+  peCredits             Float    @default(0)
+  healthCredits         Float    @default(0)
+  careerPathwayCredits  Float    @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  assessments Assessment[]
+
+  @@index([userId])
+}
+
+model Assessment {
+  id              String           @id @default(uuid())
+  gradChecklistId String
+  gradChecklist   GradChecklist     @relation(fields: [gradChecklistId], references: [id], onDelete: Cascade)
+  type            AssessmentType
+  result          AssessmentResult  @default(PENDING)
+  method          AssessmentMethod?
+  score           String?          @db.VarChar(32)
+  completedAt     DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([gradChecklistId])
+  @@index([type])
+}
+
+model ServiceLearning {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hours       Float    @default(0)
+  verified    Boolean  @default(false)
+  notes       String?  @db.VarChar(1024)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model LocalObligations {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feesClear   Boolean  @default(false)
+  deviceClear Boolean @default(false)
+  booksClear  Boolean  @default(false)
+  athleticClear Boolean @default(false)
+  notes       String?  @db.VarChar(1024)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model CCRStatus {
+  id        String           @id @default(uuid())
+  userId    String           @unique
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pathway   CompleterPathway?
+  met       Boolean          @default(false)
+  completedAt DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([userId])
+}
+
+model Win {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            WinType
+  title           String    @db.VarChar(256)
+  description    String?   @db.VarChar(1024)
+  institutionName String?   @db.VarChar(256)
+  institutionType InstitutionType?
+  scholarshipRange ScholarshipRange?
+  scholarshipType ScholarshipType?
+  militaryBranch  MilitaryBranch?
+  amount          Float?
+  approved        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
+  comments        Comment[]
+
+  @@index([userId])
+  @@index([type])
+  @@index([approved])
+}
+
+model YearbookPage {
+  id          String           @id @default(uuid())
+  userId      String           @unique
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  headline    String?          @db.VarChar(256)
+  quote       String?          @db.VarChar(512)
+  template   YearbookTemplate  @default(CLASSIC)
+  layout     YearbookLayout    @default(SINGLE)
+  imageUrl   String?           @db.VarChar(512)
+  status      ModerationStatus @default(PENDING)
+  publishedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  comments Comment[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Comment {
+  id          String        @id @default(uuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  relation    CommentRelation
+  yearbookPageId String?
+  yearbookPage   YearbookPage? @relation(fields: [yearbookPageId], references: [id], onDelete: Cascade)
+  winId       String?
+  win         Win?          @relation(fields: [winId], references: [id], onDelete: Cascade)
+  content     String        @db.VarChar(2000)
+  status      ModerationStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([yearbookPageId])
+  @@index([winId])
+}
+
+model LeaderboardEntry {
+  id         String             @id @default(uuid())
+  userId     String
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   LeaderboardCategory
+  value      Float
+  rank       Int?
+  period     String             @db.VarChar(32)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@unique([userId, category, period])
+  @@index([category])
+  @@index([period])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String   @db.VarChar(128)
+  resource  String   @db.VarChar(128)
+  details   String?  @db.Text
+  ip        String?  @db.VarChar(64)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model Resource {
+  id          String   @id @default(uuid())
+  title       String   @db.VarChar(256)
+  url         String   @db.VarChar(512)
+  description String?  @db.VarChar(1024)
+  category    String   @db.VarChar(64)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+}

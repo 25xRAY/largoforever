@@ -7,13 +7,42 @@
 
 ## Current phase
 
-**Phase 0 — Bootstrap (safety net)**  
-- Git initialized, bootstrap files committed.  
-- Next: Phase 1 (project scaffold: package.json, Next.js app, Tailwind, Prisma placeholder).
+**Phase 1**  
+- Phase 0 (Project Scaffold & Infrastructure) is COMPLETE.  
+- Next: Phase 1 features (pages, dashboard, API routes, etc. as specified in project plan).
 
 ---
 
-## Completed (bootstrap)
+## Phase 0 — COMPLETE (Project Scaffold & Infrastructure)
+
+- `.env.example`
+- `src/lib/env.ts`
+- `tailwind.config.ts`
+- `src/app/globals.css`
+- `src/app/layout.tsx`
+- `src/lib/utils.ts`
+- `src/lib/constants.ts`
+- `src/lib/logger.ts`
+- `prisma/schema.prisma`
+- `src/lib/prisma.ts`
+- `prisma/seed.ts`
+- `src/lib/auth.ts`
+- `src/types/next-auth.d.ts`
+- `src/middleware.ts`
+- `src/app/api/auth/[...nextauth]/route.ts`
+- `src/lib/seo.ts`
+- `src/components/seo/JsonLd.tsx`
+- `src/components/seo/SchemaOrg.tsx`
+- `src/app/sitemap.ts`
+- `src/app/robots.ts`
+- `src/types/index.ts`
+- `src/components/providers/Providers.tsx`
+- `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `next-env.d.ts`
+- `.phase_0_complete` marker
+
+---
+
+## Completed (bootstrap, pre-Phase 0)
 
 - `.gitignore`
 - `00-cursorrules.md`
@@ -32,9 +61,7 @@ _(none)_
 
 ## Next up (Phase 1)
 
-- package.json (Node 18+, Next 14, TypeScript strict, Tailwind, Prisma)
-- next.config.js
-- tsconfig.json
-- Tailwind config + design tokens (navy, gold, etc.)
-- App router layout + homepage shell
-- Prisma schema placeholder
+- Public pages: homepage, login, register, wall-of-wins, yearbook, resources, leaderboards
+- Dashboard and student flows
+- Admin and moderator flows
+- API routes with Zod, auth, rate limiting
