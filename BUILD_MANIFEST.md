@@ -19,7 +19,7 @@ Verify: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build:verify`,
 - **Libs:** `admin-session.ts`, `leaderboard-public.ts`, `ed-roniq.ts`, validations `leaderboard-opt-in.ts`, `admin.ts`.
 - **API:** `GET/POST` leaderboards (public / student opt-in); `GET /api/resources`; `POST /api/ai/chat` (Ed RonIQ); admin: `stats`, `moderation`, `students`, `students/[id]`, `export`, `leaderboards`.
 - **Public UI:** `(public)/leaderboards` (Lions of Distinction 🏅, ItemList JSON-LD); `(public)/resources` (CrisisSection, tabbed categories, FAQPage schema).
-- **Ed RonIQ:** `(dashboard)/dashboard/ed-roniq` (noIndex), `ChatInterface`, `ChatMessage`, `TypingIndicator`, `EdRoniqCrisisBanner` wired to `crisisDetected`.
+- **Ed RonIQ:** `(dashboard)/dashboard/ed-roniq` (noIndex), `components/ai/ChatInterface`, `ChatMessage`, `TypingIndicator`, `EdRoniqCrisisBanner` wired to `crisisDetected`.
 - **Admin UI:** `(admin)/admin` dashboard (Recharts: wins line, readiness bar, win types pie); `moderation`, `students`, `students/[id]`, `leaderboards`, `data-export` pages; `AdminSidebar` + `DashboardLayout` variant `admin`.
 - **Seed:** Resources for `graduation`, `fa`, `college`, `records`, `wellness`, `crisis`, `district`; leaderboard prefs + honors/GPA sample data for students.
 - `.phase_5_complete` marker.
