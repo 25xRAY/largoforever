@@ -40,7 +40,7 @@ Verify: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build:verify`,
 - **Seed:** `prisma/seed.ts` sets unique `YearbookPage.slug` for browse/e2e.
 - **Tooling:** `.eslintrc.json`, `npm run typecheck`, Prettier includes `e2e` + `scripts/**/*.mjs`.
 - **Auth (post-ship):** `src/lib/auth.ts` — Google: all accounts when `NEXTAUTH_URL` includes `localhost`; `@students.pgcps.org` / `@pgcps.org` only in production (`hd` + sign-in callback).
-- **Roster & roles (post-ship):** `ApprovedRoster`, `TeacherStudent`, `UserRole.TEACHER`, `TeacherDepartment` on `User`, `CompleterPathway.UNDECIDED`; `src/lib/roster.ts`, `readiness-calc.ts`, `/api/user/me`, `/api/admin/roster`, `/api/admin/roster/bulk`, `/api/admin/teacher-students`, `/api/teacher/onboarding`, `/api/teacher/students`, `(admin)/admin/roster`, teacher onboarding + `TeacherDashboardView`, middleware + `Sidebar` teacher nav, `CCRSection` undecided messaging, login `NotOnRoster`, seed roster + demo teacher link.
+- **Roster & roles (post-ship):** `ApprovedRoster`, `TeacherStudent`, `UserRole.TEACHER`, `ADMINISTRATOR`, `TeacherDepartment` / `AdministratorTitle` on `User`, `CompleterPathway.UNDECIDED`; `src/lib/roster.ts`, `readiness-calc.ts`, `/api/user/me`, `/api/admin/roster` (GET staff, POST `ADMIN` only), `/api/admin/roster/bulk`, `/api/admin/teacher-students`, `/api/teacher/onboarding`, `/api/teacher/students`, `/api/administrator/onboarding`, `(admin)/admin/roster`, teacher + administrator onboarding + `TeacherDashboardView`, `admin-session` staff vs platform admin, middleware admin panel for `ADMINISTRATOR`/`COUNSELOR`, `Sidebar`/`Header` staff nav, login Google hints, seed Dr. Jones `ADMINISTRATOR` + Tomeco `COUNSELOR`.
 - `.phase_6_complete` marker.
 
 ---

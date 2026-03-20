@@ -149,6 +149,17 @@ export default function LoginPage() {
           </Button>
         </form>
 
+        <div
+          className="rounded-lg border border-white/20 bg-white/5 p-4 text-center text-sm text-white/85"
+          role="region"
+          aria-label="Google sign-in accounts by audience"
+        >
+          <p className="font-medium text-white">Staff?</p>
+          <p className="mt-1">Sign in with your @pgcps.org Google account.</p>
+          <p className="mt-3 font-medium text-white">Student?</p>
+          <p className="mt-1">Sign in with your @students.pgcps.org Google account.</p>
+        </div>
+
         <p className="text-center text-sm text-white/80">
           New Lion?{" "}
           <Link

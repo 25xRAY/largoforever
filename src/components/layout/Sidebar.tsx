@@ -14,6 +14,7 @@ import {
   Sparkles,
   Settings,
   HelpCircle,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
@@ -35,6 +36,12 @@ const TEACHER_SIDEBAR_LINKS = [
   { href: "/resources", label: "Resources", icon: FileText },
 ] as const;
 
+const STAFF_PANEL_LINK = {
+  href: "/admin",
+  label: "Staff panel",
+  icon: Shield,
+} as const;
+
 const BOTTOM_LINKS = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/help", label: "Help", icon: HelpCircle },
@@ -45,8 +52,14 @@ export function Sidebar() {
   const { data: session } = useSession();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const sidebarLinks =
-    session?.user?.role === "TEACHER" ? TEACHER_SIDEBAR_LINKS : STUDENT_SIDEBAR_LINKS;
+  const role = session?.user?.role;
+  const baseLinks = role === "TEACHER" ? TEACHER_SIDEBAR_LINKS : STUDENT_SIDEBAR_LINKS;
+  const showStaffPanel =
+    role === "ADMIN" ||
+    role === "ADMINISTRATOR" ||
+    role === "MODERATOR" ||
+    role === "COUNSELOR";
+  const sidebarLinks = showStaffPanel ? [...baseLinks, STAFF_PANEL_LINK] : [...baseLinks];
 
   const content = (
     <>

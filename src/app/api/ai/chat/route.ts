@@ -83,9 +83,16 @@ export async function POST(request: Request) {
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  if (session.user.role !== "STUDENT" && session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+    const r = session.user.role;
+    if (
+      r !== "STUDENT" &&
+      r !== "ADMIN" &&
+      r !== "ADMINISTRATOR" &&
+      r !== "MODERATOR" &&
+      r !== "COUNSELOR"
+    ) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey?.trim()) {

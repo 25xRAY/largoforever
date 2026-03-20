@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TeacherDepartment } from "@prisma/client";
+import { AdministratorTitle, TeacherDepartment } from "@prisma/client";
 
 export const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address."),
@@ -74,3 +74,14 @@ export const teacherOnboardingSchema = z.object({
 });
 
 export type TeacherOnboardingInput = z.infer<typeof teacherOnboardingSchema>;
+
+export const administratorOnboardingSchema = z.object({
+  preferredName: z.string().max(50).optional().nullable(),
+  pronouns: z.string().max(30).optional().nullable(),
+  administratorTitle: z.nativeEnum(AdministratorTitle),
+  administratorOffice: z.string().min(1).max(256),
+  yearbookPublic: z.boolean().optional().default(false),
+  leaderboardOptIn: z.boolean().optional().default(false),
+});
+
+export type AdministratorOnboardingInput = z.infer<typeof administratorOnboardingSchema>;

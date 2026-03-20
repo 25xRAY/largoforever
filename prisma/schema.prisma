@@ -10,9 +10,19 @@ datasource db {
 enum UserRole {
   STUDENT
   TEACHER
+  ADMINISTRATOR
   ADMIN
   MODERATOR
   COUNSELOR
+}
+
+/** School administrator onboarding title. */
+enum AdministratorTitle {
+  PRINCIPAL
+  ASSISTANT_PRINCIPAL
+  DEPARTMENT_HEAD
+  DEAN
+  OTHER
 }
 
 enum AuthProvider {
@@ -222,6 +232,8 @@ model User {
   graduationYear   Int?
   teacherDepartment TeacherDepartment?
   teacherSubject   String?   @db.VarChar(256)
+  administratorTitle AdministratorTitle?
+  administratorOffice String? @db.VarChar(256)
   yearbookPublic   Boolean   @default(true)
   leaderboardOptIn Boolean   @default(false)
   displayGpa         Float?

@@ -56,7 +56,13 @@ export async function middleware(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const role = token.role as string;
-    if (role !== "STUDENT" && role !== "ADMIN") {
+    if (
+      role !== "STUDENT" &&
+      role !== "ADMIN" &&
+      role !== "ADMINISTRATOR" &&
+      role !== "MODERATOR" &&
+      role !== "COUNSELOR"
+    ) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     return NextResponse.next();
@@ -85,7 +91,12 @@ export async function middleware(req: NextRequest) {
   if (isDashboard && token) {
     const role = token.role as string;
     const allowedDashboard =
-      role === "STUDENT" || role === "ADMIN" || role === "TEACHER" || role === "COUNSELOR";
+      role === "STUDENT" ||
+      role === "ADMIN" ||
+      role === "ADMINISTRATOR" ||
+      role === "TEACHER" ||
+      role === "COUNSELOR" ||
+      role === "MODERATOR";
     if (!allowedDashboard) {
       return NextResponse.redirect(new URL("/", req.url));
     }
@@ -101,7 +112,12 @@ export async function middleware(req: NextRequest) {
 
   if ((isAdmin || pathname.startsWith("/api/admin")) && token) {
     const role = token.role as string;
-    if (role !== "ADMIN" && role !== "MODERATOR") {
+    const adminOk =
+      role === "ADMIN" ||
+      role === "ADMINISTRATOR" ||
+      role === "MODERATOR" ||
+      role === "COUNSELOR";
+    if (!adminOk) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }

@@ -92,13 +92,16 @@ export function Header() {
                       Settings
                     </Link>
                   </Dropdown.Item>
-                  {(session.user.role === "ADMIN" || session.user.role === "MODERATOR") && (
+                  {(session.user.role === "ADMIN" ||
+                    session.user.role === "ADMINISTRATOR" ||
+                    session.user.role === "MODERATOR" ||
+                    session.user.role === "COUNSELOR") && (
                     <Dropdown.Item asChild>
                       <Link
                         href="/admin"
                         className="block rounded px-3 py-2 text-sm text-navy-700 hover:bg-navy-50 cursor-pointer outline-none"
                       >
-                        Admin panel
+                        Staff panel
                       </Link>
                     </Dropdown.Item>
                   )}
@@ -151,6 +154,19 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+            {session?.user &&
+              (session.user.role === "ADMIN" ||
+                session.user.role === "ADMINISTRATOR" ||
+                session.user.role === "MODERATOR" ||
+                session.user.role === "COUNSELOR") && (
+                <Link
+                  href="/admin"
+                  className="rounded px-3 py-2 text-white hover:bg-white/10 font-medium border-l-4 border-gold-500 pl-4"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Staff panel
+                </Link>
+              )}
           </nav>
         </div>
       )}

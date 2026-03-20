@@ -9,7 +9,8 @@ const ALLOWED = new Set(["json", "static", "pdf"]);
  */
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id || session.user.role !== "ADMIN") {
+  const role = session?.user?.role;
+  if (!session?.user?.id || (role !== "ADMIN" && role !== "ADMINISTRATOR")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireStaffSession } from "@/lib/admin-session";
+import { canEditStudentAdminRecords, requireStaffSession } from "@/lib/admin-session";
 import { studentAdminPatchSchema } from "@/lib/validations/admin";
 
 /**
@@ -39,6 +39,12 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const staff = await requireStaffSession();
   if (!staff.ok) return staff.response;
+  if (!canEditStudentAdminRecords(staff.role)) {
+    return NextResponse.json(
+      { error: "You have read-only access. Student record edits require a platform or moderator role." },
+      { status: 403 }
+    );
+  }
 
   const { id } = await params;
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/admin-session";
+import { requireAdminSession, requireStaffSession } from "@/lib/admin-session";
 import { rosterEntryCreateSchema } from "@/lib/validations/roster-admin";
 import { Prisma, UserRole } from "@prisma/client";
 import { normalizeRosterEmail } from "@/lib/roster";
@@ -18,8 +18,8 @@ function csvEscape(value: string): string {
  * POST /api/admin/roster — add one entry (JSON)
  */
 export async function GET(request: Request) {
-  const admin = await requireAdminSession();
-  if (!admin.ok) return admin.response;
+  const staff = await requireStaffSession();
+  if (!staff.ok) return staff.response;
 
   const { searchParams } = new URL(request.url);
   const usedParam = searchParams.get("used");

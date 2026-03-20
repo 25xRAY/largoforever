@@ -33,10 +33,12 @@ async function main() {
       name: "Dr. Robyn D. Jones",
       firstName: "Robyn",
       lastName: "Jones",
-      role: "ADMIN",
+      role: "ADMINISTRATOR",
       password: hashed,
     },
-    update: {},
+    update: {
+      role: "ADMINISTRATOR",
+    },
   });
 
   await prisma.user.upsert({
@@ -317,7 +319,7 @@ async function main() {
       email: "robyn.jones@pgcps.org",
       firstName: "Robyn",
       lastName: "Jones",
-      role: "ADMIN",
+      role: "ADMINISTRATOR",
       used: true,
     },
     {

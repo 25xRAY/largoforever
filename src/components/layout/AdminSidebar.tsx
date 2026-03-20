@@ -33,7 +33,14 @@ const ADMIN_ONLY_LINKS = [
 export function AdminSidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const roleLabel = session?.user?.role === "MODERATOR" ? "Moderator" : "Admin";
+  const roleLabel = (() => {
+    const r = session?.user?.role;
+    if (r === "MODERATOR") return "Moderator";
+    if (r === "ADMINISTRATOR") return "Administrator";
+    if (r === "COUNSELOR") return "Counselor";
+    if (r === "ADMIN") return "Platform admin";
+    return "Staff";
+  })();
   const navLinks =
     session?.user?.role === "ADMIN"
       ? [...BASE_LINKS, ...ADMIN_ONLY_LINKS]

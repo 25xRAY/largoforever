@@ -2,11 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 /** Mirrors `UserRole` without importing `@prisma/client` in the browser bundle. */
-type UserRole = "STUDENT" | "TEACHER" | "ADMIN" | "MODERATOR" | "COUNSELOR";
+type UserRole =
+  | "STUDENT"
+  | "TEACHER"
+  | "ADMINISTRATOR"
+  | "ADMIN"
+  | "MODERATOR"
+  | "COUNSELOR";
 /** Mirrors `HonorDesignation`. */
 type HonorDesignation = "NONE" | "VALEDICTORIAN" | "SALUTATORIAN";
 
@@ -47,7 +54,14 @@ async function fetchStudent(id: string): Promise<StudentDetailResponse> {
   return res.json();
 }
 
-const ROLES = ["STUDENT", "TEACHER", "ADMIN", "MODERATOR", "COUNSELOR"] as const satisfies readonly UserRole[];
+const ROLES = [
+  "STUDENT",
+  "TEACHER",
+  "ADMINISTRATOR",
+  "ADMIN",
+  "MODERATOR",
+  "COUNSELOR",
+] as const satisfies readonly UserRole[];
 const HONORS = [
   "NONE",
   "VALEDICTORIAN",
@@ -58,6 +72,9 @@ const HONORS = [
  * Staff student profile with verified-only checklist edits and recent audit entries.
  */
 export function AdminStudentDetailClient({ studentId }: { studentId: string }) {
+  const { data: session } = useSession();
+  const readOnly =
+    session?.user?.role === "ADMINISTRATOR" || session?.user?.role === "COUNSELOR";
   const qc = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-student", studentId],
@@ -185,49 +202,64 @@ export function AdminStudentDetailClient({ studentId }: { studentId: string }) {
         <p className="text-sm text-navy-600">{u.email}</p>
       </div>
 
+      {readOnly && (
+        <p
+          className="rounded-card border border-navy-200 bg-navy-50 p-4 text-sm text-navy-800"
+          role="status"
+        >
+          <strong>Read-only.</strong> You can review this student profile and audit activity. Direct edits
+          to records require a platform administrator or moderator.
+        </p>
+      )}
+
       <section className="rounded-card border border-navy-200 bg-white p-6 shadow-card">
         <h2 className="font-heading text-lg font-semibold text-navy-900">Profile & display</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="block text-sm">
             <span className="font-medium text-navy-800">First name</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              disabled={readOnly}
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-navy-800">Last name</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              disabled={readOnly}
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-navy-800">Display GPA (leaderboard honors)</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={displayGpa}
               onChange={(e) => setDisplayGpa(e.target.value)}
               inputMode="decimal"
+              disabled={readOnly}
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-navy-800">AP/IB course count</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={apIb}
               onChange={(e) => setApIb(e.target.value)}
               inputMode="numeric"
+              disabled={readOnly}
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-navy-800">Honor designation</span>
             <select
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={honor}
               onChange={(e) => setHonor(e.target.value as HonorDesignation)}
+              disabled={readOnly}
             >
               {HONORS.map((h) => (
                 <option key={h} value={h}>
@@ -239,9 +271,10 @@ export function AdminStudentDetailClient({ studentId }: { studentId: string }) {
           <label className="block text-sm">
             <span className="font-medium text-navy-800">Role</span>
             <select
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={role}
               onChange={(e) => setRole(e.target.value as UserRole)}
+              disabled={readOnly}
             >
               {ROLES.map((r) => (
                 <option key={r} value={r}>
@@ -254,11 +287,12 @@ export function AdminStudentDetailClient({ studentId }: { studentId: string }) {
         <label className="mt-4 block text-sm">
           <span className="font-medium text-navy-800">Leadership roles (JSON array)</span>
           <textarea
-            className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 font-mono text-xs"
+            className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 font-mono text-xs disabled:bg-navy-50 disabled:text-navy-600"
             rows={4}
             value={leadershipJson}
             onChange={(e) => setLeadershipJson(e.target.value)}
             spellCheck={false}
+            disabled={readOnly}
           />
         </label>
       </section>
@@ -269,28 +303,31 @@ export function AdminStudentDetailClient({ studentId }: { studentId: string }) {
           <label className="block text-sm">
             <span className="font-medium text-navy-800">English credits</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={englishCredits}
               onChange={(e) => setEnglishCredits(e.target.value)}
               inputMode="decimal"
+              disabled={readOnly}
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-navy-800">Math credits</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={mathCredits}
               onChange={(e) => setMathCredits(e.target.value)}
               inputMode="decimal"
+              disabled={readOnly}
             />
           </label>
           <label className="block text-sm">
             <span className="font-medium text-navy-800">Service hours</span>
             <input
-              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm disabled:bg-navy-50 disabled:text-navy-600"
               value={serviceHours}
               onChange={(e) => setServiceHours(e.target.value)}
               inputMode="decimal"
+              disabled={readOnly}
             />
           </label>
           <label className="flex items-center gap-2 text-sm pt-6">
@@ -298,45 +335,48 @@ export function AdminStudentDetailClient({ studentId }: { studentId: string }) {
               type="checkbox"
               checked={serviceVerified}
               onChange={(e) => setServiceVerified(e.target.checked)}
+              disabled={readOnly}
             />
             <span className="font-medium text-navy-800">Service hours verified</span>
           </label>
         </div>
       </section>
 
-      <section className="rounded-card border border-navy-200 bg-white p-6 shadow-card">
-        <h2 className="font-heading text-lg font-semibold text-navy-900">Staff attestation</h2>
-        <label className="mt-3 flex items-start gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={verifiedOk}
-            onChange={(e) => setVerifiedOk(e.target.checked)}
-            className="mt-1"
-          />
-          <span>
-            I confirm these values were verified against official records (required for every save).
-          </span>
-        </label>
-        <label className="mt-4 block text-sm">
-          <span className="font-medium text-navy-800">Staff notes (optional)</span>
-          <textarea
-            className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
-            rows={2}
-            value={staffNotes}
-            onChange={(e) => setStaffNotes(e.target.value)}
-          />
-        </label>
-        {saveMsg && <p className="mt-3 text-sm text-navy-800">{saveMsg}</p>}
-        <Button
-          type="button"
-          variant="primary"
-          className="mt-4"
-          disabled={saving}
-          onClick={() => void save()}
-        >
-          {saving ? "Saving…" : "Save changes"}
-        </Button>
-      </section>
+      {!readOnly && (
+        <section className="rounded-card border border-navy-200 bg-white p-6 shadow-card">
+          <h2 className="font-heading text-lg font-semibold text-navy-900">Staff attestation</h2>
+          <label className="mt-3 flex items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={verifiedOk}
+              onChange={(e) => setVerifiedOk(e.target.checked)}
+              className="mt-1"
+            />
+            <span>
+              I confirm these values were verified against official records (required for every save).
+            </span>
+          </label>
+          <label className="mt-4 block text-sm">
+            <span className="font-medium text-navy-800">Staff notes (optional)</span>
+            <textarea
+              className="mt-1 w-full rounded-button border border-navy-200 px-3 py-2 text-sm"
+              rows={2}
+              value={staffNotes}
+              onChange={(e) => setStaffNotes(e.target.value)}
+            />
+          </label>
+          {saveMsg && <p className="mt-3 text-sm text-navy-800">{saveMsg}</p>}
+          <Button
+            type="button"
+            variant="primary"
+            className="mt-4"
+            disabled={saving}
+            onClick={() => void save()}
+          >
+            {saving ? "Saving…" : "Save changes"}
+          </Button>
+        </section>
+      )}
 
       <section className="rounded-card border border-navy-200 bg-navy-50 p-6">
         <h2 className="font-heading text-lg font-semibold text-navy-900">Recent wins</h2>

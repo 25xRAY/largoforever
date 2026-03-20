@@ -1,15 +1,25 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import type { ApprovedRoster, UserRole } from "@prisma/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
-const ROLES: UserRole[] = ["STUDENT", "TEACHER", "ADMIN", "MODERATOR", "COUNSELOR"];
+const ROLES: UserRole[] = [
+  "STUDENT",
+  "TEACHER",
+  "ADMINISTRATOR",
+  "ADMIN",
+  "MODERATOR",
+  "COUNSELOR",
+];
 
 type FilterUsed = "" | "true" | "false";
 
 export function AdminRosterClient() {
+  const { data: session } = useSession();
+  const canEditRoster = session?.user?.role === "ADMIN";
   const [entries, setEntries] = useState<ApprovedRoster[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -147,6 +157,16 @@ export function AdminRosterClient() {
         </p>
       )}
 
+      {!canEditRoster && (
+        <p
+          className="rounded-card border border-navy-200 bg-navy-50 p-4 text-sm text-navy-800"
+          role="status"
+        >
+          <strong>View only.</strong> Adding or changing roster entries requires a platform administrator
+          ({`ADMIN`}). You can review who is approved to enroll and export this list.
+        </p>
+      )}
+
       <section
         className="rounded-card border border-navy-200 bg-white p-6 shadow-card"
         aria-labelledby="roster-filters-heading"
@@ -206,6 +226,7 @@ export function AdminRosterClient() {
         </div>
       </section>
 
+      {canEditRoster && (
       <section
         className="rounded-card border border-navy-200 bg-white p-6 shadow-card"
         aria-labelledby="add-roster-heading"
@@ -258,7 +279,9 @@ export function AdminRosterClient() {
           </div>
         </form>
       </section>
+      )}
 
+      {canEditRoster && (
       <section
         className="rounded-card border border-navy-200 bg-white p-6 shadow-card"
         aria-labelledby="bulk-roster-heading"
@@ -280,7 +303,9 @@ export function AdminRosterClient() {
           />
         </div>
       </section>
+      )}
 
+      {canEditRoster && (
       <section
         className="rounded-card border border-navy-200 bg-white p-6 shadow-card"
         aria-labelledby="teacher-link-heading"
@@ -316,6 +341,7 @@ export function AdminRosterClient() {
           </p>
         )}
       </section>
+      )}
 
       <section aria-labelledby="roster-table-heading">
         <h2 id="roster-table-heading" className="sr-only">
