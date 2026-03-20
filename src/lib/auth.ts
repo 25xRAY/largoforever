@@ -9,6 +9,12 @@ import { logger } from "./logger";
 
 const allowedDomains = ["students.pgcps.org", "pgcps.org"];
 
+/** True when NextAuth is configured for local development (any Gmail OK for Google sign-in). */
+function isGoogleAuthDevMode(): boolean {
+  const url = process.env.NEXTAUTH_URL ?? "";
+  return url.includes("localhost");
+}
+
 function isAllowedEmail(email: string): boolean {
   const domain = email.split("@")[1]?.toLowerCase();
   return domain ? allowedDomains.includes(domain) : false;
@@ -26,11 +32,15 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-      authorization: {
-        params: {
-          hd: "pgcps.org",
-        },
-      },
+      ...(isGoogleAuthDevMode()
+        ? {}
+        : {
+            authorization: {
+              params: {
+                hd: "pgcps.org",
+              },
+            },
+          }),
     }),
     CredentialsProvider({
       name: "credentials",
@@ -57,7 +67,12 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      if (account?.provider === "google" && user.email && !isAllowedEmail(user.email)) {
+      if (
+        account?.provider === "google" &&
+        user.email &&
+        !isGoogleAuthDevMode() &&
+        !isAllowedEmail(user.email)
+      ) {
         return false;
       }
       if (user.id) {

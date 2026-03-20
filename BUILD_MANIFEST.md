@@ -39,6 +39,7 @@ Verify: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build:verify`,
 - **UX / a11y:** `ReadinessMeter` uses `role="meter"` (valid ARIA); `Providers` wraps `Toaster` in one client boundary.
 - **Seed:** `prisma/seed.ts` sets unique `YearbookPage.slug` for browse/e2e.
 - **Tooling:** `.eslintrc.json`, `npm run typecheck`, Prettier includes `e2e` + `scripts/**/*.mjs`.
+- **Auth (post-ship):** `src/lib/auth.ts` — Google: all accounts when `NEXTAUTH_URL` includes `localhost`; `@students.pgcps.org` / `@pgcps.org` only in production (`hd` + sign-in callback).
 - `.phase_6_complete` marker.
 
 ---
