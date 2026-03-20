@@ -42,6 +42,10 @@ export async function middleware(req: NextRequest) {
     pathname === "/" ||
     pathname === "/login" ||
     pathname === "/register" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password" ||
+    pathname === "/terms" ||
+    pathname === "/privacy" ||
     pathname.startsWith("/wall-of-wins") ||
     pathname === "/yearbook" ||
     pathname.startsWith("/yearbook/") ||
@@ -80,6 +84,10 @@ export async function middleware(req: NextRequest) {
   }
 
   if (isPublic && token && (pathname === "/login" || pathname === "/register")) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
+  if (token && pathname === "/forgot-password") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 

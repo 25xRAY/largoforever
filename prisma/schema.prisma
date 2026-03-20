@@ -242,6 +242,8 @@ model User {
   apIbCourseCount    Int       @default(0)
   leadershipRolesJson String? @db.Text
   honorDesignation   HonorDesignation @default(NONE)
+  passwordResetToken   String?   @db.VarChar(64)
+  passwordResetExpires DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   deletedAt        DateTime?
@@ -260,6 +262,8 @@ model User {
   auditLogs        AuditLog[]
   teacherRoster    TeacherStudent[] @relation("TeacherToStudents")
   studentTeachers  TeacherStudent[] @relation("StudentToTeachers")
+
+  @@index([passwordResetToken])
 }
 
 /** Counselor-approved emails allowed to register or sign in with Google. */

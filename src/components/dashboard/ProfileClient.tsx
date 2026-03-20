@@ -32,6 +32,8 @@ type ProfileData = {
   administratorOffice: string | null;
   profileComplete: boolean;
   createdAt: string;
+  /** Present on GET /api/user/profile — omit after PATCH if not returned. */
+  hasPassword?: boolean;
 };
 
 type ToastState = { message: string; type: "success" | "error" } | null;

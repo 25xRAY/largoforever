@@ -44,7 +44,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({
+    const row = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: {
         id: true,
@@ -70,10 +70,13 @@ export async function GET() {
         administratorOffice: true,
         profileComplete: true,
         createdAt: true,
+        password: true,
       },
     });
 
-    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (!row) return NextResponse.json({ error: "User not found" }, { status: 404 });
+    const { password: _p, ...rest } = row;
+    const user = { ...rest, hasPassword: _p != null };
     return NextResponse.json({ user });
   } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

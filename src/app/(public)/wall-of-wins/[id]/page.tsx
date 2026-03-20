@@ -1,8 +1,35 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { formatCurrency } from "@/lib/utils";
 import { getWinById } from "@/lib/wins";
+import { generatePageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const result = await getWinById(id);
+  if (!result || !result.isPublic) {
+    return { title: "Win Not Found | Largo Lions Class of 2026", robots: { index: false, follow: false } };
+  }
+  const win = result.win;
+  const studentName = win.user
+    ? [win.user.firstName, win.user.lastName].filter(Boolean).join(" ") || "A Largo Lion"
+    : "A Largo Lion";
+  const title = `${win.title} — ${studentName} | Largo Lions 2026`;
+  const description =
+    win.description?.slice(0, 160) ??
+    `${win.type.replace(/_/g, " ")} win from ${win.institutionName ?? "Largo High School"} — Class of 2026.`;
+  return generatePageMetadata({
+    title,
+    description,
+    path: `/wall-of-wins/${id}`,
+  });
+}
 
 export default async function WinDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

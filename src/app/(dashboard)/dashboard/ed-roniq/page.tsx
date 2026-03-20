@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { ChatInterface } from "@/components/ai/ChatInterface";
 
 export const metadata: Metadata = {
-  title: "Ed RonIQ",
+  title: "Ed RonIQ — Your Graduation AI | Largo Lions 2026",
+  description:
+    "Ask Ed RonIQ anything about graduation requirements, credits, assessments, service hours, or your career pathway. Powered by AI, built for Largo Lions.",
   robots: { index: false, follow: false },
 };
 

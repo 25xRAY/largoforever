@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { generatePageMetadata } from "@/lib/seo";
+import { generatePageMetadata, getCanonicalUrl } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { LeaderboardsPageClient } from "./LeaderboardsPageClient";
 
@@ -16,7 +16,7 @@ export default function LeaderboardsPage() {
     "@type": "ItemList",
     name: "Lions of Distinction — Class of 2026",
     description: "Opt-in honors and recognition for Largo Lions Class of 2026.",
-    url: "https://largolions2026.org/leaderboards",
+    url: getCanonicalUrl("/leaderboards"),
   };
 
   return (
