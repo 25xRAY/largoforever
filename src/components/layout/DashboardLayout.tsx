@@ -6,6 +6,7 @@ import { Sidebar } from "./Sidebar";
 import { AdminSidebar } from "./AdminSidebar";
 import { CrisisBanner } from "./CrisisBanner";
 import { Breadcrumbs } from "./Breadcrumbs";
+import { EdRoniqFloat } from "@/components/ai/EdRoniqFloat";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -32,6 +33,7 @@ export function DashboardLayout({ children, variant = "student" }: DashboardLayo
         </main>
       </div>
       <Footer />
+      <EdRoniqFloat />
     </div>
   );
 }
