@@ -4,6 +4,7 @@ import { registerSchema } from "@/lib/validations/auth";
 import { prisma } from "@/lib/prisma";
 import { logger } from "@/lib/logger";
 import { normalizeRosterEmail } from "@/lib/roster";
+import { LOGIN_QUERY_ERROR_MESSAGES } from "@/lib/login-error-messages";
 
 const BCRYPT_ROUNDS = 12;
 
@@ -31,10 +32,7 @@ export async function POST(request: Request) {
 
     if (!rosterEntry) {
       return NextResponse.json(
-        {
-          error:
-            "Your email is not on the approved roster. Please contact your counselor.",
-        },
+        { error: LOGIN_QUERY_ERROR_MESSAGES.NotOnRoster },
         { status: 403 }
       );
     }

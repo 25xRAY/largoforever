@@ -229,6 +229,8 @@ model User {
   profileComplete  Boolean   @default(false)
   preferredName    String?   @db.VarChar(50)
   pronouns         String?   @db.VarChar(30)
+  /** Optional: student onboarding — post-grad intentions / senior-year focus. */
+  seniorGoalsNote  String?   @db.VarChar(512)
   graduationYear   Int?
   teacherDepartment TeacherDepartment?
   teacherSubject   String?   @db.VarChar(256)

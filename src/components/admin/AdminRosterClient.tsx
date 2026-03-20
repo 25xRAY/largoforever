@@ -17,9 +17,15 @@ const ROLES: UserRole[] = [
 
 type FilterUsed = "" | "true" | "false";
 
+function canBulkImportRoster(role: UserRole | undefined): boolean {
+  return role === "ADMIN" || role === "ADMINISTRATOR" || role === "COUNSELOR";
+}
+
 export function AdminRosterClient() {
   const { data: session } = useSession();
-  const canEditRoster = session?.user?.role === "ADMIN";
+  const sessionRole = session?.user?.role as UserRole | undefined;
+  const canEditRoster = sessionRole === "ADMIN";
+  const canBulkImport = canBulkImportRoster(sessionRole);
   const [entries, setEntries] = useState<ApprovedRoster[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +38,7 @@ export function AdminRosterClient() {
   const [addRole, setAddRole] = useState<UserRole>("STUDENT");
   const [addBusy, setAddBusy] = useState(false);
   const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkSummary, setBulkSummary] = useState<string | null>(null);
   const [linkTeacher, setLinkTeacher] = useState("");
   const [linkStudent, setLinkStudent] = useState("");
   const [linkBusy, setLinkBusy] = useState(false);
@@ -97,6 +104,7 @@ export function AdminRosterClient() {
     if (!file) return;
     setBulkBusy(true);
     setError(null);
+    setBulkSummary(null);
     try {
       const text = await file.text();
       const res = await fetch("/api/admin/roster/bulk", {
@@ -104,8 +112,35 @@ export function AdminRosterClient() {
         headers: { "Content-Type": "text/csv; charset=utf-8" },
         body: text,
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Import failed");
+      const data: {
+        error?: string;
+        details?: string[];
+        created?: number;
+        updated?: number;
+        imported?: number;
+        errors?: string[];
+      } = await res.json();
+      if (!res.ok) {
+        const detailLines =
+          Array.isArray(data.details) && data.details.length > 0
+            ? `: ${data.details.slice(0, 5).join("; ")}`
+            : "";
+        throw new Error(`${data.error ?? "Import failed"}${detailLines}`);
+      }
+      const created = typeof data.created === "number" ? data.created : 0;
+      const updated = typeof data.updated === "number" ? data.updated : 0;
+      const errList = Array.isArray(data.errors) ? data.errors : [];
+      const errPreview =
+        errList.length > 0
+          ? ` ${errList.slice(0, 3).join(" · ")}${errList.length > 3 ? " …" : ""}`
+          : "";
+      setBulkSummary(
+        `Import complete: ${created} created, ${updated} updated.${
+          errList.length > 0
+            ? ` ${errList.length} row(s) skipped or failed:${errPreview}`
+            : ""
+        }`
+      );
       await load();
     } catch (err) {
       setError(String(err));
@@ -162,8 +197,21 @@ export function AdminRosterClient() {
           className="rounded-card border border-navy-200 bg-navy-50 p-4 text-sm text-navy-800"
           role="status"
         >
-          <strong>View only.</strong> Adding or changing roster entries requires a platform administrator
-          ({`ADMIN`}). You can review who is approved to enroll and export this list.
+          <strong>Limited editing.</strong> Adding single entries or teacher links requires platform admin (
+          {`ADMIN`}
+          ).
+          {canBulkImport
+            ? " You can bulk-import CSV roster updates below."
+            : " You can review who is approved to enroll and export this list."}
+        </p>
+      )}
+
+      {bulkSummary && (
+        <p
+          className="rounded-card border border-success/40 bg-success-light/30 p-3 text-sm text-navy-900"
+          role="status"
+        >
+          {bulkSummary}
         </p>
       )}
 
@@ -281,7 +329,7 @@ export function AdminRosterClient() {
       </section>
       )}
 
-      {canEditRoster && (
+      {canBulkImport && (
       <section
         className="rounded-card border border-navy-200 bg-white p-6 shadow-card"
         aria-labelledby="bulk-roster-heading"
@@ -296,10 +344,14 @@ export function AdminRosterClient() {
           <input
             type="file"
             accept=".csv,text/csv"
-            aria-label="Upload roster CSV file"
+            aria-label="Upload roster CSV file for bulk import"
             disabled={bulkBusy}
-            onChange={(e) => void handleBulk(e.target.files?.[0] ?? null)}
-            className="text-sm text-navy-800 file:mr-4 file:rounded-button file:border-0 file:bg-gold-500 file:px-4 file:py-2 file:font-medium file:text-navy-900"
+            onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              void handleBulk(f);
+              e.target.value = "";
+            }}
+            className="text-sm text-navy-800 file:mr-4 file:rounded-button file:border-0 file:bg-gold-500 file:px-4 file:py-2 file:font-medium file:text-navy-900 focus:outline-none focus:ring-2 focus:ring-gold-500"
           />
         </div>
       </section>

@@ -20,6 +20,7 @@ export function useAuth() {
   const isAuthenticated = status === "authenticated" && Boolean(user);
   const isLoading = status === "loading";
   const isStudent = user?.role === "STUDENT";
+  const isTeacher = user?.role === "TEACHER";
   const isAdmin = user?.role === "ADMIN";
   const isModerator = user?.role === "MODERATOR";
 
@@ -32,6 +33,7 @@ export function useAuth() {
     isAuthenticated,
     isLoading,
     isStudent,
+    isTeacher,
     isAdmin,
     isModerator,
     signOut,

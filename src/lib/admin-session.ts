@@ -35,6 +35,27 @@ export async function requireStaffSession(): Promise<
   return { ok: true, userId: session.user.id, role };
 }
 
+/** Bulk approved-roster CSV import: platform admin, school administrator, or counselor. */
+const ROSTER_BULK_IMPORT_ROLES: readonly UserRole[] = [
+  "ADMIN",
+  "ADMINISTRATOR",
+  "COUNSELOR",
+];
+
+export async function requireRosterBulkImportSession(): Promise<
+  { ok: true; userId: string; role: UserRole } | { ok: false; response: NextResponse }
+> {
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  }
+  const role = session.user.role;
+  if (!ROSTER_BULK_IMPORT_ROLES.includes(role)) {
+    return { ok: false, response: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+  }
+  return { ok: true, userId: session.user.id, role };
+}
+
 /** Platform (`ADMIN`) only — destructive / roster-of-record operations. */
 export async function requireAdminSession(): Promise<
   { ok: true; userId: string; role: UserRole } | { ok: false; response: NextResponse }

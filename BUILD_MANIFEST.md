@@ -39,8 +39,8 @@ Verify: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build:verify`,
 - **UX / a11y:** `ReadinessMeter` uses `role="meter"` (valid ARIA); `Providers` wraps `Toaster` in one client boundary.
 - **Seed:** `prisma/seed.ts` sets unique `YearbookPage.slug` for browse/e2e.
 - **Tooling:** `.eslintrc.json`, `npm run typecheck`, Prettier includes `e2e` + `scripts/**/*.mjs`.
-- **Auth (post-ship):** `src/lib/auth.ts` — Google: all accounts when `NEXTAUTH_URL` includes `localhost`; `@students.pgcps.org` / `@pgcps.org` only in production (`hd` + sign-in callback).
-- **Roster & roles (post-ship):** `ApprovedRoster`, `TeacherStudent`, `UserRole.TEACHER`, `ADMINISTRATOR`, `TeacherDepartment` / `AdministratorTitle` on `User`, `CompleterPathway.UNDECIDED`; `src/lib/roster.ts`, `readiness-calc.ts`, `/api/user/me`, `/api/admin/roster` (GET staff, POST `ADMIN` only), `/api/admin/roster/bulk`, `/api/admin/teacher-students`, `/api/teacher/onboarding`, `/api/teacher/students`, `/api/administrator/onboarding`, `(admin)/admin/roster`, teacher + administrator onboarding + `TeacherDashboardView`, `admin-session` staff vs platform admin, middleware admin panel for `ADMINISTRATOR`/`COUNSELOR`, `Sidebar`/`Header` staff nav, login Google hints, seed Dr. Jones `ADMINISTRATOR` + Tomeco `COUNSELOR`.
+- **Auth (post-ship):** `src/hooks/useAuth.ts` (`isStudent`, `isTeacher`, `isAdmin`, `isModerator`); `src/lib/login-error-messages.ts` (`/login?error` copy); `src/lib/auth.ts`; onboarding wizard: student steps `pathway` → `profile` → `goals` → `review`, teacher `profile` → `department` → `review` (`(auth)/onboarding/page.tsx`); `User.seniorGoalsNote` optional (run `prisma db push` / migrate on prod DB). — Google: all accounts when `NEXTAUTH_URL` includes `localhost`; `@students.pgcps.org` / `@pgcps.org` only in production (`hd` + sign-in callback).
+- **Roster & roles (post-ship):** `ApprovedRoster`, `TeacherStudent`, `UserRole.TEACHER`, `ADMINISTRATOR`, `TeacherDepartment` / `AdministratorTitle` on `User`, `CompleterPathway.UNDECIDED`; `src/lib/roster.ts`, `readiness-calc.ts`, `/api/user/me`, `/api/admin/roster` (GET staff, POST `ADMIN` only), `/api/admin/roster/bulk` (`ADMIN` | `ADMINISTRATOR` | `COUNSELOR`, CSV + rate limit), `/api/admin/teacher-students`, `/api/teacher/onboarding`, `/api/teacher/students`, `/api/administrator/onboarding`, `(admin)/admin/roster` (`AdminRosterClient`: bulk import for `ADMIN` | `ADMINISTRATOR` | `COUNSELOR`, success summary; add/link `ADMIN` only), teacher + administrator onboarding + `TeacherDashboardView`, `admin-session` staff vs platform admin, middleware admin panel for `ADMINISTRATOR`/`COUNSELOR`, `Sidebar`/`Header` staff nav, login Google hints, seed Dr. Jones `ADMINISTRATOR` + Tomeco `COUNSELOR`.
 - `.phase_6_complete` marker.
 
 ---
@@ -55,7 +55,7 @@ Verify: `npm run typecheck`, `npm run lint`, `npm test`, `npm run build:verify`,
 - `src/app/(dashboard)/dashboard/page.tsx` (two-column: welcome, meter, alerts, quick actions, recent wins; sidebar: profile, deadlines, class stats; React Query, loading skeleton, error retry)
 - `src/app/(dashboard)/dashboard/loading.tsx` (branded skeleton)
 - `src/app/api/student/checklist/route.ts` (GET: full checklist — credits, assessments, service, obligations, CCR)
-- **Checklist components:** CreditSection, AssessmentSection, ServiceSection, ObligationsSection, CCRSection (Radix Accordion)
+- **Checklist components:** CreditSection, AssessmentSection, ServiceSection, ObligationsSection, CCRSection (Radix Accordion; `UNDECIDED` pathway warning callout + Calendly)
 - `src/app/(dashboard)/dashboard/checklist/page.tsx` (horizontal readiness bar, 5 accordion sections, last synced, counselor contact)
 - `src/app/(dashboard)/dashboard/checklist/layout.tsx` (metadata: My Graduation Checklist, noIndex)
 - `.phase_3_complete` marker
@@ -83,6 +83,7 @@ _(none)_
 
 ## Backlog (post–Phase 6; **not** active until re-scoped)
 
+- **Temporary dev:** `src/app/api/debug-db/route.ts` — GET dev-only Prisma counts (`Account` / `User` / `ApprovedRoster`); delete before prod deploy.
 - Admin: dedicated **reported content** queue when backend supports it
 - API hardening: expanded rate limiting / Zod coverage where needed
 

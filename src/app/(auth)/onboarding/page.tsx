@@ -11,11 +11,12 @@ import {
   teacherOnboardingSchema,
   administratorOnboardingSchema,
   type OnboardingInput,
-  type TeacherOnboardingInput,
+  type TeacherOnboardingFormInput,
   type AdministratorOnboardingInput,
 } from "@/lib/validations/auth";
 import { Button, Input, Progress } from "@/components/ui";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { cn } from "@/lib/utils";
 import type { AdministratorTitle, CompleterPathway, TeacherDepartment } from "@prisma/client";
 
 const PATHWAY_SELECT_ORDER: CompleterPathway[] = [
@@ -66,8 +67,11 @@ const TEACHER_DEPARTMENT_LABELS: Record<TeacherDepartment, string> = {
   OTHER: "Other",
 };
 
-const STUDENT_STEPS = 3;
-const TEACHER_STEPS = 3;
+/** Student wizard step keys (order: pathway → profile → goals → review). */
+const STUDENT_ONBOARDING_STEPS = ["pathway", "profile", "goals", "review"] as const;
+/** Teacher wizard step keys — mirrors `isTeacher ? teacherSteps : studentSteps` flow. */
+const TEACHER_ONBOARDING_STEPS = ["profile", "department", "review"] as const;
+
 const ADMINISTRATOR_STEPS = 3;
 
 const ADMIN_TITLE_ORDER: AdministratorTitle[] = [
@@ -418,16 +422,18 @@ function TeacherOnboardingForm({
   router: ReturnType<typeof useRouter>;
   onSessionRefresh: () => void;
 }) {
-  const [step, setStep] = useState(1);
+  const [stepIndex, setStepIndex] = useState(0);
+  const stepId = TEACHER_ONBOARDING_STEPS[stepIndex];
+  const teacherStepTotal = TEACHER_ONBOARDING_STEPS.length;
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const form = useForm<TeacherOnboardingInput>({
+  const form = useForm<TeacherOnboardingFormInput>({
     resolver: zodResolver(teacherOnboardingSchema),
     defaultValues: {
       preferredName: "",
       pronouns: "",
-      teacherDepartment: "OTHER",
+      teacherDepartment: "",
       teacherSubject: "",
       yearbookPublic: false,
       leaderboardOptIn: false,
@@ -486,22 +492,27 @@ function TeacherOnboardingForm({
   return (
     <div className="w-full max-w-lg space-y-8">
       <div>
-        <Progress value={(step / TEACHER_STEPS) * 100} showLabel />
+        <Progress value={((stepIndex + 1) / teacherStepTotal) * 100} showLabel />
         <p className="mt-2 text-center text-sm text-white/80">
-          Step {step} of {TEACHER_STEPS}
+          Step {stepIndex + 1} of {teacherStepTotal}
         </p>
       </div>
 
       <Card className="border-white/20 bg-white/10 text-white">
         <CardHeader>
-          <CardTitle className="text-xl">
-            {step === 1 && "About you"}
-            {step === 2 && "Teaching"}
-            {step === 3 && "Review & preferences"}
+          <CardTitle
+            className={cn(
+              "text-xl text-white",
+              stepId === "department" && "sr-only"
+            )}
+          >
+            {stepId === "profile" && "About you"}
+            {stepId === "department" && "Your Department & Classes"}
+            {stepId === "review" && "Review & preferences"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {step === 1 && (
+          {stepId === "profile" && (
             <>
               <p className="text-sm text-white/80">
                 Name:{" "}
@@ -544,38 +555,53 @@ function TeacherOnboardingForm({
             </>
           )}
 
-          {step === 2 && (
-            <>
+          {stepId === "department" && (
+            <div className="space-y-4">
+              <h2 className="font-heading text-xl font-bold text-white">
+                Your Department &amp; Classes
+              </h2>
               <div>
-                <label htmlFor="teacher-dept" className="mb-2 block text-sm font-medium">
+                <label htmlFor="teacher-dept" className="mb-1 block text-sm font-medium text-white">
                   Department
                 </label>
                 <select
                   id="teacher-dept"
                   {...register("teacherDepartment")}
-                  className="w-full rounded-button border-2 border-white/30 bg-white/10 px-4 py-3 text-white focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
+                  aria-label="Select your teaching department"
+                  className="w-full rounded-button border-2 border-white/30 bg-white/10 px-3 py-2 text-sm text-white focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
                 >
+                  <option value="" disabled hidden className="bg-navy-800 text-white/70">
+                    Select department…
+                  </option>
                   {TEACHER_DEPT_ORDER.map((key) => (
                     <option key={key} value={key} className="bg-navy-800 text-white">
                       {TEACHER_DEPARTMENT_LABELS[key]}
                     </option>
                   ))}
                 </select>
+                {form.formState.errors.teacherDepartment?.message && (
+                  <p className="mt-1 text-sm text-danger" role="alert">
+                    {form.formState.errors.teacherDepartment.message}
+                  </p>
+                )}
               </div>
-              <Input
-                label="Class / subject"
-                placeholder="e.g. English 10 — Room 112"
-                className="border-white/30 bg-white/10 text-white placeholder:text-white/50"
-                errorMessage={form.formState.errors.teacherSubject?.message}
-                {...register("teacherSubject")}
-              />
-              <p className="text-sm text-white/80">
-                Graduation pathway questions are for students only; you can skip them here.
-              </p>
-            </>
+              <div>
+                <label htmlFor="teacher-subject" className="mb-1 block text-sm font-medium text-white">
+                  Class / Subject You Teach
+                </label>
+                <Input
+                  id="teacher-subject"
+                  placeholder="e.g. AP English Literature, Algebra II…"
+                  className="border-white/30 bg-white/10 text-white placeholder:text-white/50"
+                  errorMessage={form.formState.errors.teacherSubject?.message}
+                  aria-label="Class or subject you teach"
+                  {...register("teacherSubject")}
+                />
+              </div>
+            </div>
           )}
 
-          {step === 3 && (
+          {stepId === "review" && (
             <>
               <dl className="space-y-2 text-sm">
                 <div>
@@ -590,10 +616,15 @@ function TeacherOnboardingForm({
                 )}
                 <div>
                   <dt className="text-white/70">Department</dt>
-                  <dd className="font-medium">{TEACHER_DEPARTMENT_LABELS[teacherDepartment]}</dd>
+                  <dd className="font-medium">
+                    {teacherDepartment &&
+                    Object.keys(TEACHER_DEPARTMENT_LABELS).includes(teacherDepartment)
+                      ? TEACHER_DEPARTMENT_LABELS[teacherDepartment as TeacherDepartment]
+                      : "—"}
+                  </dd>
                 </div>
                 <div>
-                  <dt className="text-white/70">Class / subject</dt>
+                  <dt className="text-white/70">Class / subject you teach</dt>
                   <dd className="font-medium">{teacherSubject}</dd>
                 </div>
               </dl>
@@ -624,29 +655,29 @@ function TeacherOnboardingForm({
           )}
 
           <div className="flex justify-between pt-4">
-            {step > 1 ? (
+            {stepIndex > 0 ? (
               <Button
                 type="button"
                 variant="outline"
                 className="border-white text-white hover:bg-white/10"
-                onClick={() => setStep((s) => s - 1)}
+                onClick={() => setStepIndex((s) => s - 1)}
               >
                 Back
               </Button>
             ) : (
               <span />
             )}
-            {step < TEACHER_STEPS ? (
+            {stepIndex < teacherStepTotal - 1 ? (
               <Button
                 type="button"
                 variant="primary"
                 className="bg-gold-500 text-navy-900 hover:bg-gold-400"
                 onClick={async () => {
-                  if (step === 2) {
+                  if (stepId === "department") {
                     const ok = await form.trigger(["teacherDepartment", "teacherSubject"]);
                     if (!ok) return;
                   }
-                  setStep((s) => s + 1);
+                  setStepIndex((s) => s + 1);
                 }}
               >
                 Next
@@ -677,15 +708,18 @@ function StudentOnboardingForm({
   session: NonNullable<ReturnType<typeof useSession>["data"]>;
   router: ReturnType<typeof useRouter>;
 }) {
-  const [step, setStep] = useState(1);
+  const [stepIndex, setStepIndex] = useState(0);
+  const stepId = STUDENT_ONBOARDING_STEPS[stepIndex];
+  const studentStepTotal = STUDENT_ONBOARDING_STEPS.length;
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const form = useForm<OnboardingInput & { preferredName?: string; pronouns?: string }>({
+  const form = useForm<OnboardingInput>({
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
       preferredName: "",
       pronouns: "",
+      seniorGoalsNote: "",
       completerPathway: "STEM",
       graduationYear: 2026,
       yearbookPublic: true,
@@ -696,6 +730,7 @@ function StudentOnboardingForm({
   const { register, handleSubmit, watch, setValue } = form;
   const preferredName = watch("preferredName");
   const pronouns = watch("pronouns");
+  const seniorGoalsNote = watch("seniorGoalsNote");
   const completerPathway = watch("completerPathway");
   const graduationYear = watch("graduationYear");
   const yearbookPublic = watch("yearbookPublic");
@@ -721,6 +756,7 @@ function StudentOnboardingForm({
         body: JSON.stringify({
           preferredName: preferredName?.trim() || null,
           pronouns: pronouns?.trim() || null,
+          seniorGoalsNote: seniorGoalsNote?.trim() || null,
           completerPathway,
           graduationYear: 2026,
           yearbookPublic,
@@ -744,22 +780,47 @@ function StudentOnboardingForm({
   return (
     <div className="w-full max-w-lg space-y-8">
       <div>
-        <Progress value={(step / STUDENT_STEPS) * 100} showLabel />
+        <Progress value={((stepIndex + 1) / studentStepTotal) * 100} showLabel />
         <p className="mt-2 text-center text-sm text-white/80">
-          Step {step} of {STUDENT_STEPS}
+          Step {stepIndex + 1} of {studentStepTotal}
         </p>
       </div>
 
       <Card className="border-white/20 bg-white/10 text-white">
         <CardHeader>
           <CardTitle className="text-xl">
-            {step === 1 && "About you"}
-            {step === 2 && "Graduation path"}
-            {step === 3 && "Review & preferences"}
+            {stepId === "pathway" && "Career completer pathway"}
+            {stepId === "profile" && "About you"}
+            {stepId === "goals" && "Goals after Largo"}
+            {stepId === "review" && "Review & preferences"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {step === 1 && (
+          {stepId === "pathway" && (
+            <>
+              <div>
+                <label htmlFor="completer-pathway" className="mb-2 block text-sm font-medium">
+                  Completer pathway
+                </label>
+                <select
+                  id="completer-pathway"
+                  {...register("completerPathway")}
+                  className="w-full rounded-button border-2 border-white/30 bg-white/10 px-4 py-3 text-white focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
+                >
+                  {PATHWAY_SELECT_ORDER.map((key) => (
+                    <option key={key} value={key} className="bg-navy-800 text-white">
+                      {COMPLETER_PATHWAY_LABELS[key]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <p className="text-sm text-white/80">
+                Graduation year: <strong>2026</strong>
+              </p>
+            </>
+          )}
+
+          {stepId === "profile" && (
             <>
               <p className="text-sm text-white/80">
                 Name:{" "}
@@ -786,7 +847,7 @@ function StudentOnboardingForm({
                   accept="image/*"
                   onChange={onFileChange}
                   aria-label="Upload profile photo"
-                  className="block w-full text-sm text-white/80 file:mr-4 file:rounded file:border-0 file:bg-gold-500 file:px-4 file:py-2 file:text-navy-900"
+                  className="block w-full text-sm text-white/80 file:mr-4 file:rounded file:border-0 file:bg-gold-500 file:px-4 file:py-2 file:text-navy-900 focus:outline-none focus:ring-2 focus:ring-gold-500"
                 />
                 {profileImagePreview && (
                   <div className="relative mt-2 h-24 w-24 overflow-hidden rounded-full border-2 border-white/30">
@@ -802,33 +863,42 @@ function StudentOnboardingForm({
             </>
           )}
 
-          {step === 2 && (
+          {stepId === "goals" && (
             <>
-              <div>
-                <label htmlFor="completer-pathway" className="mb-2 block text-sm font-medium">
-                  Completer pathway
-                </label>
-                <select
-                  id="completer-pathway"
-                  {...register("completerPathway")}
-                  className="w-full rounded-button border-2 border-white/30 bg-white/10 px-4 py-3 text-white focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
-                >
-                  {PATHWAY_SELECT_ORDER.map((key) => (
-                    <option key={key} value={key} className="bg-navy-800 text-white">
-                      {COMPLETER_PATHWAY_LABELS[key]}
-                    </option>
-                  ))}
-                </select>
-              </div>
               <p className="text-sm text-white/80">
-                Graduation year: <strong>2026</strong>
+                Share what you&apos;re aiming for after graduation — college, career, military, trade
+                school, or anything you&apos;re working toward. This is optional and helps your counselor
+                support you.
               </p>
+              <div>
+                <label htmlFor="senior-goals-note" className="mb-1 block text-sm font-medium">
+                  Your goals (optional)
+                </label>
+                <textarea
+                  id="senior-goals-note"
+                  rows={4}
+                  maxLength={512}
+                  placeholder="e.g. Computer science at Howard; ROTC; cosmetology program…"
+                  aria-describedby="senior-goals-hint"
+                  className="w-full rounded-button border-2 border-white/30 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
+                  {...register("seniorGoalsNote")}
+                />
+                <p id="senior-goals-hint" className="mt-1 text-xs text-white/70">
+                  {(seniorGoalsNote ?? "").length}/512 characters
+                </p>
+              </div>
             </>
           )}
 
-          {step === 3 && (
+          {stepId === "review" && (
             <>
               <dl className="space-y-2 text-sm">
+                <div>
+                  <dt className="text-white/70">Pathway</dt>
+                  <dd className="font-medium">
+                    {COMPLETER_PATHWAY_LABELS[completerPathway as CompleterPathway]}
+                  </dd>
+                </div>
                 <div>
                   <dt className="text-white/70">Name</dt>
                   <dd className="font-medium">{displayNameFull || user?.name}</dd>
@@ -839,12 +909,12 @@ function StudentOnboardingForm({
                     <dd className="font-medium">{pronouns}</dd>
                   </div>
                 )}
-                <div>
-                  <dt className="text-white/70">Pathway</dt>
-                  <dd className="font-medium">
-                    {COMPLETER_PATHWAY_LABELS[completerPathway as CompleterPathway]}
-                  </dd>
-                </div>
+                {seniorGoalsNote?.trim() && (
+                  <div>
+                    <dt className="text-white/70">Goals</dt>
+                    <dd className="font-medium whitespace-pre-wrap">{seniorGoalsNote.trim()}</dd>
+                  </div>
+                )}
                 <div>
                   <dt className="text-white/70">Graduation year</dt>
                   <dd className="font-medium">{graduationYear}</dd>
@@ -877,24 +947,30 @@ function StudentOnboardingForm({
           )}
 
           <div className="flex justify-between pt-4">
-            {step > 1 ? (
+            {stepIndex > 0 ? (
               <Button
                 type="button"
                 variant="outline"
                 className="border-white text-white hover:bg-white/10"
-                onClick={() => setStep((s) => s - 1)}
+                onClick={() => setStepIndex((s) => s - 1)}
               >
                 Back
               </Button>
             ) : (
               <span />
             )}
-            {step < STUDENT_STEPS ? (
+            {stepIndex < studentStepTotal - 1 ? (
               <Button
                 type="button"
                 variant="primary"
                 className="bg-gold-500 text-navy-900 hover:bg-gold-400"
-                onClick={() => setStep((s) => s + 1)}
+                onClick={async () => {
+                  if (stepId === "goals") {
+                    const ok = await form.trigger("seniorGoalsNote");
+                    if (!ok) return;
+                  }
+                  setStepIndex((s) => s + 1);
+                }}
               >
                 Next
               </Button>

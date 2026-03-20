@@ -13,7 +13,7 @@ const PATHWAY_LABELS: Record<string, string> = {
   CONSTRUCTION: "Construction",
   EDUCATION: "Education",
   PUBLIC_SERVICE: "Public Service",
-  UNDECIDED: "Not sure yet",
+  UNDECIDED: "Not Sure Yet",
 };
 
 interface CCRSectionProps {
@@ -42,19 +42,26 @@ export function CCRSection({ pathway, met, completedAt }: CCRSectionProps) {
       </Accordion.Header>
       <Accordion.Content className="px-6 pb-6 pt-0">
         {pathway === "UNDECIDED" ? (
-          <p className="text-navy-700">
-            You haven&apos;t selected a Career Completer Pathway yet. Talk to your counselor to explore
-            your options.{" "}
-            <a
-              href={COUNSELOR_INFO.calendly}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-gold-600 hover:underline focus:outline-none focus:ring-2 focus:ring-gold-500 rounded"
-            >
-              Book time with {COUNSELOR_INFO.name}
-            </a>
-            .
-          </p>
+          <div
+            role="status"
+            className="rounded-card border-2 border-warning bg-warning-light p-4 text-sm text-warning-dark"
+          >
+            <p className="mb-1 font-heading font-semibold text-navy-900">
+              No Career Completer Pathway selected yet.
+            </p>
+            <p>
+              Talk to your counselor to explore your options.{" "}
+              <a
+                href={COUNSELOR_INFO.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-navy-900 underline decoration-gold-500 underline-offset-2 hover:text-navy-800 focus:outline-none focus:ring-2 focus:ring-gold-500 rounded"
+                aria-label="Book an appointment with Ms. Dates on Calendly (opens in a new tab)"
+              >
+                Book an appointment with Ms. Dates
+              </a>
+            </p>
+          </div>
         ) : pathway ? (
           <>
             <p className="font-medium text-navy-900">

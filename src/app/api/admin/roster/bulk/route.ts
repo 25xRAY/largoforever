@@ -1,8 +1,25 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { requireAdminSession } from "@/lib/admin-session";
+import { requireRosterBulkImportSession } from "@/lib/admin-session";
 import { UserRole } from "@prisma/client";
 import { normalizeRosterEmail } from "@/lib/roster";
+import { logger } from "@/lib/logger";
+
+const BULK_IMPORT_WINDOW_MS = 60 * 60 * 1000;
+const BULK_IMPORT_MAX_PER_USER_PER_HOUR = 30;
+const bulkImportTimestampsByUserId = new Map<string, number[]>();
+
+function allowBulkRosterImportForUser(userId: string): boolean {
+  const now = Date.now();
+  const prior = bulkImportTimestampsByUserId.get(userId) ?? [];
+  const recent = prior.filter((t) => now - t < BULK_IMPORT_WINDOW_MS);
+  if (recent.length >= BULK_IMPORT_MAX_PER_USER_PER_HOUR) {
+    return false;
+  }
+  recent.push(now);
+  bulkImportTimestampsByUserId.set(userId, recent);
+  return true;
+}
 
 function parseCsvLine(line: string): string[] {
   const result: string[] = [];
@@ -29,11 +46,18 @@ function parseCsvLine(line: string): string[] {
 }
 
 /**
- * POST /api/admin/roster/bulk — body: text/csv with header email,firstName,lastName,role
+ * POST /api/admin/roster/bulk — body: text/csv with header email,firstName,lastName,role.
+ * Auth: `ADMIN` | `ADMINISTRATOR` | `COUNSELOR`. Rate limited per user (30/hour).
  */
 export async function POST(request: Request) {
-  const admin = await requireAdminSession();
-  if (!admin.ok) return admin.response;
+  const auth = await requireRosterBulkImportSession();
+  if (!auth.ok) return auth.response;
+  if (!allowBulkRosterImportForUser(auth.userId)) {
+    return NextResponse.json(
+      { error: "Rate limit: too many bulk imports this hour. Try again later." },
+      { status: 429 }
+    );
+  }
 
   const text = await request.text();
   const lines = text
@@ -62,7 +86,8 @@ export async function POST(request: Request) {
     );
   }
 
-  let imported = 0;
+  let created = 0;
+  let updated = 0;
   const errors: string[] = [];
 
   for (let i = 1; i < lines.length; i++) {
@@ -82,20 +107,32 @@ export async function POST(request: Request) {
     }
     const role = roleRaw as UserRole;
     try {
+      const existing = await prisma.approvedRoster.findUnique({
+        where: { email },
+        select: { email: true },
+      });
       await prisma.approvedRoster.upsert({
         where: { email },
         create: { email, firstName, lastName, role },
         update: { firstName, lastName, role },
       });
-      imported++;
+      if (existing) updated++;
+      else created++;
     } catch (e) {
-      errors.push(`Row ${i + 1}: ${String(e)}`);
+      logger.error("admin roster bulk row", { error: String(e), row: i + 1 });
+      errors.push(`Row ${i + 1}: ${e instanceof Error ? e.message : String(e)}`);
     }
   }
 
+  const imported = created + updated;
   if (imported === 0 && errors.length > 0) {
     return NextResponse.json({ error: "Import failed", details: errors }, { status: 400 });
   }
 
-  return NextResponse.json({ imported, errors: errors.length ? errors : undefined });
+  return NextResponse.json({
+    imported,
+    created,
+    updated,
+    errors: errors.length ? errors : undefined,
+  });
 }

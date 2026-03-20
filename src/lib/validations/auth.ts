@@ -56,6 +56,7 @@ const COMPLETER_PATHWAY_VALUES = [
 export const onboardingSchema = z.object({
   preferredName: z.string().max(50).optional().nullable(),
   pronouns: z.string().max(30).optional().nullable(),
+  seniorGoalsNote: z.string().max(512).optional().nullable(),
   completerPathway: z.enum(COMPLETER_PATHWAY_VALUES),
   graduationYear: z.literal(2026),
   yearbookPublic: z.boolean(),
@@ -67,13 +68,19 @@ export type OnboardingInput = z.infer<typeof onboardingSchema>;
 export const teacherOnboardingSchema = z.object({
   preferredName: z.string().max(50).optional().nullable(),
   pronouns: z.string().max(30).optional().nullable(),
-  teacherDepartment: z.nativeEnum(TeacherDepartment),
+  teacherDepartment: z
+    .string({ required_error: "Select a department." })
+    .min(1, "Select a department.")
+    .pipe(z.nativeEnum(TeacherDepartment)),
   teacherSubject: z.string().min(1).max(256),
   yearbookPublic: z.boolean().optional().default(false),
   leaderboardOptIn: z.boolean().optional().default(false),
 });
 
+/** Parsed payload (API / submit). */
 export type TeacherOnboardingInput = z.infer<typeof teacherOnboardingSchema>;
+/** RHF default values — `teacherDepartment` may be `""` until the user selects. */
+export type TeacherOnboardingFormInput = z.input<typeof teacherOnboardingSchema>;
 
 export const administratorOnboardingSchema = z.object({
   preferredName: z.string().max(50).optional().nullable(),

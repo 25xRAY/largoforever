@@ -38,6 +38,7 @@ export async function POST(request: Request) {
     const {
       preferredName,
       pronouns,
+      seniorGoalsNote,
       completerPathway,
       graduationYear,
       yearbookPublic,
@@ -51,6 +52,7 @@ export async function POST(request: Request) {
           profileComplete: true,
           preferredName: preferredName ?? null,
           pronouns: pronouns ?? null,
+          seniorGoalsNote: seniorGoalsNote?.trim() ? seniorGoalsNote.trim() : null,
           graduationYear,
           yearbookPublic,
           leaderboardOptIn,
