@@ -12,6 +12,7 @@ import {
   Award,
   FileText,
   Sparkles,
+  UserCircle,
   Settings,
   HelpCircle,
   Shield,
@@ -27,6 +28,7 @@ const STUDENT_SIDEBAR_LINKS = [
   { href: "/leaderboards", label: "Leaderboards", icon: Award },
   { href: "/resources", label: "Resources", icon: FileText },
   { href: "/dashboard/ed-roniq", label: "Ed RonIQ", icon: Sparkles },
+  { href: "/dashboard/profile", label: "My Profile", icon: UserCircle },
 ] as const;
 
 const TEACHER_SIDEBAR_LINKS = [
@@ -34,6 +36,7 @@ const TEACHER_SIDEBAR_LINKS = [
   { href: "/wall-of-wins", label: "Wall of Wins", icon: Trophy },
   { href: "/leaderboards", label: "Leaderboards", icon: Award },
   { href: "/resources", label: "Resources", icon: FileText },
+  { href: "/dashboard/profile", label: "My Profile", icon: UserCircle },
 ] as const;
 
 const STAFF_PANEL_LINK = {
@@ -100,7 +103,11 @@ export function Sidebar() {
           );
         })}
         {session?.user && (
-          <div className="mt-4 flex items-center gap-3 rounded-card bg-navy-50 p-3">
+          <Link
+            href="/dashboard/profile"
+            className="mt-4 flex items-center gap-3 rounded-card bg-navy-50 p-3 outline-none transition-colors hover:bg-navy-100 focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2"
+            aria-label="Open my profile"
+          >
             <Avatar
               size="sm"
               name={session.user.name ?? session.user.email ?? undefined}
@@ -114,7 +121,7 @@ export function Sidebar() {
                 {session.user.role?.toLowerCase()}
               </p>
             </div>
-          </div>
+          </Link>
         )}
       </div>
     </>

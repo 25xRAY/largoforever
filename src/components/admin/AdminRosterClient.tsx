@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import type { ApprovedRoster, UserRole } from "@prisma/client";
 import { Button } from "@/components/ui/Button";
@@ -154,6 +154,13 @@ export function AdminRosterClient() {
     window.open(`/api/admin/roster?${qs ? `${qs}&` : ""}format=csv`, "_blank", "noopener,noreferrer");
   }
 
+  const filtersActive = Boolean(usedFilter || roleFilter || search.trim());
+  const rosterStats = useMemo(() => {
+    const enrolled = entries.filter((e) => e.used).length;
+    const pending = entries.length - enrolled;
+    return { enrolled, pending };
+  }, [entries]);
+
   async function handleLink(e: React.FormEvent) {
     e.preventDefault();
     setLinkBusy(true);
@@ -180,6 +187,11 @@ export function AdminRosterClient() {
     <div className="space-y-8">
       <div>
         <h1 className="font-heading text-2xl font-bold text-navy-900">Approved roster</h1>
+        <p className="mt-1 text-sm text-navy-600">
+          {loading
+            ? "Loading roster…"
+            : `${entries.length} ${filtersActive ? "shown" : "total"} · ${rosterStats.enrolled} enrolled · ${rosterStats.pending} pending${filtersActive ? " (current filters)" : ""}`}
+        </p>
         <p className="mt-1 text-navy-600">
           Students and staff must appear here before they can register or sign in with Google
           (production).
@@ -239,10 +251,11 @@ export function AdminRosterClient() {
               value={usedFilter}
               onChange={(e) => setUsedFilter(e.target.value as FilterUsed)}
               className="rounded-button border-2 border-navy-200 px-3 py-2 text-navy-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
+              aria-label="Filter by enrollment status"
             >
-              <option value="">All</option>
-              <option value="true">Used</option>
-              <option value="false">Unused</option>
+              <option value="">All status</option>
+              <option value="true">Enrolled</option>
+              <option value="false">Not yet enrolled</option>
             </select>
           </div>
           <div>
@@ -254,8 +267,9 @@ export function AdminRosterClient() {
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value as UserRole | "")}
               className="rounded-button border-2 border-navy-200 px-3 py-2 text-navy-900 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
+              aria-label="Filter by roster role"
             >
-              <option value="">All</option>
+              <option value="">All roles</option>
               {ROLES.map((r) => (
                 <option key={r} value={r}>
                   {r}
@@ -404,29 +418,54 @@ export function AdminRosterClient() {
         ) : (
           <div className="overflow-x-auto rounded-card border border-navy-200 bg-white shadow-card">
             <table className="min-w-full text-left text-sm">
-              <thead className="border-b border-navy-200 bg-navy-50">
+              <thead className="border-b border-navy-200 bg-navy-500 text-white">
                 <tr>
-                  <th className="px-4 py-3 font-heading font-semibold text-navy-900">Email</th>
-                  <th className="px-4 py-3 font-heading font-semibold text-navy-900">Name</th>
-                  <th className="px-4 py-3 font-heading font-semibold text-navy-900">Role</th>
-                  <th className="px-4 py-3 font-heading font-semibold text-navy-900">Used</th>
+                  <th className="px-4 py-3 font-heading font-semibold" scope="col">
+                    Name
+                  </th>
+                  <th className="px-4 py-3 font-heading font-semibold" scope="col">
+                    Email
+                  </th>
+                  <th className="px-4 py-3 font-heading font-semibold" scope="col">
+                    Role
+                  </th>
+                  <th className="px-4 py-3 font-heading font-semibold" scope="col">
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {entries.map((row) => (
-                  <tr key={row.id} className="border-b border-navy-100">
-                    <td className="px-4 py-3 text-navy-800">{row.email}</td>
-                    <td className="px-4 py-3 text-navy-800">
+                {entries.map((row, i) => (
+                  <tr
+                    key={row.id}
+                    className={`border-b border-navy-100 ${i % 2 === 0 ? "bg-white" : "bg-navy-50/80"}`}
+                  >
+                    <td className="px-4 py-3 font-medium text-navy-900">
                       {row.firstName} {row.lastName}
                     </td>
-                    <td className="px-4 py-3 text-navy-800">{row.role}</td>
-                    <td className="px-4 py-3 text-navy-800">{row.used ? "Yes" : "No"}</td>
+                    <td className="px-4 py-3 text-navy-700">{row.email}</td>
+                    <td className="px-4 py-3 text-navy-800">
+                      <span className="inline-flex rounded-full bg-info-light px-2.5 py-0.5 text-xs font-medium text-info-dark">
+                        {row.role}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-navy-800">
+                      {row.used ? (
+                        <span className="inline-flex rounded-full bg-success-light px-2.5 py-0.5 text-xs font-medium text-success-dark">
+                          Enrolled
+                        </span>
+                      ) : (
+                        <span className="inline-flex rounded-full bg-warning-light px-2.5 py-0.5 text-xs font-medium text-warning-dark">
+                          Pending
+                        </span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
             {entries.length === 0 && (
-              <p className="p-6 text-center text-navy-600">No entries match your filters.</p>
+              <p className="p-6 text-center text-navy-600">No roster entries match your filters.</p>
             )}
           </div>
         )}
