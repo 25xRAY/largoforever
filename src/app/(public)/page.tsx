@@ -9,7 +9,7 @@ import {
 } from "@/components/seo/SchemaOrg";
 import { Button } from "@/components/ui/Button";
 import { CrisisBanner } from "@/components/layout/CrisisBanner";
-import { Logo } from "@/components/layout/Logo";
+import Image from "next/image";
 import { StatsBar } from "@/components/home/StatsBar";
 import { COUNSELOR_INFO, ADMIN_INFO } from "@/lib/constants";
 import { getCanonicalUrl } from "@/lib/seo";
@@ -87,7 +87,14 @@ export default function HomePage() {
           }}
         />
         <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
-          <Logo className="h-24 w-24 animate-fadeIn text-gold-500 sm:h-32 sm:w-32" />
+          <Image
+            src="/images/largo-crest-red.png"
+            alt="Largo High School Class of 2026 crest"
+            width={192}
+            height={192}
+            className="h-28 w-28 animate-fadeIn rounded-full object-contain sm:h-36 sm:w-36"
+            priority
+          />
           <h1 className="mt-8 font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl animate-fadeUp">
             Largo Lions Class of 2026
           </h1>
