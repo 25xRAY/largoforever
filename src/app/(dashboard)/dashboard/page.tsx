@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { GRADUATION_DATE } from "@/lib/constants";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
@@ -10,6 +11,7 @@ import { AlertsList } from "@/components/dashboard/AlertsList";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { RecentWins } from "@/components/dashboard/RecentWins";
 import { DeadlinesWidget } from "@/components/dashboard/DeadlinesWidget";
+import { TeacherDashboardView } from "@/components/dashboard/TeacherDashboardView";
 
 function daysUntilGraduation(): number {
   const grad = new Date("2026-06-02");
@@ -25,11 +27,21 @@ async function fetchDashboard() {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { data: session, status: sessionStatus } = useSession();
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["dashboard"],
     queryFn: fetchDashboard,
     staleTime: 5 * 60 * 1000,
+    enabled: session?.user?.role !== "TEACHER",
   });
+
+  if (sessionStatus === "loading") {
+    return <DashboardSkeleton />;
+  }
+
+  if (session?.user?.role === "TEACHER") {
+    return <TeacherDashboardView />;
+  }
 
   if (isLoading) {
     return <DashboardSkeleton />;

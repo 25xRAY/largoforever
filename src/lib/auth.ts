@@ -6,6 +6,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 import { logger } from "./logger";
+import { normalizeRosterEmail } from "./roster";
 
 const allowedDomains = ["students.pgcps.org", "pgcps.org"];
 
@@ -75,6 +76,18 @@ export const authOptions: NextAuthOptions = {
       ) {
         return false;
       }
+      if (account?.provider === "google" && user.email) {
+        if (!isGoogleAuthDevMode()) {
+          const email = normalizeRosterEmail(user.email);
+          const existingUser = await prisma.user.findUnique({ where: { email } });
+          if (!existingUser) {
+            const roster = await prisma.approvedRoster.findUnique({ where: { email } });
+            if (!roster) {
+              return "/login?error=NotOnRoster";
+            }
+          }
+        }
+      }
       if (user.id) {
         try {
           await prisma.auditLog.create({
@@ -95,7 +108,32 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      if (user?.id && user.email && account?.provider === "google") {
+        const email = normalizeRosterEmail(user.email);
+        const roster = await prisma.approvedRoster.findUnique({ where: { email } });
+        if (roster) {
+          try {
+            await prisma.$transaction([
+              prisma.user.update({
+                where: { id: user.id },
+                data: {
+                  role: roster.role,
+                  firstName: roster.firstName,
+                  lastName: roster.lastName,
+                  name: `${roster.firstName} ${roster.lastName}`,
+                },
+              }),
+              prisma.approvedRoster.update({
+                where: { id: roster.id },
+                data: { used: true },
+              }),
+            ]);
+          } catch (e) {
+            logger.error("Roster sync on Google jwt", { error: String(e) });
+          }
+        }
+      }
       if (user) {
         token.id = user.id;
         const dbUser = await prisma.user.findUnique({

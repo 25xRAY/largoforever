@@ -14,6 +14,7 @@ import { getCanonicalUrl } from "@/lib/seo";
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
+  const isNotOnRoster = errorParam === "NotOnRoster";
   const [loading, setLoading] = useState(false);
   const [providerLoading, setProviderLoading] = useState<string | null>(null);
 
@@ -89,7 +90,27 @@ export default function LoginPage() {
               {errors.root.message}
             </p>
           )}
-          {errorParam && (
+          {isNotOnRoster && (
+            <p className="text-sm text-warning" role="alert">
+              Your email is not on the approved Class of 2026 roster. If you believe this is an error,
+              contact your counselor Tomeco Dates at{" "}
+              <a
+                href="mailto:tomeco.dates@pgcps.org"
+                className="font-medium underline focus:outline-none focus:ring-2 focus:ring-gold-500 rounded"
+              >
+                tomeco.dates@pgcps.org
+              </a>{" "}
+              or{" "}
+              <a
+                href="tel:+13018088880"
+                className="font-medium underline focus:outline-none focus:ring-2 focus:ring-gold-500 rounded"
+              >
+                301-808-8880
+              </a>
+              .
+            </p>
+          )}
+          {errorParam && !isNotOnRoster && (
             <p className="text-sm text-warning" role="alert">
               Something went wrong. Please try again.
             </p>

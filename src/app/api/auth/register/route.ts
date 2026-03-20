@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { registerSchema } from "@/lib/validations/auth";
 import { prisma } from "@/lib/prisma";
 import { logger } from "@/lib/logger";
+import { normalizeRosterEmail } from "@/lib/roster";
 
 const BCRYPT_ROUNDS = 12;
 
@@ -22,9 +23,24 @@ export async function POST(request: Request) {
     }
 
     const { email, password, firstName, lastName } = parsed.data;
+    const emailNorm = normalizeRosterEmail(email);
+
+    const rosterEntry = await prisma.approvedRoster.findUnique({
+      where: { email: emailNorm },
+    });
+
+    if (!rosterEntry) {
+      return NextResponse.json(
+        {
+          error:
+            "Your email is not on the approved roster. Please contact your counselor.",
+        },
+        { status: 403 }
+      );
+    }
 
     const existing = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() },
+      where: { email: emailNorm },
     });
 
     if (existing) {
@@ -36,21 +52,28 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
 
-    const user = await prisma.user.create({
-      data: {
-        email: email.toLowerCase().trim(),
-        password: hashedPassword,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        name: `${firstName.trim()} ${lastName.trim()}`,
-        role: "STUDENT",
-      },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-      },
+    const user = await prisma.$transaction(async (tx) => {
+      const created = await tx.user.create({
+        data: {
+          email: emailNorm,
+          password: hashedPassword,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          role: rosterEntry.role,
+        },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+        },
+      });
+      await tx.approvedRoster.update({
+        where: { id: rosterEntry.id },
+        data: { used: true },
+      });
+      return created;
     });
 
     return NextResponse.json(

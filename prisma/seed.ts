@@ -1,4 +1,9 @@
-import { PrismaClient, HonorDesignation, DistrictLeaderboardCategory } from "@prisma/client";
+import {
+  PrismaClient,
+  HonorDesignation,
+  DistrictLeaderboardCategory,
+  type UserRole,
+} from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -58,6 +63,27 @@ async function main() {
       password: hashed,
     },
     update: {},
+  });
+
+  const teacherUser = await prisma.user.upsert({
+    where: { email: "coach.teacher@pgcps.org" },
+    create: {
+      email: "coach.teacher@pgcps.org",
+      name: "Alex Mentor",
+      firstName: "Alex",
+      lastName: "Mentor",
+      role: "TEACHER",
+      password: hashed,
+      profileComplete: true,
+      teacherDepartment: "MATH",
+      teacherSubject: "Algebra II — Room 214",
+    },
+    update: {
+      role: "TEACHER",
+      teacherDepartment: "MATH",
+      teacherSubject: "Algebra II — Room 214",
+      profileComplete: true,
+    },
   });
 
   const studentEmails = [
@@ -258,6 +284,82 @@ async function main() {
         publishedAt: i < 8 ? new Date() : null,
       },
       update: {},
+    });
+  }
+
+  const firstStudentForLink = await prisma.user.findFirst({
+    where: { email: studentEmails[0] },
+  });
+  if (firstStudentForLink) {
+    await prisma.teacherStudent.upsert({
+      where: {
+        teacherId_studentId: {
+          teacherId: teacherUser.id,
+          studentId: firstStudentForLink.id,
+        },
+      },
+      create: {
+        teacherId: teacherUser.id,
+        studentId: firstStudentForLink.id,
+      },
+      update: {},
+    });
+  }
+
+  const rosterRows: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: UserRole;
+    used: boolean;
+  }[] = [
+    {
+      email: "robyn.jones@pgcps.org",
+      firstName: "Robyn",
+      lastName: "Jones",
+      role: "ADMIN",
+      used: true,
+    },
+    {
+      email: "tomeco.dates@pgcps.org",
+      firstName: "Tomeco",
+      lastName: "Dates",
+      role: "COUNSELOR",
+      used: true,
+    },
+    {
+      email: "admin@largolions2026.org",
+      firstName: "System",
+      lastName: "Admin",
+      role: "ADMIN",
+      used: true,
+    },
+    {
+      email: "coach.teacher@pgcps.org",
+      firstName: "Alex",
+      lastName: "Mentor",
+      role: "TEACHER",
+      used: true,
+    },
+    ...studentEmails.map((email, i) => ({
+      email,
+      firstName: firstNames[i],
+      lastName: lastNames[i],
+      role: "STUDENT" as UserRole,
+      used: true,
+    })),
+  ];
+
+  for (const row of rosterRows) {
+    await prisma.approvedRoster.upsert({
+      where: { email: row.email },
+      create: row,
+      update: {
+        firstName: row.firstName,
+        lastName: row.lastName,
+        role: row.role,
+        used: row.used,
+      },
     });
   }
 

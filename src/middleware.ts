@@ -62,6 +62,17 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  const isApiTeacher = pathname.startsWith("/api/teacher");
+  if (isApiTeacher) {
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if ((token.role as string) !== "TEACHER") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+    return NextResponse.next();
+  }
+
   if (isPublic && token && (pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
@@ -69,10 +80,22 @@ export async function middleware(req: NextRequest) {
   if (isDashboard && !token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
+  const teacherBlockedPaths = ["/dashboard/checklist", "/dashboard/ed-roniq", "/dashboard/yearbook"];
+
   if (isDashboard && token) {
     const role = token.role as string;
-    if (role !== "STUDENT" && role !== "ADMIN") {
+    const allowedDashboard =
+      role === "STUDENT" || role === "ADMIN" || role === "TEACHER" || role === "COUNSELOR";
+    if (!allowedDashboard) {
       return NextResponse.redirect(new URL("/", req.url));
+    }
+    if (role === "TEACHER") {
+      const blocked = teacherBlockedPaths.some(
+        (p) => pathname === p || pathname.startsWith(`${p}/`)
+      );
+      if (blocked) {
+        return NextResponse.redirect(new URL("/dashboard", req.url));
+      }
     }
   }
 

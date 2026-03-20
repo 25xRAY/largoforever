@@ -3,16 +3,28 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { LayoutDashboard, ShieldCheck, Users, Award, Download, LayoutList } from "lucide-react";
+import {
+  LayoutDashboard,
+  ShieldCheck,
+  Users,
+  Award,
+  Download,
+  LayoutList,
+  ClipboardList,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
 
-const LINKS = [
+const BASE_LINKS = [
   { href: "/admin", label: "Admin dashboard", icon: LayoutDashboard },
   { href: "/admin/moderation", label: "Moderation", icon: ShieldCheck },
   { href: "/admin/students", label: "Students", icon: Users },
   { href: "/admin/leaderboards", label: "Leaderboards", icon: Award },
   { href: "/admin/data-export", label: "Data export", icon: Download },
+] as const;
+
+const ADMIN_ONLY_LINKS = [
+  { href: "/admin/roster", label: "Approved roster", icon: ClipboardList },
 ] as const;
 
 /**
@@ -22,6 +34,10 @@ export function AdminSidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const roleLabel = session?.user?.role === "MODERATOR" ? "Moderator" : "Admin";
+  const navLinks =
+    session?.user?.role === "ADMIN"
+      ? [...BASE_LINKS, ...ADMIN_ONLY_LINKS]
+      : [...BASE_LINKS];
 
   return (
     <aside
@@ -36,7 +52,7 @@ export function AdminSidebar() {
         </span>
       </div>
       <nav className="flex flex-1 flex-col gap-1 px-3 py-4" aria-label="Admin navigation">
-        {LINKS.map((link) => {
+        {navLinks.map((link) => {
           const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
           const Icon = link.icon;
           return (

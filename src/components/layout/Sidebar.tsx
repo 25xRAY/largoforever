@@ -18,7 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
 
-const SIDEBAR_LINKS = [
+const STUDENT_SIDEBAR_LINKS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/checklist", label: "Graduation Checklist", icon: ClipboardCheck },
   { href: "/wall-of-wins", label: "Wall of Wins", icon: Trophy },
@@ -26,6 +26,13 @@ const SIDEBAR_LINKS = [
   { href: "/leaderboards", label: "Leaderboards", icon: Award },
   { href: "/resources", label: "Resources", icon: FileText },
   { href: "/dashboard/ed-roniq", label: "Ed RonIQ", icon: Sparkles },
+] as const;
+
+const TEACHER_SIDEBAR_LINKS = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/wall-of-wins", label: "Wall of Wins", icon: Trophy },
+  { href: "/leaderboards", label: "Leaderboards", icon: Award },
+  { href: "/resources", label: "Resources", icon: FileText },
 ] as const;
 
 const BOTTOM_LINKS = [
@@ -38,11 +45,13 @@ export function Sidebar() {
   const { data: session } = useSession();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const sidebarLinks =
+    session?.user?.role === "TEACHER" ? TEACHER_SIDEBAR_LINKS : STUDENT_SIDEBAR_LINKS;
 
   const content = (
     <>
       <nav className="flex flex-1 flex-col gap-1 px-3 py-4" aria-label="Sidebar">
-        {SIDEBAR_LINKS.map((link) => {
+        {sidebarLinks.map((link) => {
           const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
           const Icon = link.icon;
           return (

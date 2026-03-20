@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 /** Mirrors `UserRole` without importing `@prisma/client` in the browser bundle. */
-type UserRole = "STUDENT" | "ADMIN" | "MODERATOR" | "COUNSELOR";
+type UserRole = "STUDENT" | "TEACHER" | "ADMIN" | "MODERATOR" | "COUNSELOR";
 /** Mirrors `HonorDesignation`. */
 type HonorDesignation = "NONE" | "VALEDICTORIAN" | "SALUTATORIAN";
 
@@ -47,7 +47,7 @@ async function fetchStudent(id: string): Promise<StudentDetailResponse> {
   return res.json();
 }
 
-const ROLES = ["STUDENT", "ADMIN", "MODERATOR", "COUNSELOR"] as const satisfies readonly UserRole[];
+const ROLES = ["STUDENT", "TEACHER", "ADMIN", "MODERATOR", "COUNSELOR"] as const satisfies readonly UserRole[];
 const HONORS = [
   "NONE",
   "VALEDICTORIAN",

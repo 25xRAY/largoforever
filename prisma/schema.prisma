@@ -9,6 +9,7 @@ datasource db {
 
 enum UserRole {
   STUDENT
+  TEACHER
   ADMIN
   MODERATOR
   COUNSELOR
@@ -59,6 +60,20 @@ enum CompleterPathway {
   CONSTRUCTION
   EDUCATION
   PUBLIC_SERVICE
+  UNDECIDED
+}
+
+/** Teacher profile: department (onboarding). */
+enum TeacherDepartment {
+  ENGLISH
+  MATH
+  SCIENCE
+  SOCIAL_STUDIES
+  FINE_ARTS
+  PE_HEALTH
+  CTE
+  SPECIAL_EDUCATION
+  OTHER
 }
 
 enum WinType {
@@ -205,6 +220,8 @@ model User {
   preferredName    String?   @db.VarChar(50)
   pronouns         String?   @db.VarChar(30)
   graduationYear   Int?
+  teacherDepartment TeacherDepartment?
+  teacherSubject   String?   @db.VarChar(256)
   yearbookPublic   Boolean   @default(true)
   leaderboardOptIn Boolean   @default(false)
   displayGpa         Float?
@@ -227,6 +244,37 @@ model User {
   leaderboardEntries LeaderboardEntry[]
   leaderboardPreferences UserLeaderboardPreference[]
   auditLogs        AuditLog[]
+  teacherRoster    TeacherStudent[] @relation("TeacherToStudents")
+  studentTeachers  TeacherStudent[] @relation("StudentToTeachers")
+}
+
+/** Counselor-approved emails allowed to register or sign in with Google. */
+model ApprovedRoster {
+  id        String   @id @default(uuid())
+  email     String   @unique @db.VarChar(256)
+  firstName String   @db.VarChar(128)
+  lastName  String   @db.VarChar(128)
+  role      UserRole @default(STUDENT)
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+/** Links staff teachers to students they advise (read-only progress for teachers). */
+model TeacherStudent {
+  id        String   @id @default(uuid())
+  teacherId String
+  studentId String
+  teacher   User     @relation("TeacherToStudents", fields: [teacherId], references: [id], onDelete: Cascade)
+  student   User     @relation("StudentToTeachers", fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([teacherId, studentId])
+  @@index([teacherId])
+  @@index([studentId])
 }
 
 model UserLeaderboardPreference {
