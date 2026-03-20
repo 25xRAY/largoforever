@@ -145,14 +145,14 @@ export default function HomePage() {
                 style={{ background: "linear-gradient(135deg, #001a3d, #002a5c)" }}
               >
                 <div
-                  className="flex h-40 w-40 sm:h-48 sm:w-48 items-center justify-center rounded-full"
+                  className="flex h-64 w-64 sm:h-72 sm:w-72 items-center justify-center rounded-full"
                   style={{ background: "rgba(0,10,30,0.5)" }}
                 >
                   <Image
                     src="/images/largo-crest-red.png"
                     alt="Largo High School Class of 2026 crest — Largo Lions"
-                    width={192}
-                    height={192}
+                    width={280}
+                    height={280}
                     className="h-36 w-36 rounded-full object-contain sm:h-44 sm:w-44"
                     priority
                   />
