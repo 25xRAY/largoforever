@@ -84,7 +84,6 @@ _(none)_
 
 ## Backlog (post–Phase 6; **not** active until re-scoped)
 
-- **Temporary dev:** `src/app/api/debug-db/route.ts` — GET dev-only Prisma counts (`Account` / `User` / `ApprovedRoster`); delete before prod deploy.
 - Admin: dedicated **reported content** queue when backend supports it
 - API hardening: expanded rate limiting / Zod coverage where needed
 
