@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GRADUATION_CEREMONY_SUMMARY } from "@/lib/constants";
 
 export interface PageSEOConfig {
   title: string;
@@ -115,7 +116,7 @@ export const FAQ_SCHEMA = {
       name: "When is graduation?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Largo Lions Class of 2026 graduation is June 2, 2026.",
+        text: GRADUATION_CEREMONY_SUMMARY,
       },
     },
     {

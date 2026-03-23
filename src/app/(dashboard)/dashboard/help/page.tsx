@@ -8,7 +8,7 @@ import {
   CREDITS_REQUIRED,
   SERVICE_HOURS_REQUIRED,
   ASSESSMENTS_REQUIRED,
-  GRADUATION_DATE,
+  GRADUATION_CEREMONY_SUMMARY,
 } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -33,7 +33,7 @@ const FAQS = [
   },
   {
     q: "When is graduation?",
-    a: `Largo Lions Class of 2026 graduation is ${GRADUATION_DATE}.`,
+    a: GRADUATION_CEREMONY_SUMMARY,
   },
   {
     q: "What is a Career Completer Pathway?",

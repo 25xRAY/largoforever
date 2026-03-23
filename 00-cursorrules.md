@@ -47,7 +47,7 @@ Brand:
   Motto: "Legacy in Motion...Altitude Achieved!"
   Mascot: Lions
   Philosophy: L.I.O.N. = Leadership, Integrity, Optimism, Nobility
-  Graduation Date: June 2, 2026
+  Graduation: May 18, 2026, 10:30 a.m. — The Show Place Arena, Upper Marlboro, Maryland
 
 ===== SCHOOL CONTEXT =====
 

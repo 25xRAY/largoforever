@@ -24,7 +24,12 @@ import {
 } from "@/components/seo/SchemaOrg";
 import { CrisisBanner } from "@/components/layout/CrisisBanner";
 import { StatsBar } from "@/components/home/StatsBar";
-import { COUNSELOR_INFO, ADMIN_INFO, GRADUATION_DATE } from "@/lib/constants";
+import {
+  COUNSELOR_INFO,
+  ADMIN_INFO,
+  GRADUATION_DATE,
+  GRADUATION_DATE_ISO,
+} from "@/lib/constants";
 
 export const metadata = generatePageMetadata({
   title: "Largo Lions Class of 2026 | Graduation Tracker, Wall of Wins & Digital Yearbook",
@@ -73,7 +78,7 @@ const LION_PILLARS = [
 ];
 
 function daysLeft(): number {
-  const grad = new Date("2026-06-02");
+  const grad = new Date(GRADUATION_DATE_ISO);
   const now = new Date();
   return Math.max(0, Math.ceil((grad.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
 }
@@ -262,7 +267,7 @@ export default function HomePage() {
           </h2>
           <div className="grid grid-cols-2 gap-px lg:grid-cols-4" style={{ background: "rgba(255,255,255,0.1)" }}>
             {[
-              { label: "Days Until Graduation", value: days.toString(), sub: "June 2, 2026" },
+              { label: "Days Until Graduation", value: days.toString(), sub: GRADUATION_DATE },
               { label: "Credits to Graduate", value: "21", sub: "Required" },
               { label: "Service Hours", value: "75", sub: "Grades 6–12" },
               { label: "Largo Lions", value: "350+", sub: "Class of 2026" },

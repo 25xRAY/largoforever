@@ -1,9 +1,9 @@
 "use client";
 
 import { Calendar } from "lucide-react";
-import { GRADUATION_DATE } from "@/lib/constants";
+import { GRADUATION_DATE, GRADUATION_DATE_ISO } from "@/lib/constants";
 
-const GRADUATION_DATE_DATE = new Date("2026-06-02");
+const GRADUATION_DATE_DATE = new Date(GRADUATION_DATE_ISO);
 const FAFSA_DEADLINE = new Date("2026-06-30");
 const YEARBOOK_DEADLINE = new Date("2026-05-15");
 
@@ -13,7 +13,7 @@ function daysAway(from: Date, to: Date): number {
 }
 
 /**
- * Important dates with countdowns: Graduation June 2 2026, FAFSA, yearbook. "X days away".
+ * Important dates with countdowns: graduation day, FAFSA, yearbook. "X days away".
  */
 export function DeadlinesWidget() {
   const now = new Date();

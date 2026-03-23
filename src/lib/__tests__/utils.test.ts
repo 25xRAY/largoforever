@@ -38,7 +38,7 @@ describe("formatCurrency", () => {
 
 describe("formatDate", () => {
   it("formats valid ISO string", () => {
-    const s = formatDate("2026-06-02T12:00:00.000Z");
+    const s = formatDate("2026-05-18T12:00:00.000Z");
     expect(s.length).toBeGreaterThan(4);
   });
 

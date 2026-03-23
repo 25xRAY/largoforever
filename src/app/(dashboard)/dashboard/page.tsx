@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { GRADUATION_DATE } from "@/lib/constants";
+import { GRADUATION_DATE, GRADUATION_DATE_ISO } from "@/lib/constants";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { ReadinessMeter } from "@/components/dashboard/ReadinessMeter";
@@ -14,7 +14,7 @@ import { DeadlinesWidget } from "@/components/dashboard/DeadlinesWidget";
 import { TeacherDashboardView } from "@/components/dashboard/TeacherDashboardView";
 
 function daysUntilGraduation(): number {
-  const grad = new Date("2026-06-02");
+  const grad = new Date(GRADUATION_DATE_ISO);
   const now = new Date();
   return Math.max(0, Math.ceil((grad.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
 }
