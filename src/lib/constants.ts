@@ -5,7 +5,7 @@ export const SITE_NAME = "Largo Lions Class of 2026";
 export const SITE_URL = "https://largolions2026.org";
 
 /** Graduation ceremony date (display). */
-export const GRADUATION_DATE = "May 18, 2026";
+export const GRADUATION_DATE = "May 17, 2026";
 
 /** Ceremony time (display). */
 export const GRADUATION_TIME = "10:30 a.m.";
@@ -17,7 +17,7 @@ export const GRADUATION_VENUE = "The Show Place Arena";
 export const GRADUATION_VENUE_LOCATION = "Upper Marlboro, Maryland";
 
 /** ISO date string for ceremony day (countdown widgets). */
-export const GRADUATION_DATE_ISO = "2026-05-18";
+export const GRADUATION_DATE_ISO = "2026-05-17";
 
 /** Single sentence for FAQ, schema, and help copy. */
 export const GRADUATION_CEREMONY_SUMMARY =
