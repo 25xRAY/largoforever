@@ -44,3 +44,4 @@ yarn-error.log*
 
 # Phase markers (optional; remove if you want to track them)
 # .phase_*_complete
+.env*
