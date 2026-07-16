@@ -45,3 +45,6 @@ yarn-error.log*
 # Phase markers (optional; remove if you want to track them)
 # .phase_*_complete
 .env*
+
+# LD-315 rollout backup files
+CLAUDE.md.bak*
