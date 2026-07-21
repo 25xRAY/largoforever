@@ -1,0 +1,58 @@
+── largo_2026 — Tue Jul 21 11:02:48 CDT 2026 ──
+
+  ── LD — Locked Decisions ──
+LD-199
+LD-207
+LD-259
+LD-276
+LD-277
+LD-278
+LD-279
+LD-280
+LD-286
+LD-287
+LD-288
+LD-300
+LD-302
+LD-309
+LD-311
+LD-315
+
+  ── GAP — GAP specs ──
+GAP-088
+
+  ── PAT — Patents ──
+
+  ── S# — Sections ──
+S13
+S14
+S176
+S185
+S239
+S250
+
+  ── Sub# — Subsystems ──
+
+  ── Migrations — filesystem tail ──
+
+  ── CLAUDE.md registry block ──
+# PIR — Platform Integrity Registry
+## LD-311 | 25 Alpha LLC | Carlton A. James — Founder & Chief AI Officer
+## Mandatory for every platform in the 25 Alpha ecosystem — June 25, 2026
+
+Every platform built here is registered in X.R.A.Y.'s Platform Integrity Registry (PIR).
+No platform goes LIVE without passing the enterprise acceptance gate.
+
+### What PIR Is
+PIR is the 25 Alpha ecosystem's universal quality enforcement layer, living in xray_platform.
+It runs 17 audit dimensions against every platform before go-live and on a continuous schedule.
+The AUDITOR agent (S239) runs all dimensions. Results write to platform_audit_registry (immutable, 7-year retention).
+
+### Enterprise Acceptance Gate — LD-311 (HARD REQUIREMENT)
+Before ANY platform flips from dark to live, it must pass:
+
+| Threshold | Requirement |
+|---|---|
+| Average score | ≥ 85/100 across all scored dimensions |
+| Carlton flags | = 0 |
+| AUD-06 Security | ≥ 70 (hard floor — non-negotiable) |
