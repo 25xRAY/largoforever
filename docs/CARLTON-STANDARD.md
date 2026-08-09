@@ -421,3 +421,22 @@ CARLTON'S 10%                — flags, secrets, deploys, migrations, cost, fili
 *25 Alpha LLC · 611 Commerce Street, Suite 2611-E68, Nashville, TN 37203 · info@25alpha.ai (corporate) · info@25xray.ai (product) · 567-252-5742*
 *Technology owned by 25 ACTUAL Holdings LLC. Licensed through 25 Alpha LLC.*
 *Intelligence with Intention™ · The Algorithm of Trust™ · See Through Everything.™*
+<!-- PATENT-FILING-STANDARD-REF -->
+### §13.5 — Filing Procedure (operative SOP)
+
+The step-by-step procedure for filing a provisional patent is codified in
+**`docs/CARLTON-PATENT-FILING-STANDARD-v1.md`** (in this repo), verified live
+across 5 filings on 2026-08-09 (dockets 009, 010, 011, 012, 014). Read it before
+drafting or filing any provisional. It covers: the decision gate (novel? about to
+be disclosed? category vs. mechanism), scope-protection drafting rules
+(industry-agnostic title/claims, no brand, no codenames, no GICS/ICB), the 16-page
+/ 27-claim document structure, the SB/15A micro-entity method (item (1) "small
+entity" is the required base of the micro certification — do not remove it), the
+verified USPTO Patent Center click-path (Applicant = 0/empty; ADS dropdown = Small;
+claim Micro at fee step = $65), the build pipeline, deferred assignment, and
+deadline discipline.
+
+**Registry:** every filing is logged to `PAT-INDEX.md` the same session and
+S3-synced to `alpha-patent-vault-372482646107` (Object Lock COMPLIANCE), so any
+repo can run a filing and 25 Alpha / KÁRMÁN receives the record back in the vault.
+<!-- /PATENT-FILING-STANDARD-REF -->
