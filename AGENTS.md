@@ -23,3 +23,5 @@ This file is the canonical instruction set for EVERY AI agent and tool that work
 - If the assertion is not held, the run writes BLOCKED-keepawake and stops. A sleeping Mac is a sprint failure.
 - Implemented in `scripts/lib/keep-awake.sh` (xray_platform: `infra/scripts/lib/keep-awake.sh`) and checked by `scripts/check-keep-awake.sh`.
 - A locked screen is not prevented by caffeinate. Keep the Mac on power, and do not lock it during a run.
+
+Handoff standard: 95/5 (AI 95%, Carlton 5%). The 5% is only what a human must do: typed confirmations, signatures, consent recordings, payments, legal.
